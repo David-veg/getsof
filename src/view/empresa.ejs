@@ -1,0 +1,813 @@
+<%- include("header") %>
+    <!--begin::Wrapper-->
+    <div class="app-wrapper flex-column flex-row-fluid" id="ViewEmpresa">
+        <!--begin::Wrapper container-->
+        <div class="app-container container-xxl d-flex flex-row flex-column-fluid">
+            <!--begin::Main-->
+            <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                <!--begin::Content wrapper-->
+                <div class="d-flex flex-column flex-column-fluid">
+                    <!--begin::Toolbar-->
+                    <div class="app-toolbar align-items-center justify-content-between">
+                        <!--begin::Toolbar wrapper-->
+                        <div class="d-flex flex-grow-1 flex-stack flex-wrap gap-2 mb-n10" id="kt_toolbar">
+                            <!--begin::Page title-->
+                            <div class="d-flex flex-column align-items-start me-3 gap-2">
+                                <!--begin::Title-->
+                                <div v-show="dom.mostrarTitle">
+                                    <h1 class="d-flex text-dark fw-bolder m-0 fs-2qx mt-10"> Gestión de Empresas</h1>
+                                </div>
+                                <!--end::Title-->
+                            </div>
+                            <!--end::Page title-->
+                            <!--begin::Actions-->
+                            <div class="d-flex align-items-center py-2">
+
+                                <div class="row" v-show="dom.mostrarBtns">
+                                <!--begin::Button-->
+                                <div class="col-md-8">
+                                <a class="btn btn-sm btn-primary" v-on:click="verFormulario();">Nueva Empresa</a>
+                                </div>
+                                <div class="col-md-3">
+                                <a class="btn btn-sm btn-primary" v-on:click="verFiltro();">Filtros</a>
+                                </div>
+                                <!-- <div class="col-md-3">
+                                    <download-excel
+                                    :data="json_data"
+                                    :fields="json_fields"
+                                    :name="fileName">
+                                        <button type="button" class="btn btn-success">Download Excel</button>
+                                    </download-excel>
+                                </div> -->
+                                <!--end::Button-->
+                                </div>
+
+                            </div>
+                            <!--end::Actions-->
+                        </div>
+                        <!--end::Toolbar wrapper-->
+                    </div>
+                    <!--end::Toolbar-->
+
+                     <!-- <pre> {{dataSucursales}}</pre>  -->
+
+
+
+                    <div class="card mb-12" v-show="dom.mostrarBusqueda" id="">
+                        <div class="card-body">
+
+                            <div class="d-flex align-items-center">
+                                <div class="position-relative w-md-400px me-md-2">
+                                    <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+                                    <span class="svg-icon svg-icon-3 svg-icon-gray-500 position-absolute top-50 ms-5 translate-middle-y">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+										<rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1"
+											transform="rotate(45 17.0365 15.1223)" fill="currentColor"></rect>
+										<path
+											d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z"
+											fill="currentColor"></path>
+									</svg>
+								</span>
+                                    <!--end::Svg Icon-->
+                                    <!--end::Icon-->
+                                    <!--begin::Input-->
+                                    <input type="text" class="form-control form-control-solid ps-13" name="Buscar" placeholder="Buscar Empresas"
+                                    v-model="dataBusqueda.busquedaEmpresa" v-on:keyup="validarBusquedaEnter">
+                                    <!--end::Input-->
+
+                                </div>
+                                <div class="col-md-4"></div>
+
+                                <div class="d-flex align-items-center">
+                                    <button type="submit" class="btn btn-sm btn-primary me-5" data-kt-menu-dismiss="true"
+                                    v-on:click="executeCargarListadoFiltro();">Aplicar</button>
+                                    <a id="kt_horizontal_search_advanced_link" class="btn btn-link me-5" data-bs-toggle="collapse" href="#kt_advanced_search_form" > Búsqueda Avanzada</a>
+                                    <button type="submit" class="btn btn-sm btn-danger" data-kt-menu-dismiss="true" v-on:click="ocultarFiltro();" >Cancelar</button>
+                                </div>
+                                <!-- {{dataBusqueda}} -->
+                            </div>
+
+                            <!--begin::Búsqueda Avanzadas-->
+                            <div class="collapse" id="kt_advanced_search_form">
+                                <!--begin::Separator-->
+                                <div class="separator separator-dashed mt-9 mb-6"></div>
+                                <!--end::Separator-->
+                                <!--begin::Row-->
+                                <div class="row g-8 mb-8">
+                                    <!--begin::Col-->
+
+                                    <!--begin::Col-->
+                                    <div class="col-md-6">
+                                        <label class="fs-6 form-label fw-bolder text-dark">FECHA DESDE - HASTA</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input type="date" class="form-control form-control form-control-solid"
+                                                v-model="dataBusqueda.busquedaFechaDesde" v-on:keyup="validarBusquedaEnter">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="date" class="form-control form-control form-control-solid"
+                                                v-model="dataBusqueda.busquedaFechaHasta" v-on:keyup="validarBusquedaEnter">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!--end::Col-->
+
+                                    <!--begin::Col-->
+                                    <div class="col-md-6">
+                                        <label class="fs-6 form-label fw-bolder text-dark">Estado</label>
+                                        <select class="form-select form-select-solid" aria-label="Select example" v-model="dataBusqueda.busquedaEstado"
+                                        v-on:keyup="validarBusquedaEnter">
+                                            <option value="">:Todos:</option>
+                                            <option value="R">Activo</option>
+                                            <option value="S">Inactivo</option>
+                                        </select>
+                                    </div>
+                                    <!--end::Col-->
+
+                                    <!--begin::Col-->
+                                    <div class="col-md-6">
+                                        <label class="fs-6 form-label fw-bolder text-dark">RUC / Razón Social</label>
+                                        <input type="text" class="form-control form-control form-control-solid" name="tags" v-model="dataBusqueda.busquedaRUCRazSocial"
+                                        v-on:keyup="validarBusquedaEnter">
+                                    </div>
+                                    <!--end::Col-->
+
+                                </div>
+                                <!--end::Row-->
+                            </div>
+                            <!--end::Búsqueda Avanzada-->
+
+                        </div>
+                    </div>
+                    <!--begin::Content-->
+                    <div class="app-content flex-column-fluid" id="kt_app_content">
+                        <!--begin::Content-->
+                        <!--begin::Formulario Empresa-->
+                        <div class="card mb-12" v-show="dom.mostrarFormulario" id="viewFormulario">
+                            <form role="form" @submit.prevent="validarCreacionEdicionEmpresa()" id="formEmpresa"
+                            novalidate="novalidate">
+
+                            <!-- <pre> {{dataEmpresa}}</pre> -->
+                                <div class="card-body pt-5 pb-5">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="fv-row col-md-12 mb-5">
+                                                    <div class="form-group">
+                                                        <label class="required form-label">RUC</label>
+                                                        <div class="input-group">
+                                                            <input name="numDocumento" class="form-control form-control-solid"
+                                                            v-model="dataEmpresa.numeroDocumento" maxlength="13" @keypress="isNumber($event)">
+                                                            <span class="input-group-btn">
+                                                                <button type="button"class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary"
+															 id="btnExtraer" v-on:click="extraerDataSRI()"> Extraer Datos
+                                                            <i class="las la-cloud-download-alt text-primary"></i></button></span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="fv-row col-md-12 mb-5">
+                                                    <label class="required form-label">Razón Social</label>
+                                                    <input name="razonSocial" type="text" class="form-control form-control-solid"
+                                                    v-model="dataEmpresa.razonSocial"/>
+                                                </div>
+
+                                                <div class="fv-row col-md-12 mb-5">
+                                                    <label class="required form-label">Nombre Comercial</label>
+                                                    <input name="nombreComercial" type="text" class="form-control form-control-solid"
+                                                    v-model="dataEmpresa.nombreComercial"/>
+                                                </div>
+
+                                                <div class="fv-row col-md-12 mb-5">
+                                                    <label class="required form-label">Dirección Matriz</label>
+                                                    <input name="direccionMatriz" type="text" class="form-control form-control-solid"
+                                                    v-model="dataEmpresa.direccionMatriz"/>
+                                                </div>
+
+                                                <div class="col-md-12 mb-5">
+                                                    <label class="form-label">Celular</label>
+                                                    <input type="text" class="form-control form-control-solid"
+                                                    v-model="dataEmpresa.celular" @keypress="isNumber($event)" maxlength="10"/>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6 ">
+                                            <div class="row">
+                                                <div class="fv-row col-md-12 mb-5">
+                                                    <label class="required form-label">Tipo Contribuyente</label>
+                                                    <select name="tipoContribuyente" class="form-select form-select-solid" aria-label="Select example"
+                                                    v-model="dataEmpresa.tipoContribuyente">
+                                                        <option value="">:Seleccione:</option>
+												<option v-for="option in datosGenerales.tipoContribuyente"
+                                                v-bind:value="option.ID_TIPO_CONTRIBUYENTE">{{option.NOMBRE}}</option>
+
+											</select>
+                                                </div>
+
+                                                <div class="fv-row col-md-12 mb-5">
+                                                        <label class=" form-label">Correo</label>
+                                                        <div class="input-group">
+                                                        <input
+                                                        v-on:focus="$event.target.select()" ref="myinput" name="correoEmpresa" type="text" class="form-control form-control-solid"
+                                                        v-model="dataEmpresa.correo"/>
+                                                        <a class="btn btn-light-primary" @click="copy">
+                                                            Copy
+                                                        </a>
+                                                        </div>
+
+                                                </div>
+
+                                                <div class="col-md-12 mb-10">
+                                                    <label class=" form-label">Estado</label>
+                                                    <select class="form-select form-select-solid" aria-label="Select example"
+                                                    v-model="dataEmpresa.esado">
+
+												<option value="R">Activo</option>
+												<option value="S">Inactivo</option>
+
+											</select>
+                                                </div>                                                
+
+                                                <div class="col-md-12 mb-7">
+                                                    <!--begin::Switch-->
+                                                    <label class="form-check form-switch form-check-custom form-check-solid">
+												<input class="form-check-input" type="checkbox" checked="checked"
+                                                v-model="dataEmpresa.obligadoContabilidad"/>
+												<span class="form-check-label fw-bold text-muted">
+													Obligado a contabilidad
+												</span>
+											</label>
+                                                    <!--end::Switch-->
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <!--begin::Switch-->
+                                                    <label class="form-check form-switch form-check-custom form-check-solid">
+												<input class="form-check-input" type="checkbox" checked="checked"
+                                                v-model="dataEmpresa.microEmpresa"/>
+												<span class="form-check-label fw-bold text-muted">
+													Micro Empresa
+												</span>
+											</label>
+                                                    <!--end::Switch-->
+                                                </div>
+
+                                                <div class="col-md-6 mt-6">
+                                                    <!--begin::Switch-->
+                                                    <label class="form-check form-switch form-check-custom form-check-solid">
+												<input class="form-check-input" type="checkbox" checked="checked"
+                                                v-model="dataEmpresa.agenteRetencion" v-on:change="executeCargarNumResolucionRet();"/>
+												<span class="form-check-label fw-bold text-muted">
+													Agente de retención
+												</span>
+											</label>
+                                                    <!--end::Switch-->
+                                                </div>
+
+                                                <div class="col-md-6 mt-4" v-show="dom.mostrarNumResolReten">
+                                                    <input type="text" class="form-control form-control-solid"
+                                                    placeholder="Num Resolucion Retención" v-model="dataEmpresa.numResolucionAR"/>
+                                                </div>                                                
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-12 mt-10">
+                                            <ul class="nav nav-tabs nav-line-tabs mb-5 fs-6">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" data-bs-toggle="tab" href="#kt_tab_pane_1">
+                                                        <i class="bi bi-building"></i>
+                                                        Sucursales</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a v-if="dataEmpresa.idEmpresa != '' " class="nav-link" data-bs-toggle="tab" href="#kt_tab_pane_2">
+                                                        <i class="bi bi-file-person-fill"></i>Firma Electrónica</a>
+                                                    <a v-else class="nav-link" data-bs-toggle="tab" href="#">
+                                                        <i class="bi bi-file-person-fill"></i>
+                                                        Firma Electrónica</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-bs-toggle="tab" href="#kt_tab_pane_3">
+                                                        <i class="bi bi-envelope-fill"></i>
+                                                        Credenciales de Correo</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-bs-toggle="tab" href="#kt_tab_pane_4">
+                                                        <i class="bi bi-person-check-fill"></i>
+                                                        Contribuyente Especial</a>
+                                                </li>
+                                            </ul>
+
+                                            <div class="tab-content" id="myTabContent">
+                                                <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel">
+                                                    <div class="row">
+                                                        <div class="col-md-2 mb-5">
+
+                                                            <a class="btn btn-primary btn-hover-scale me-5" data-bs-toggle="modal" data-bs-target="#Sucursal"
+                                                            v-on:click="limpiarArraySucursales();"><i class="bi bi-plus-circle text-light fs-6"></i>Nueva Sucursal</a>
+                                                            <!-- {{dataSucursales}} -->
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-hover table-row-bordered" cellspacing="0" cellpadding="0" width="100%" style="max-height: 300px; height: 300px; overflow-y: scroll;">
+                                                                    <thead class="bg-primary text-white fw-bolder">
+                                                                        <tr>
+                                                                            <th width="5%">#</th>
+                                                                            <th width="15%">N° Estab.</th>
+                                                                            <th width="50%">Nombre Comercial</th>
+                                                                            <th width="15%">Estado</th>
+                                                                            <th width="15%">Opciones</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="text-gray-600 fw-bold">
+                                                                       <tr v-for="(item, i) in dataSucursales.arraySucursales">
+                                                                        <td width="5%">{{i+1}}</td>
+                                                                        <td width="15%">{{item.numEstablecimento}}</td>
+                                                                        <td width="50%">{{item.nombreComercialSucursal}}</td>
+                                                                        <td width="15%">
+                                                                            <span class="badge badge-success">Activo</span>
+                                                                        </td>
+
+                                                                        <td width="15%">
+
+                                                                            <div class="btn-group" role="group">
+                                                                              <button id="btnGroupDrop1" type="button" class="btn btn-light-primary btn-sm"  aria-expanded="false"
+                                                                              title="Editar" data-bs-toggle="modal" data-bs-target="#Sucursal"
+                                                                              @click="executecargarDataSucursalModal(dataSucursales.arraySucursales.indexOf(item),item)">
+                                                                                <span class="svg-icon svg-icon-3 me-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path opacity="0" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="currentColor"></path><path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="currentColor"></path></svg></span>
+                                                                                Editar
+                                                                              </button>
+                                                                            </div>
+
+
+                                                                        </td>
+
+
+                                                                       </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade alert alert-primary" id="kt_tab_pane_2" role="tabpanel">
+
+                                                    <div class="row">
+                                                        <div class="col-md-6 mt-8">
+                                                            <!--begin::Form-->
+
+                                                            <form id="upload-widget" class="dropzone" enctype="multipart/form-data">
+                                                                <!--begin::Input group-->
+                                                                <div class="fv-row">
+
+                                                                    <!--begin::Dropzone-->
+                                                                    <div class="dropzone" id="kt_dropzonejs_example_1">
+                                                                        <!--begin::Message-->
+                                                                        <div class="dz-message needsclick">
+                                                                            <!--begin::Icon-->
+                                                                            <i class="bi bi-file-earmark-arrow-up text-primary fs-3x"></i>
+                                                                            <!--end::Icon-->
+
+                                                                            <!--begin::Info-->
+                                                                            <div class="ms-4">
+                                                                                <h3 class="fs-5 fw-bold text-gray-900 mb-1">
+                                                                                    Suelte los archivos aquí o haga clic para cargar.
+                                                                                </h3>
+
+                                                                                <span class="fs-7 fw-semibold text-gray-400">Solo Cargar una firma</span>
+                                                                            </div>
+                                                                            <!--end::Info-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Dropzone-->
+                                                                </div>
+                                                                <!--end::Input group-->
+                                                            </form>
+                                                            <!--end::Form-->
+                                                        </div>
+                                                        <div class="col-md-6">
+
+                                                            <div class="col-md-12">
+                                                                <!--begin::Main wrapper-->
+                                                                <div class="fv-row" data-kt-password-meter="true">
+                                                                    <!--begin::Wrapper-->
+                                                                    <div class="mb-1">
+                                                                        <!--begin::Label-->
+                                                                        <label class=" required form-label fw-bold fs-6 mb-2">
+                                                                    Contraseña
+                                                                </label>
+                                                                        <!--end::Label-->
+
+                                                                        <!--begin::Input wrapper-->
+                                                                        <div class="position-relative mb-3">
+                                                                            <input class="form-control form-control-lg" type="password"  name="new_password" autocomplete="off"
+                                                                            v-model="dataEmpresa.firmaClave"/>
+
+                                                                            <!--begin::Visibility toggle-->
+                                                                            <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" data-kt-password-meter-control="visibility">
+                                                                        <i class="bi bi-eye-slash fs-2"></i>
+
+                                                                        <i class="bi bi-eye fs-2 d-none"></i>
+                                                                    </span>
+                                                                            <!--end::Visibility toggle-->
+                                                                        </div>
+                                                                        <!--end::Input wrapper-->
+
+                                                                        <!--begin::Highlight meter-->
+                                                                        <div class="d-flex align-items-center mb-3" data-kt-password-meter-control="highlight">
+                                                                            <div class="flex-grow-1 bg-secondary bg-active-primary rounded h-5px me-2">
+                                                                            </div>
+                                                                            <div class="flex-grow-1 bg-secondary bg-active-primary rounded h-5px me-2">
+                                                                            </div>
+                                                                            <div class="flex-grow-1 bg-secondary bg-active-primary rounded h-5px me-2">
+                                                                            </div>
+                                                                            <div class="flex-grow-1 bg-secondary bg-active-primary rounded h-5px">
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--end::Highlight meter-->
+                                                                    </div>
+                                                                    <!--end::Wrapper-->
+
+                                                                    <!--begin::Hint-->
+                                                                    <div class="text-primary pb-10">
+                                                                        Use 8 o más caracteres con una combinación de letras, números y simbolos
+                                                                    </div>
+                                                                    <!--end::Hint-->
+                                                                </div>
+                                                                <!--end::Main wrapper-->
+                                                            </div>
+
+                                                            <!-- <label class=" form-label">Clave</label>
+                                                            <input type="text" class="form-control form-control-solid"> -->
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="tab-pane fade" id="kt_tab_pane_3" role="tabpanel">
+                                                    <div class="row">
+                                                        <div class="fv-row col-md-3">
+                                                            <label class="required form-label">Tipo de Plataforma</label>
+                                                            <select name="tipoPlataforma" class="form-select form-select-solid" aria-label="Select example"
+                                                            v-model="dataEmpresa.tipoPlataforma" @change="executeCargarDatosPlataforma">
+                                                                <option value="">:Seleccione:</option>
+                                                                <option value="GENERAL">AWS GETSOFT</option>
+                                                                <option value="AWSP">AWS PERSONALIZADO </option>
+                                                                <option value="PERSONALIZADO">PERSONALIZADO PROPIO</option>
+
+                                                        <option></option>
+
+                                                    </select>
+                                                        </div>
+                                                        <div class="fv-row col-md-3">
+                                                            <label class=" form-label">SMTP</label>
+                                                            <input name="smtpPlataforma" type="text" class="form-control form-control-solid"
+                                                            v-model="dataEmpresa.smtpPlataforma"
+                                                            v-if="dataEmpresa.tipoPlataforma === 'GENERAL' || dataEmpresa.tipoPlataforma === 'AWSP'
+                                                            || dataEmpresa.tipoPlataforma === ''" disabled >
+
+                                                            <input name="smtpPlataforma" type="text" class="form-control form-control-solid"
+                                                            v-model="dataEmpresa.smtpPlataforma" v-else>
+                                                        </div>
+                                                        <div class="fv-row col-md-3">
+                                                            <label class=" form-label">Puerto</label>
+                                                            <input name="puertoPlataforma" type="text" class="form-control form-control-solid"
+                                                            v-model="dataEmpresa.puertoPlataforma"
+                                                            v-if="dataEmpresa.tipoPlataforma === 'GENERAL' || dataEmpresa.tipoPlataforma === 'AWSP'
+                                                            || dataEmpresa.tipoPlataforma === ''" disabled >
+
+                                                            <input name="puertoPlataforma" type="text" class="form-control form-control-solid"
+                                                            v-model="dataEmpresa.puertoPlataforma" v-else>
+                                                        </div>
+                                                        <div class="fv-row col-md-3">
+                                                            <label class=" form-label">TLS/SSL Encryption</label>
+                                                            <input name="tlsSslPlataforma" type="text" class="form-control form-control-solid"
+                                                            v-model="dataEmpresa.tlsSslPlataforma"
+                                                            v-if="dataEmpresa.tipoPlataforma === 'GENERAL' || dataEmpresa.tipoPlataforma === 'AWSP'
+                                                            || dataEmpresa.tipoPlataforma === ''" disabled >
+
+                                                            <input name="tlsSslPlataforma" type="text" class="form-control form-control-solid"
+                                                            v-model="dataEmpresa.tlsSslPlataforma" v-else>
+                                                        </div>
+                                                        <div class=" col-md-3" v-show="dom.emailPlataforma">
+                                                            <label class=" form-label">EMAIL</label>
+                                                            <input type="text" class="form-control form-control-solid"
+                                                            v-model="dataEmpresa.emailPlataforma">
+                                                        </div>
+                                                        <div class=" col-md-3" v-show="dom.claveEmailPlataforma">
+                                                            <label class=" form-label">CLAVE DE EMAIL</label>
+                                                            <input type="text" class="form-control form-control-solid"
+                                                            v-model="dataEmpresa.emaiClavePlataforma">
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="kt_tab_pane_4" role="tabpanel">
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="form-label">Contribuyente:</label>                                                            
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            <label class="form-check form-switch form-check-custom form-check-solid">
+                                                                <input class="form-check-input" type="checkbox" checked="checked"
+                                                                v-model="dataEmpresa.contibuyenteEsp" v-on:change="executeCargarNumResolucionCont();"/>                                                                
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-md-2 mt-13" v-show="dom.mostrarNumResolContr">
+                                                            <label class=" form-label">Número Resolución:</label>                                                            
+                                                        </div>
+                                                        <div class="col-md-3 mt-10" v-show="dom.mostrarNumResolContr">                                                        
+                                                            <input type="text" class="form-control form-control-sm form-control-solid rounded-pill"
+                                                            v-model="dataEmpresa.numResolucionEsp">
+                                                        </div>                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-12 text-center pt-10">
+
+                                            <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" v-if="!dataEmpresa.idEmpresa"
+                                            >{{dom.nombreBotonRegistrar}}</button>
+                                            <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" data-bs-dismiss="modal" v-else
+                                            >{{dom.nombreBotonEditar}}</button>
+                                            <button type="button" class="btn btn-bg-dark text-inverse-dark  me-2 mb-2" hidden ref="btnActualizar" id="btnActualizar"></button>
+                                            <button type="button" class="btn btn-bg-dark text-inverse-dark  me-2 mb-2" v-on:click="ocultarFormulario(),limpiarArray()" id="btnCancelar">Cancelar</button>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!--end::Formulario Usuario-->
+
+
+
+                        <!--begin::Lista de usuarios tabla-->
+                        <div class="card mb-12" v-show="dom.mostrarListado" id="viewListado">
+                            <div class="card-body pt-5 pb-5">
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        <div class="notice d-flex bg-light-warning rounded border-warning border border-dashed p-6">
+                                            <!--begin::Icon-->
+                                            <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg--><span class="svg-icon svg-icon-2tx svg-icon-warning me-4"><svg xmlns="http://www.w3.org/2000/svg"
+													width="24" height="24" viewBox="0 0 24 24" fill="none">
+													<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
+													<rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)"
+														fill="currentColor"></rect>
+													<rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)"
+														fill="currentColor"></rect>
+												</svg></span>
+                                            <!--end::Svg Icon-->
+                                            <!--end::Icon-->
+                                            <!--begin::Wrapper-->
+                                            <div class="d-flex flex-stack flex-grow-1">
+                                                <!--begin::Content-->
+                                                <div class="fw-bold">
+                                                    <h4 class="text-gray-900 fw-bolder">¡Necesitamos su atención!</h4>
+                                                    <div class="fs-6 text-gray-700">En la siguiente lista encontrará los <a class="fw-bolder"> 50
+															últimos productos y servicios registrados</a>, si desea obtener mas información por favor usuar los filtros.
+                                                    </div>
+                                                </div>
+                                                <!--end::Content-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 table-responsive pt-5" style="max-height: 450px; height: 450px; overflow-y: scroll;">
+                                        <table class="table table-hover table-row-bordered">
+                                            <thead class="bg-primary text-white fw-bolder">
+                                                <tr>
+                                                    <th width="3%">#</th>
+                                                    <th width="10%">RUC</th>
+                                                    <th width="22%">Razón Social</th>
+                                                    <th width="15%">Nombre Empresa</th>
+                                                    <th width="18%">Dirección</th>
+                                                    <th width="7%">Estado</th>
+                                                    <th width="15%">Opciones</th>
+                                                </tr>
+
+                                            </thead>
+                                            <tbody class="text-gray-600 fw-bold">
+                                                <tr v-for="(item, i) in datosGenerales.listadoEmpresas">
+                                                    <td width="3%">{{ i+1 }}</td>
+                                                    <td width="10%">{{ item.RUC }} </td>
+                                                    <td width="22%">{{ item.RAZON_SOCIAL }}<br></td>
+                                                    <td width="15%">{{ item.NOMBRE_EMPRESA }}</td>
+                                                    <td width="18%">{{ item.DIRECCION }}</td>
+                                                    <td width="7%">
+
+                                                        <span class="badge badge-success" v-if="item.ESTADO == 'R'">Activo</span>
+                                                        <span v-else class="badge badge-danger">Inactivo</span>
+                                                    </td>
+                                                    <td width="15%">
+
+                                                            <div class="btn-group" role="group">
+
+                                                              <button id="btnGroupDrop1" type="button" class="btn btn-light btn-active-light-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                Acción
+                                                              </button>
+                                                              <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                                <li><a href="javascript:void(0)" class="dropdown-item"  data-toggle="tooltip" title="Editar"
+                                                                    v-on:click="executecargarDataEmpresa(item.ID_EMPRESA),CargarDropZoneFirma(item.ID_EMPRESA, item.RUC, item.NOMBRE_EMPRESA);">
+                                                                    <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="currentColor"></path><path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="currentColor"></path></svg></span>
+                                                                    Editar</a>
+                                                                </li>
+                                                                <li><a  href="javascript:void(0)" class="dropdown-item" data-toggle="tooltip" title="Eliminar"
+                                                                    v-on:click="confirmacionEliminarEmpresa(item.ID_EMPRESA, item.NOMBRE_EMPRESA);">
+                                                                    <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor"></path><path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor"></path><path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor"></path></svg></span>
+
+                                                                    Eliminar</a>
+                                                                </li>
+
+                                                                <div v-if="item.FECHA_EDICION === ' ' ">
+                                                                    <div class="separator"></div>
+                                                                    <div class="d-flex align-items-center p-2 ">
+                                                                        <!--begin::Text-->
+                                                                        <div class="fs-9 fw-bold">
+                                                                            <span class="text-muted"> Creado por:</span> <br>
+                                                                            <a href="javascript:void(0)" class="text-gray-700 text-hover-primary"> {{ item.NOMBRE_USUARIO_REG }}</a>
+                                                                            <span class="text-muted"> el {{ item.FECHA_REG }}</span>
+                                                                        </div>
+                                                                        <!--end::Text-->
+                                                                    </div>
+                                                                </div>
+
+                                                                <div v-else>
+                                                                    <div class="separator"></div>
+                                                                    <div class="d-flex align-items-center p-2 ">
+                                                                        <!--begin::Text-->
+                                                                        <div class="fs-9 fw-bold">
+                                                                            <span class="text-muted"> Creado por:</span> <br>
+                                                                            <a href="javascript:void(0)" class="text-gray-700 text-hover-primary"> {{ item.NOMBRE_USUARIO_REG }}</a>
+                                                                            <span class="text-muted"> el {{ item.FECHA_REG }}</span>
+                                                                        </div>
+                                                                        <!--end::Text-->
+                                                                    </div>
+
+                                                                    <div class="separator pt-3"></div>
+                                                                    <div class="d-flex align-items-center p-2">
+
+                                                                        <!--begin::Text-->
+                                                                        <div class="fs-9 fw-bold">
+                                                                            <span class="text-muted"> Actualizado por:</span> <br>
+                                                                            <a href="javascript:void(0)" class="text-gray-700 text-hover-primary">{{ item.NOMBRE_USUARIO_EDI}}</a><br>
+                                                                            <span class="text-muted"> el {{item.FECHA_EDICION}}</span>
+                                                                        </div>
+                                                                        <!--end::Text-->
+                                                                    </div>
+                                                                </div>
+
+                                                              </ul>
+                                                            </div>
+
+
+                                                    </td>
+
+
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--end::Lista de usuarios tabla-->
+
+                        <!--begin::Content-->
+
+
+
+                    </div>
+                    <!--end::Content-->
+                </div>
+
+
+                 <!--Modal Sucursal-->
+                <div class="modal fade" tabindex="-1" id="Sucursal" >
+                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary">
+
+                                <h1 class="mb-1 text-white">NUEVA SUCURSAL</h1>
+
+                            </div>
+
+                            <div class="modal-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h3 class="mb-1 text-black text-hover-primary">DATOS GENERALES</h3>
+                                        <br><br>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- {{dataSucursales}} -->
+                                        <div class="row">
+                                            <div class="fv-row col-md-12">
+                                                <label class="form-label">N° Establecimiento</label>
+                                                <input name="numEstablecimiento" type="text" class="form-control form-control-solid"
+                                                v-model="dataSucursales.numEstablecimento" @keypress="isNumber($event)"
+                                                maxlength="3">
+                                            </div>
+
+                                            <div class="fv-row col-md-12">
+                                                <label class="form-label">Nombre Comercial</label>
+                                                <input name="nombreComercial" type="text" class="form-control form-control-solid"
+                                                v-model="dataSucursales.nombreComercialSucursal">
+                                            </div>
+                                            <div class="fv-row col-md-12">
+                                                <label class="form-label">Dirección Establecimiento</label>
+                                                <input name="direccionEstablecimiento" type="text" class="form-control form-control-solid"
+                                                v-model="dataSucursales.direccionEstablecimiento">
+                                            </div>
+                                            <div class="fv-row col-md-12">
+                                                <label class="form-label">Ambiente Facturación Electrónica</label>
+                                                <!--begin::Select-->
+                                                <select name="ambiente" class="form-select form-select-solid"
+                                                v-model="dataSucursales.facturacionElectronica">
+                                                    <option value="">::Seleccione::</option>
+                                                    <option value="1">Pruebas</option>
+                                                    <option value="2">Producción</option>
+                                                </select>
+                                                <!--end::Select-->
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="col-md-6">
+                                        <div class="row">
+
+                                            <div class="col-md-12">
+                                                <label class="form-label">Celular</label>
+                                                <input type="text" class="form-control form-control-solid"
+                                                v-model="dataSucursales.celularSucursal" @keypress="isNumber($event)" maxlength="10"/>
+                                            </div>
+
+                                            <div class="fv-row col-md-12">
+                                                <label class="form-label">Correo</label>
+                                                <input name="correoSucursal" type="text" class="form-control form-control-solid"
+                                                v-model="dataSucursales.correoSucursal" />
+                                            </div>
+
+
+                                            <div class="col-md-12 mt-10">
+                                                <div class="rounded border d-flex flex-column p-10">
+                                                    <label for="" class="form-label">Mensaje Personalizado (Facturas)</label>
+                                                    <textarea class="form-control form-control form-control-solid" data-kt-autosize="true"
+                                                    v-model="dataSucursales.mensajeSucursal" ></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer centrar-contenido"
+                            v-if="dataSucursales.numEstablecimento === '' || dataSucursales.nombreComercialSucursal === ''
+                            || dataSucursales.direccionEstablecimiento === '' || dataSucursales.facturacionElectronica === ''">
+                                <button @click="validarSucursalModal()" class="btn btn-primary"
+                                    v-if="!dataSucursales.idEmpresa">{{dom.nombreBotonRegistrar}}</button>
+                                    <button @click="validarSucursalModal()" class="btn btn-primary"
+                                    v-else>{{dom.nombreBotonEditar}}</button>
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                            </div>
+
+                            <div class="modal-footer centrar-contenido"
+                            v-else>
+                                <button data-bs-dismiss="modal" @click="validarSucursalModal()" class="btn btn-primary"
+                                    v-if="!dataSucursales.idEmpresa">{{dom.nombreBotonRegistrar}}</button>
+                                    <button data-bs-dismiss="modal" @click="validarSucursalModal()" class="btn btn-primary"
+                                    v-else>{{dom.nombreBotonEditar}}</button>
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                 <!--Fin::Modal Sucursal-->
+
+                <script src="scripts/empresa.js?op=prb0004"></script>
+
+                <%- include("footer") %>

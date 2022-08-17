@@ -1,0 +1,151 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	   font-family: Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";
+	}
+	  
+p {margin: 2px 0;}
+	  
+	  
+table{
+    
+     border-collapse: collapse;
+    border: none;
+	
+}
+	
+td{
+    padding-bottom:3px; 
+	padding-top:3px; 
+	left:1px; 
+}
+th{
+    padding-bottom:7px; 
+	padding-top:3px; 
+	left:1px;
+}
+.header{
+	position: absolute;
+
+	height: 120px;
+	width: 100%;
+	
+
+	  }
+
+.header_info_empresa{
+	position: absolute;
+	width: 424px;
+	
+	border-radius: 10px;
+	height: 90px;
+	  }
+	.header_info_adicional{
+	top: 20px;
+	position: absolute;
+	left: 450px;
+	padding-top: 20px;
+	width: 240px;
+
+	}
+	.linea{
+		position: absolute;
+		height:4px;
+		top: 120px;
+		left: -40px;
+		
+		width:1125px; 
+		border-bottom: solid 4px #eb1c24; 
+	}
+	
+	.content{
+		position: relative;
+		left:40px;  
+		top: 150px;
+	}
+	
+	.tituloReporte{
+	position: absolute;
+	width: 550px;
+	
+	height:15px; 
+	left: 210px;
+	
+	
+	background-color: #eb1c24;
+	border-radius:10px;
+	font-size:15px;
+	color: #FFF;
+	font-weight:900; 
+	top: 150px;	
+		
+	}
+	
+	.tabla_info_general{
+	position: absolute;
+	top: 210px;
+	width: 690px;
+	padding:10px;
+	border: solid 1px #000000; 
+	border-radius: 10px;
+	}
+	
+	.tabla_detalle{
+	position: absolute;
+	width: 690px;
+	
+	
+	}
+	
+	.tabla_totales{
+	 padding-left:455px; 
+	}
+.contenedorcierre{
+	position: relative;
+	overflow-x: auto;
+	height: 100%;
+	min-height: 80%;
+	
+}
+   .tabla_cierre{
+	position: absolute;
+	
+	width: 300px;
+	
+	}
+   .tabla_arqueo{
+	position: absolute;
+	left: 346px;
+	
+	width: 350px;
+    
+	}
+	
+.tabla_propietario{
+	position: absolute;
+	
+	width: 300px;
+	top: 200px;
+	
+	}
+   
+
+.txtTitulos{
+		  
+		 font-size: 10px;
+	    
+	}
+	
+.txtTitulosNegrita{
+		  
+		font-size: 15px;
+	     font-weight: bold;
+	letter-spacing: 5px;
+	    
+	}
+	
+.footer { position: relative;}
+
+      
+
+

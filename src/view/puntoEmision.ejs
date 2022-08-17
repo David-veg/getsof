@@ -1,0 +1,255 @@
+<%- include("header") %>
+    <!--begin::Wrapper-->
+    <div class="app-wrapper flex-column flex-row-fluid" id="ViewPuntoEmision">
+        <!--begin::Wrapper container-->
+        <div class="app-container container-xxl d-flex flex-row flex-column-fluid">
+            <!--begin::Main-->
+            <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                <!--begin::Content wrapper-->
+                <div class="d-flex flex-column flex-column-fluid">
+                    <!--begin::Toolbar-->
+                    <div class="app-toolbar align-items-center justify-content-between">
+                        <!--begin::Toolbar wrapper-->
+                        <div class="d-flex flex-grow-1 flex-stack flex-wrap gap-2 mb-n10" id="kt_toolbar">
+                            <!--begin::Page title-->
+                            <div class="d-flex flex-column align-items-start me-3 gap-2">
+                                <!--begin::Title-->
+                                <h1 class="d-flex text-dark fw-bolder m-0 fs-3">Gestión de Punto de Emisión</h1>
+                                <!--end::Title-->
+                            </div>
+                            <!--end::Page title-->
+                            <!--begin::Actions-->
+                            <div class="d-flex align-items-center py-2">
+
+                                <div class="row" v-show="dom.mostrarBtns">
+                                    <!--begin::Button-->
+                                    <div class="col-md-6">
+                                        <a class="btn btn-sm btn-primary" v-on:click="verFormulario();">Nuevo</a>
+                                    </div>                                    
+                                    <!--end::Button-->
+                                </div>
+                            </div>
+                            <!--end::Actions-->
+                        </div>
+                        <!--end::Toolbar wrapper-->
+                    </div>
+                    <!--end::Toolbar-->
+                    <!-- <pre>{{dataVendedor}}prb</pre> -->                    
+                    <!--begin::Content-->
+                    <div class="app-content flex-column-fluid" id="kt_app_content">
+                        <!--begin::Content-->
+
+                        <!--begin::Formulario Vendedor-->
+                        <div class="card mb-12" v-show="dom.mostrarFormulario" id="viewFormulario">
+                            <form role="form" @submit.prevent="validarCreacionEdicionPEmision()"
+                                novalidate="novalidate">
+
+                                <!-- {{dataVendedor}} -->
+                                <div class="card-body pt-5 pb-5">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">                                                                                                
+
+                                                <div class="col-md-6 mt-5">
+                                                    <label class="form-label">Descripción:</label>
+                                                    <input name="nombresApellidos" type="text"
+                                                        class="form-control form-control-sm form-control-solid"
+                                                        v-model="dataPEmision.descripcionPEmi" maxlength="800" />
+                                                </div>
+
+
+                                                <div class="col-md-3 mt-5">
+                                                    <label class="form-label">Serie:</label>
+                                                    <input name="direccion" type="text"
+                                                        class="form-control form-control-sm form-control-solid"
+                                                        v-model="dataPEmision.seriePEmi" maxlength="3" @keypress="isNumber($event)"/>
+                                                </div>
+
+                                                <div class="col-md-3 mt-5">
+                                                    <label class="form-label">Tipo:</label><br>
+                                                    <span class="badge badge-success rounded-pill mt-2">ELECTRÓNICO</span>
+                                                </div>
+
+                                            </div>
+
+                                        </div>   
+                                        <!-- {{dataPEmision}} -->
+                                        <div class="col-md-12 table-responsive mt-5" v-show="dom.mostrarComprobantes">
+                                            <label class="fs-4 form-label fw-bolder text-dark">Datos de los Comprobantes</label>
+                                            <div class="separator separator-dotted border-primary my-2"></div>
+                                            <table class="table table-sm table-row-bordered">
+                                                <thead class="bg-primary text-white fw-bolder">
+                                                    <tr>
+                                                        <th width="1%">#</th>
+                                                        <th width="10%">Comprobante</th>
+                                                        <th width="1%">N° EST.</th>
+                                                        <th width="1%">N° Serie</th>
+                                                        <th width="10%">Correlativo</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="text-gray-600 fw-bold">
+                                                    <tr v-for="(item, i) in dataPEmision.arrayComprobantes">
+                                                        <td>{{i+1}}</td>
+                                                        <td>
+                                                            {{item.NOMBRE}}
+                                                        </td>
+                                                        <td>
+                                                            {{item.NUM_ESTABLECIMIENTO}}
+                                                        </td>
+                                                        <td>
+                                                            {{item.SERIE}}
+                                                        </td>                                            
+                                                        <td>
+                                                            <div class="fv-row">                                                    
+                                                                <div class="input-group input-group-sm">
+                                                                    <input type="text" class="form-control form-control-sm form-control-solid rounded-pill"
+                                                                    v-model="item.CORRELATIVO_FINAL" @keypress="isNumber($event)"/>
+                                                                </div>																			
+                                                            </div>
+                                                        </td>														
+                                                    </tr>
+                                                </tbody>                                                
+                                            </table>
+                                        </div>
+
+                                        <div class="col-md-12 text-center pt-10">
+
+                                            <button type="submit"
+                                                class="btn btn-bg-success text-inverse-success me-2 mb-2"
+                                                v-if="!dataPEmision.idPuntoEmision">{{dom.nombreBotonRegistrar}}</button>
+                                            <button type="submit"
+                                                class="btn btn-bg-success text-inverse-success me-2 mb-2"
+                                                v-else>{{dom.nombreBotonEditar}}</button>
+                                            <button type="button" class="btn btn-bg-dark text-inverse-dark  me-2 mb-2"
+                                                v-on:click="ocultarFormulario()">Cancelar</button>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!--end::Formulario Vendedor-->
+
+
+
+                        <!--begin::Lista de vendedores tabla-->
+                        <div class="card mb-12" v-show="dom.mostrarListado" id="viewListado">
+                            <div class="card-body pt-5 pb-5">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div
+                                            class="notice d-flex bg-light-warning rounded border-warning border border-dashed p-6">
+                                            <!--begin::Icon-->
+                                            <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
+                                            <span class="svg-icon svg-icon-2tx svg-icon-warning me-4">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none">
+                                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10"
+                                                        fill="currentColor"></rect>
+                                                    <rect x="11" y="14" width="7" height="2" rx="1"
+                                                        transform="rotate(-90 11 14)" fill="currentColor"></rect>
+                                                    <rect x="11" y="17" width="2" height="2" rx="1"
+                                                        transform="rotate(-90 11 17)" fill="currentColor"></rect>
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                            <!--end::Icon-->
+                                            <!--begin::Wrapper-->
+                                            <div class="d-flex flex-stack flex-grow-1">
+                                                <!--begin::Content-->
+                                                <div class="fw-bold">
+                                                    <h4 class="text-gray-900 fw-bolder">¡Necesitamos su atención!</h4>
+                                                    <div class="fs-6 text-gray-700">En la siguiente lista encontrará los
+                                                        <a class="fw-bolder">
+                                                            <!--<font color="#66D2F4">--> 50 últimos vendedores
+                                                            registrados
+                                                            <!--</font>-->
+                                                        </a>, si desea obtener mas información por favor usuar los
+                                                        filtros.</div>
+                                                </div>
+                                                <!--end::Content-->
+                                            </div>
+                                            <!--end::Wrapper-->
+
+                                            <!-- {{datosGenerales.listadoVendedores}} -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row pt-5">
+                                    <div class="col-md-12 table-responsive"
+                                    style="max-height: 450px; height: 450px; overflow-y: scroll;">
+                                        <table class="table table-hover table-row-bordered">
+                                            <thead class="bg-primary text-white fw-bolder">
+                                                <tr>
+                                                    <th width="3%">#</th>
+                                                    <th width="10%">Sucursal</th>
+                                                    <th width="25%">Descripción</th>
+                                                    <th width="15%">Serie</th>
+                                                    <th width="10%">Tipo</th>
+                                                    <th width="25%">Vista por Defecto</th>
+                                                    <th width="6%">Opciones</th>
+                                                </tr>
+
+                                            </thead>
+                                            <tbody class="text-gray-600 fw-bold">
+                                                <tr v-for="(item, i) in datosGenerales.listaPEmi">
+                                                    <td>{{ i+1 }}</td>
+                                                    <td>{{ item.NOMBRE_COMERCIAL }} </td>
+                                                    <td>{{ item.DESCRIPCION }}</td>
+                                                    <td>{{ item.SERIE }}</td>
+                                                    <td>
+                                                        <span class="badge badge-success rounded-pill"
+                                                        v-if="item.TIPO == 'E'">ELECTRÓNICO</span>
+                                                        <span v-else class="badge badge-danger rounded-pill">Indefinido</span>
+                                                    </td>
+                                                    <td>
+                                                        <!--begin::Switch-->
+                                                    <label class="form-check form-switch form-check-custom form-check-solid">
+                                                        <input class="form-check-input" type="checkbox" @change="confirmacionIndDefault(item.ID_PUNTO_EMISION);"
+                                                        v-model="dataPEmision.indDefault"/>
+                                                    </label>
+                                                            <!--end::Switch-->
+                                                    </td>                                                    
+                                                    <td>
+                                                        <div class="btn-group input-group-sm" role="group">
+                                                            <a href="javascript:void(0)" class="btn btn-sm btn-active-light-success"  data-toggle="tooltip" title="Editar" 
+                                                            v-on:click="executecargarDataPEmision(item.ID_PUNTO_EMISION);" >
+                                                            <i class="bi bi-pencil-fill fs-3"></i>
+                                                            </a>
+
+                                                            <a  href="javascript:void(0)" class="btn btn-sm btn-active-light-danger" data-toggle="tooltip" title="Eliminar"
+                                                            v-on:click="confirmacionEliminarPEmision(item.ID_PUNTO_EMISION,item.NOMBRE_COMERCIAL)">
+                                                            <i class="bi bi-x-circle-fill fs-3"></i>
+                                                            </a>								  												
+                                                        </div>
+                                                    </td>
+
+
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--end::Lista de usuarios tabla-->
+
+                        <!--begin::Content-->
+
+
+
+                    </div>
+                    <!--end::Content-->
+                </div>
+
+                <script src="scripts/puntoEmision.js?op=PRB00043"></script>
+
+                <%- include("footer") %>

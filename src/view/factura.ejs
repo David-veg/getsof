@@ -1,0 +1,989 @@
+<%- include("header") %>
+	<!--begin::Wrapper-->
+	<div class="app-wrapper flex-column flex-row-fluid" id="ViewFactura">
+		<!--begin::Wrapper container-->
+		<div class="app-container container-xxl d-flex flex-row flex-column-fluid">
+			<!--begin::Main-->
+			<div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+				<!--begin::Content wrapper-->
+				<div class="d-flex flex-column flex-column-fluid">
+					<!--begin::Toolbar-->
+					<div class="app-toolbar align-items-center justify-content-between">
+						<!--begin::Toolbar wrapper-->
+						<div class="d-flex flex-grow-1 flex-stack flex-wrap gap-2 mb-n10" id="kt_toolbar">
+							<!--begin::Page title-->
+							<div class="d-flex flex-column align-items-start me-3 gap-2">
+								<!--begin::Title-->
+								<h1 class="d-flex text-dark fw-bolder m-0 fs-3">Gestión de Facturas</h1>
+								<!--end::Title-->
+							</div>
+							<!--end::Page title-->
+							<!--begin::Actions-->
+							<div class="d-flex align-items-center py-2">
+
+								<div class="row" v-show="dom.mostrarBtns">
+                                    <div class="col-md-6">
+                                    <!--begin::Button-->
+									<a class="btn btn-sm btn-primary" v-on:click="verFormulario();">Nueva Factura</a>
+                                    </div>
+
+                                    <div class="col-md-4">                                
+										<a class="btn btn-sm btn-primary mt-3" @click="verFiltro();">Filtros</a>
+                                    </div>
+                                    <!--end::Button-->
+                                </div>
+
+							</div>
+							<!--end::Actions-->
+						</div>
+						<!--end::Toolbar wrapper-->
+					</div>
+					<!--end::Toolbar-->
+
+					<!--  <pre> {{dataUsuario}}</pre>  -->
+
+
+
+					<div class="card mb-12" v-show="dom.mostarBusqueda">
+						<div class="card-body">
+
+							<div class="d-flex align-items-center">
+
+								<div class="position-relative w-md-400px me-md-2">
+									<!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+									<span
+										class="svg-icon svg-icon-3 svg-icon-gray-500 position-absolute top-50 ms-5 translate-middle-y">
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+											viewBox="0 0 24 24" fill="none">
+											<rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2"
+												rx="1" transform="rotate(45 17.0365 15.1223)" fill="currentColor">
+											</rect>
+											<path
+												d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z"
+												fill="currentColor"></path>
+										</svg>
+									</span>
+									<!--end::Svg Icon-->
+									<!--end::Icon-->
+									<!--begin::Input-->
+									<input type="text" class="form-control form-control-solid ps-13" name="Buscar"
+										v-model="dataBusqueda.numFactura" placeholder="Buscar Factura por N°">
+									<!--end::Input-->
+
+								</div>
+
+								<div class="col-md-4"></div>
+
+								<div class="d-flex align-items-center">
+									<button type="submit" class="btn btn-sm btn-primary me-5"
+										data-kt-menu-dismiss="true" v-on:click="executeCargarListadoFiltro();">Aplicar</button>
+									<a id="kt_horizontal_search_advanced_link" class="btn btn-link me-5"
+										data-bs-toggle="collapse" href="#kt_advanced_search_form"> Búsqueda Avanzada</a>
+									<button type="submit" class="btn btn-sm btn-danger" data-kt-menu-dismiss="true"
+										v-on:click="ocultarFiltro()">Cancelar</button>
+								</div>
+							</div>
+
+							<!--begin::Búsqueda Avanzadas-->
+							<div class="collapse" id="kt_advanced_search_form">
+								<!--begin::Separator-->
+								<div class="separator separator-dashed mt-9 mb-6"></div>
+								<!--end::Separator-->
+								<!--begin::Row-->
+								<div class="row g-8 mb-8">
+									<!--begin::Col-->
+
+									<!--begin::Col-->
+									<div class="col-md-4">
+										<label class="fs-6 form-label fw-bolder text-dark">FECHA DESDE - HASTA</label>
+										<div class="row">
+											<div class="col-md-5 btn-group bg-gray-100 rounded-pill">
+												<input class="form-control form-control-sm form-control-solid" placeholder="01/01/2022" ref="txtFechaIni" />
+												<i class="bi bi-calendar-date-fill mt-3"></i>
+											</div>
+											<div class="col-md-2"></div>
+											<div class="col-md-5 btn-group bg-gray-100 rounded-pill">
+												<input class="form-control form-control-sm form-control-solid" placeholder="01/01/2022" ref="txtFechaFin" />
+												<i class="bi bi-calendar-date-fill mt-3"></i>
+											</div>
+										</div>
+
+									</div>
+									<!--end::Col-->
+
+									<!--begin::Col-->
+									<div class="col-md-4">
+										<label class="fs-6 form-label fw-bolder text-dark">Cliente:</label>
+										<select class="form-select form-select-sm form-select-solid rounded-pill"
+											ref="cboClienteBusqueda" aria-label="Select example">
+										</select>
+									</div>
+									<!--end::Col-->
+
+									<!--begin::Col-->
+									<div class="col-md-4">
+										<label class="fs-6 form-label fw-bolder text-dark">Usuario:</label>
+										<select class="form-select form-select-sm form-select-solid rounded-pill"
+											ref="cboUsuarioBusqueda" aria-label="Select example">
+										</select>
+									</div>
+									<!--end::Col-->
+
+									<!--begin::Col-->
+									<div class="col-md-4">
+										<label class="fs-6 form-label fw-bolder text-dark">Tipo de Documento:</label>
+										<select class="form-select form-select-sm form-select-solid rounded-pill" aria-label="Select example" v-model="dataBusqueda.tipoDocumento">
+											<option value="">:Seleccione:</option>	
+											<option v-for="option in datosGenerales.tipoDocumento"
+													v-bind:value="option.ID_TIPO_DOCUMENTO">{{
+													option.NOMBRE }}</option>
+											</select>
+									</div>
+									<!--end::Col-->
+
+									<!--begin::Col-->
+									<div class="col-md-4">
+										<label class="fs-6 form-label fw-bolder text-dark">Estado de Retención:</label>
+										<select class="form-select form-select-sm form-select-solid rounded-pill" aria-label="Select example"
+											v-model="" v-on:keyup="">
+											<option value="">:Todos:</option>
+											<option value="CR">Con Retención</option>
+											<option value="SR">Sin Retención</option>
+										</select>
+									</div>
+									<!--end::Col-->
+
+									<!--begin::Col-->
+									<div class="col-md-4">
+										<label class="fs-6 form-label fw-bolder text-dark">Estado:</label>
+										<select class="form-select form-select-sm form-select-solid rounded-pill" aria-label="Select example"
+											v-model="dataBusqueda.estadoBusqueda" v-on:keyup="">
+											<option value="">:Todos:</option>
+											<option value="R">Activo</option>
+											<option value="S">Inactivo</option>
+										</select>
+									</div>
+									<!--end::Col-->
+
+								</div>
+								<!--end::Row-->
+							</div>
+							<!--end::Búsqueda Avanzada-->
+
+						</div>
+					</div>
+
+					<!--begin::Content-->
+					<div class="app-content flex-column-fluid" id="kt_app_content">
+						<!--begin::Layout-->
+						<div class="d-flex flex-column flex-lg-row">
+							<!--begin::Content-->
+							<div class="flex-lg-row-fluid mb-10 mb-lg-0 me-lg-7 me-xl-10">
+								<!--begin::Card-->
+								<div class="card">
+									<!--begin::Card body-->
+
+									<!--begin::Form-->
+									<div class="card mb-12" v-show="dom.mostrarFomulario" id="viewFormulario">
+										<form role="form" @submit.prevent="validarCreacionFactura()" id="formFactura">
+											<div class="card-body p-12">
+												<!--begin::Wrapper-->
+												<div class="d-flex flex-column align-items-start flex-xxl-row">
+													<!--begin::Input group-->
+													<div class="d-flex flex-center flex-equal fw-row text-nowrap order-1 order-xxl-2 me-4 mt-5"
+														data-bs-toggle="tooltip" data-bs-trigger="hover"
+														title="Enter invoice number">
+														<span class="fs-2x fw-bolder text-gray-800">Factura #</span>
+														<input type="text"
+															class="form-control form-control-flush fw-bolder text-muted fs-3 w-125px"
+															placeholder="..." />
+													</div>
+													<!--end::Input group-->
+												</div>
+												<!--end::Top-->
+												<div class="row">
+
+													<!--begin::Col-->
+												{{dataFactura}}
+<!-- 
+												<div class="col-md-12 table-responsive">
+													<table class="table border gs-1">
+														<thead>
+															<tr>
+																<th>
+																	<label class="fs-4 form-label fw-bolder text-dark">Datos Generales</label>
+																</th>
+															</tr>
+														</thead>
+
+													</table>
+												</div>
+ -->
+													<!--end::Col-->
+
+													<!--begin::Col-->
+													<div class="col-12 border border-1 border-top border-top-5 border-left border-left-5 border-right border-right-5 border-bottom border-bottom-5">
+														<label class="fs-4 form-label fw-bolder text-dark">Datos Generales</label>
+													</div>
+													<!--end::Col-->	
+
+													<!--begin::Col-->
+
+													<div class="col-1 border border-1 border-left border-left-5 ">
+														<label class="fs-6 form-label mt-3">CI/RUC:</label>    
+													</div>
+													<!--end::Col-->	
+
+													<!--begin::Col-->
+													<div class="col-2 border border-1" >
+														
+														<div class="fv-row input-group input-group-sm mt-2 mb-2"
+														v-bind:class="{'border border-danger rounded' : !validNumDoc(dataFactura.numDocumentoCliente) && dataFactura.numDocBlured}" v-on:blur="dataFactura.numDocBlured = true">
+															<input type="text" class="form-control form-control-sm form-control-solid" v-model="dataFactura.numDocumentoCliente" 
+															name="numDocumento" @keypress="isNumber($event)" maxlength="13"/>
+															<button type="button" @click="executeBuscarDataCliente()"
+															class="btn btn-light-primary btn-sm">
+																<i class="bi bi-search"></i>
+															</button>
+														</div>                                                                                                                                 
+													</div>
+													<!--end::Col--> 
+
+													<!--begin::Col-->
+													<div class="col-1 border border-1">
+														<label class="fs-6 form-label mt-3">Nombre:</label>                                                                                                                                                                                                    
+													</div>
+													<!--end::Col--> 
+
+													<!--begin::Col-->
+													<div class="col-4 border border-1">
+														<div class="fv-row input-group input-group-sm mt-2 mb-2" id="nomCliente"
+														v-bind:class="{ 'border border-danger rounded' : !validNomCli(dataFactura.nomCliente) && dataFactura.nomCliBlured}" v-on:blur="dataFactura.nomCliBlured = true">
+															<select class="form-select form-select-sm form-select-solid"
+																ref="cboCliente" aria-label="Select example">
+																<option value="">:Todos:</option>
+																<option value="R">Activo</option>
+																<option value="S">Inactivo</option>
+															</select>                                                                    
+														</div>                                                                                                                                 
+													</div>
+													<!--end::Col-->	
+
+													<!--begin::Col-->
+													<div class="col-1 border border-1">
+														<label class="fs-6 form-label mt-3">Vendedor:</label>                                                                                                                                                                                                     
+													</div>
+													<!--end::Col-->	 
+
+													<!--begin::Col-->
+													<div class="col-3 border border-1 border-right border-right-5">
+														<div class="fv-row input-group input-group-sm mt-2 mb-2" id="nomVendedor"
+														v-bind:class="{ 'border border-danger rounded' : !validNomVen(dataFactura.nomVendedor) && dataFactura.nomCliBlured}" v-on:blur="dataFactura.nomVenBlured = true">
+															<select class="form-select form-select-sm form-select-solid"
+															ref="cboVendedor" aria-label="Select example" name="nombreVendedor">
+																<option value="">:Todos:</option>
+																<option value="R">Factura</option>
+																<option value="S">No Tributario</option>
+															</select>
+														</div>                                                                                                                                
+													</div>
+													<!--end::Col--> 
+
+													<!--begin::Col-->
+													<div class="col-1 border border-1 border-left border-left-5 border-bottom border-bottom-5">
+														<label class="fs-md-8 form-label mt-4">Comprobante:</label>                                                                                                                                                                                                    
+													</div>
+													<!--end::Col-->
+
+													<!--begin::Col-->
+													<div class="col-2 border border-1 border-bottom border-bottom-5">
+														<div class="fv-row input-group input-group-sm mt-2 mb-2">
+															<select class="form-select form-select-solid" aria-label="Select example" name="comprobante"
+															v-model="dataFactura.idTipoDocumento">
+																<option v-for="option in datosGenerales.tipoDocumento" 
+																v-bind:value="option.ID_TIPO_DOCUMENTO">{{option.NOMBRE}}</option>
+															</select>                                                                                                                                                                                                         
+														</div>                                                                                                                                 
+													</div>
+													<!--end::Col-->
+
+													<!--begin::Col-->
+													<div class="col-1  border border-1 border-bottom border-bottom-5">
+														<label class="fs-8 form-label mt-4">P.Emision:</label>                                                                                                                                                                                                  
+													</div>
+													<!--end::Col-->           
+													
+													<!--begin::Col-->
+													<div class="col-2  border border-1 border-bottom border-bottom-5">
+														<div class="input-group input-group-sm mt-2 mb-2">
+															<select class="form-select form-select-sm form-select-solid"
+															v-bind:disabled="dom.disabled" aria-label="Select example">
+															<option v-for="formaPago in datosGenerales.puntosEmision" value="R">{{formaPago.SERIE}}</option>
+															</select>
+															<label class="mt-3">-</label>
+															<input type="text" v-bind:disabled="dom.disabled" v-model="dataFactura.correlativo" class="form-control form-control-sm form-control-solid" />
+														</div>                                                                                                                                                                                              
+													</div>
+													<!--end::Col-->
+
+													<!--begin::Col-->
+													<div class="col-1  border border-1 border-bottom border-bottom-5">
+														<label class="fs-7 form-label mt-3">Fecha Emisión:</label>                                                                                                                                                                                                    
+													</div>
+													<!--end::Col--> 
+
+													<!--begin::Col-->
+													<div class="col-2  border border-1 border-bottom border-bottom-5">
+														<div class="fv-row input-group input-group-sm mt-2 mb-2">
+															<input class="form-control form-control-sm form-control-solid" 
+															placeholder="01/01/2022" ref="txtFechaEmision" name="fechaEmision"/>
+														</div>                                                                                                                                                                                              
+													</div>
+													<!--end::Col-->
+
+													<!--begin::Col-->
+													<div class="col-1  border border-1 border-bottom border-bottom-5">
+														<label class="fs-md-7 form-label mt-3">Número de Autorización:</label>                                                                                                                                                                                                  
+													</div>
+													<!--end::Col-->     
+													
+													<!--begin::Col-->
+													<div class="col-2  border border-1 border-right border-right-5 border-bottom border-bottom-5">
+														<div class="input-group-sm mt-2 mb-2">
+															<input type="text" v-bind:disabled="dom.disabled" class="form-control form-control-solid" />
+														</div>                                                                                                                              
+													</div>
+													<!--end::Col-->  
+
+												</div>
+
+												
+												<label class="fs-4 form-label fw-bolder text-dark mt-5">Datos del Producto</label>
+												<div class="separator separator-dotted border-primary"></div>
+												<!-- {{detalleProductos}} -->
+												<div class="col-md-12 table-responsive">
+													<table class="table table-row-bordered">
+														<thead class="bg-primary text-white fw-bolder">
+															<tr>
+																<th width="1%">#</th>
+																<th width="5%">Código</th>
+																<th width="15%">Producto</th>
+																<th width="10%">Cantidad</th>
+																<th width="10%">IVA</th>
+																<th width="10%">Precio</th>
+																<th width="10%">% Dcto</th>
+																<th width="10%">Dcto Tot</th>
+																<th width="10%">Total</th>
+																<th width="10%">Opciones</th>
+															</tr>
+														</thead>
+														<tbody class="text-gray-600 fw-bold">
+															<tr v-for="(item, i) in detalleProductos" :key="i">
+																<td>{{i+1}}</td>
+																<td>
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input type="text" v-model="item.Codigo" v-on:keyup.enter="executeBuscarProductoCodigo(i)"
+																				class="form-control form-control-solid" name="codigoProd"/>
+																		</div>
+																	</div>
+																</td>
+																<td>
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<select ref="cboProducto" class="form-select form-select-sm form-select-solid" 
+																			aria-label="Select example" name="nombreProd">
+																				<option value="">Buscar un producto o
+																					Item</option>
+																				<option value="1">Opc1</option>
+																				<option value="2">Opc2</option>
+																			</select>
+																		</div>
+																	</div>
+																</td>
+																<td>
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input type="text" ref="Cant" v-model="item.Cantidad" 
+																			class="form-control form-control-solid" name="cantProd" @keypress="isNumber($event)"/>
+																		</div>
+																	</div>
+																</td>
+																<td>
+																	<div class="input-group input-group-sm">
+																		<select v-model="item.codIva"
+																			class="form-select form-select-solid"
+																			aria-label="Select example">
+																			<option value="0">IVA 0%</option>
+																			<option value="2">IVA 12%</option>
+																		</select>
+																	</div>
+																</td>
+																<td>
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input v-model="item.Precio" type="text" class="form-control form-control-solid" 
+																			name="precioProd" @keypress="isNumber($event)"/>
+																		</div>
+																	</div>
+																</td>
+																<td>
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input v-model="item.Pdcto" ref="Pdcto" type="text" 
+																			class="form-control form-control-solid" name="PdctoProd" @keypress="isNumber($event)"/>
+																		</div>
+																	</div>
+																</td>
+																<td>
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input v-model="item.Tdcto" ref="Tdcto" type="text"
+																			class="form-control form-control-solid" name="tdctoProd" @keypress="isNumber($event)"/>
+																		</div>
+																	</div>
+																</td>
+																<td>
+																	<div class="col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input v-model="item.Total"
+																				v-bind:disabled="datosGenerales.disabled"
+																				type="text"
+																				class="form-control form-control-solid" />
+																		</div>
+																	</div>
+																</td>
+																<td>
+																	<div class="btn-group input-group-sm" role="group">
+																		<button type="button"
+																			class="btn btn-sm btn-primary btn-hover-scale me-5"
+																			@click="quitarProducto(i)">Quitar</button>
+																			<div>
+																			<a href="javascript:void(0)" @click="subirPosicion(i)"><i class="bi bi-chevron-up text-black" ></i></a>
+																			<br>
+																			<a href="javascript:void(0)" @click="bajarPosicion(i)"><i class="bi bi-chevron-down text-black"></i></a>
+																			</div>
+																	</div>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													<div class="d-flex align-items-left py-2">
+														<!--begin::Button-->
+														<button type="button" class="btn btn-sm btn-primary"
+															@click="agregarProducto()" @click="">Agregar</button>
+														<!--end::Button-->
+													</div>
+												</div>
+												<div class="separator separator-dotted border-primary my-8"></div>
+												<div class="row">
+													<div class="col-md-7">
+														<!--begin::Input-->
+														<textarea name="textarea_input"
+															placeholder="Ingrese una Observacion"
+															class="form-control form-control-solid"></textarea>
+														<!--end::Input-->
+{{detalleFormasPago}}
+														<!-- begin::table -->
+														<div class="table-responsive mt-10">
+															<table class="table table-row-bordered">
+																<thead class="bg-primary text-white fw-bolder">
+																	<tr>
+																		<th width="5%">#</th>
+																		<th width="30%">Forma Pago</th>
+																		<th width="50%">Valor</th>
+																		<th width="10%">Opc</th>
+																	</tr>
+
+																</thead>
+																<tbody class="text-gray-600 fw-bold">
+																	<tr v-for="(item, i) in detalleFormasPago">
+																		<td>{{i + 1}}</td>
+																		<td>
+																			<select
+																				class="form-select form-select-sm form-select-solid"
+																				aria-label="Select example" v-model="item.codigo">
+																				<option value="01">EFECTIVO</option>
+																				<option value="03">CHEQUE</option>
+																				<option value="04">DEP/TRANS</option>
+																				<option value="05">TARJETA CRÉDITO /
+																					DÉBITO</option>
+																				<option value="08">DEBITO BANCARIO
+																				</option>
+																				<option value="09">CHEQUE POSTFECHADO
+																				</option>
+																			</select>
+																		</td>
+																		<td>
+																			<input v-model="item.valor" type="text" class="form-control form-control-sm form-control-solid" @keypress="isNumber($event)"/>
+																		</td>
+																		<td>
+																			<div class="btn-group input-group-sm" role="group">
+																				<button type="button" class="btn btn-sm btn-primary btn-hover-scale me-5" 
+																				@click="quitarformaPago(i)">Quitar</button>
+
+																			</div>
+																		</td>
+																	</tr>
+																</tbody>
+																<tfoot>
+																	<tr>
+																		<td colspan="2">
+																			<div class="btn-group input-group-sm">
+																				<button type="button"
+																					class="btn btn-sm btn-rounded btn-outline btn-outline-success btn-active-success rounded-pill"
+																					title="Eliminar"
+																					v-on:click="agregarFormaPago()">
+																					Agregar Forma de Pago
+																				</button>
+																			</div>
+																		</td>
+																		<td colspan="2">
+																			<div class="row">
+																				<div class="col-md-6">
+																					Diferencia
+																					<div class="input-group input-group-sm">
+																						<input type="text" class="form-control form-control-solid bg-success text-white rounded-pill" 
+																						v-model="dataPago.diferenciaPago" v-if="dataPago.diferenciaPago >= 0"/>
+																						<input type="text" class="form-control form-control-solid bg-danger text-white rounded-pill" 
+																						v-model="dataPago.diferenciaPago" v-else/>
+																					</div>
+																				</div>
+																				<div class="col-md-6">
+																					Total FP
+																					<div
+																						class="input-group input-group-sm">
+																						<input type="text" class="form-control form-control-solid rounded-pill" 
+																						v-model="dataPago.totalFormaPago"/>
+																					</div>
+																				</div>
+																			</div>
+																		</td>
+																	</tr>
+																</tfoot>
+															</table>
+														</div>
+														<!-- end::table -->
+
+													</div>
+													<div class="col-md-5 table-responsive">
+														<table class="table border gs-1">
+															<tr>
+																<td width="60%"
+																	class="border fw-bolder fs-5 text-gray-600">Sub
+																	Total 12%</td>
+																<td width="40%" class="border fw-bolder">
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input type="text"
+																				v-model="dataFactura.sub12"
+																				class="form-control form-control-solid" />
+																		</div>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td class="border fw-bolder fs-5 text-gray-600">Sub
+																	Total 0%</td>
+																<td class="border fw-bolder">
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input type="text"
+																				v-model="dataFactura.sub0"
+																				class="form-control form-control-solid" />
+																		</div>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td class="border fw-bolder fs-5 text-gray-600">Sub
+																	Total No Objeto</td>
+																<td class="border fw-bolder">
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input type="text"
+																				v-model="dataFactura.subNo"
+																				class="form-control form-control-solid" @keypress="isNumber($event)"/>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td class="border fw-bolder fs-5 text-gray-600">Sub
+																	Total Exento</td>
+																<td class="border fw-bolder">
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input type="text"
+																				v-model="dataFactura.subEx"
+																				class="form-control form-control-solid" @keypress="isNumber($event)"/>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td class="border fw-bolder fs-5 text-gray-600">Sub
+																	Total Sin Imp</td>
+																<td class="border fw-bolder">
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input type="text"
+																				v-model="dataFactura.subSinImp"
+																				class="form-control form-control-solid" />
+																		</div>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td class="border fw-bolder fs-5 text-gray-600">
+																	Descuento</td>
+																<td class="border fw-bolder">
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input type="text"
+																				v-model="dataFactura.descuento"
+																				class="form-control form-control-solid" />
+																		</div>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td class="border fw-bolder fs-5 text-gray-600">IVA 12%
+																</td>
+																<td class="border fw-bolder">
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input type="text"
+																				v-model="dataFactura.iva12"
+																				class="form-control form-control-solid" />
+																		</div>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td class="border fw-bolder fs-5 text-gray-600">ICE</td>
+																<td class="border fw-bolder">
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input type="text" v-model="dataFactura.ice"
+																				class="form-control form-control-solid" @keypress="isNumber($event)"/>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td class="border fw-bolder fs-5 text-gray-600">IRBPNR
+																</td>
+																<td class="border fw-bolder">
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input type="text"
+																				v-model="dataFactura.irbpnr"
+																				class="form-control form-control-solid" @keypress="isNumber($event)"/>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td class="border fw-bolder fs-5 text-gray-600">Propina
+																</td>
+																<td class="border fw-bolder">
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input type="text"
+																				v-model="dataFactura.propina"
+																				class="form-control form-control-solid" @keypress="isNumber($event)"/>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td class="border fw-bolder fs-5 text-gray-600">Valor
+																	Total</td>
+																<td class="border fw-bolder">
+																	<div class="fv-row col-md-12">
+																		<div class="input-group input-group-sm">
+																			<input type="text"
+																				v-model="dataFactura.total"
+																				class="form-control form-control-solid" />
+																		</div>
+																	</div>
+																</td>
+															</tr>
+
+														</table>
+													</div>
+												</div>
+												<div class="col-md-12 text-center pt-10">
+
+													<button type="submit"
+														class="btn btn-bg-success text-inverse-success me-2 mb-2">Registrar</button>
+													<button type="button"
+														class="btn btn-bg-dark text-inverse-dark  me-2 mb-2"
+														v-on:click="ocultarFormulario()"
+														id="btnCancelar">Cancelar</button>
+
+												</div>
+											</div>
+										</form>
+									</div>
+									<!--end::Form-->
+									<div class="card mb-12" id="viewListado" v-show="dom.mostarListado">
+										<div class="card-body pt-5 pb-5">
+											<div class="row">
+
+												<div class="col-md-12">
+													<div
+														class="notice d-flex bg-light-warning rounded border-warning border border-dashed p-6">
+														<!--begin::Icon-->
+														<!--begin::Svg Icon | path: icons/duotune/general/gen044.svg--><span
+															class="svg-icon svg-icon-2tx svg-icon-warning me-4"><svg
+																xmlns="http://www.w3.org/2000/svg" width="24"
+																height="24" viewBox="0 0 24 24" fill="none">
+																<rect opacity="0.3" x="2" y="2" width="20" height="20"
+																	rx="10" fill="currentColor"></rect>
+																<rect x="11" y="14" width="7" height="2" rx="1"
+																	transform="rotate(-90 11 14)" fill="currentColor">
+																</rect>
+																<rect x="11" y="17" width="2" height="2" rx="1"
+																	transform="rotate(-90 11 17)" fill="currentColor">
+																</rect>
+															</svg></span>
+														<!--end::Svg Icon-->
+														<!--end::Icon-->
+														<!--begin::Wrapper-->
+														<div class="d-flex flex-stack flex-grow-1">
+															<!--begin::Content-->
+															<div class="fw-bold">
+																<h4 class="text-gray-900 fw-bolder">¡Necesitamos su
+																	atención!</h4>
+																<div class="fs-6 text-gray-700">En la siguiente lista
+																	encontrará los <a class="fw-bolder"> 50
+																		últimos productos y servicios registrados</a>,
+																	si desea obtener mas información por favor usuar los
+																	filtros.
+																</div>
+															</div>
+															<!--end::Content-->
+														</div>
+														<!--end::Wrapper-->
+													</div>
+												</div>
+
+												<div class="col-md-12 table-responsive pt-5"
+													style="max-height: 450px; height: 450px; overflow-y: scroll;">
+													<table class="table table-hover table-row-bordered">
+														<thead class="bg-primary text-white fw-bolder">
+															<tr>
+																<th width="3%">#</th>
+																<th width="10%">Comprobante</th>
+																<th width="22%">N° Documento</th>
+																<th width="15%">F. Pago</th>
+																<th width="18%">Cliente</th>
+																<th width="15%">Fecha</th>
+																<th width="18%">Total</th>
+																<th width="18%"><i
+																		class="bi bi-envelope-fill text-white"></i></th>
+																<th width="18%">P.E</th>
+																<th width="7%">Estado</th>
+																<th width="15%">Opciones</th>
+															</tr>
+
+														</thead>
+														<tbody class="text-gray-600 fw-bold">
+															<tr v-for="(item, i) in datosGenerales.listaFacturas">
+																<td width="3%">{{i+1}}</td>
+																<td width="10%"> {{item.COMPROBANTE}} </td>
+																<td width="22%"> {{item.NUM_COMPROBANTE}} <br></td>
+																<td width="15%"> {{item.FORMA_PAGO}} </td>
+																<td width="18%"> {{item.CLIENTE}} </td>
+																<td width="15%"> {{item.FECHA_EMISION}} </td>
+																<td width="18%"> {{item.IMP_TOTAL}} </td>
+																<td width="7%">
+
+																	<span v-if="item.IND_CORREO == 'NO'" class="badge badge-danger">No</span>
+																	<span v-else class="badge badge-success">No</span>
+																</td>
+																<td width="7%">
+																	<span v-if="item.IND_CORREO == 'NO'" class="badge badge-danger">No</span>
+																	<!--<span class="badge badge-success">Activo</span>-->
+																</td>
+																<td width="7%">
+
+																	<span v-if="item.ESTADO == 'R'" class="badge badge-success">Activo</span>
+																	<span v-else class="badge badge-danger">Inactivo</span>
+																</td>
+																<td width="15%">
+
+																	<div class="btn-group" role="group">
+
+																		<button id="btnGroupDrop1" type="button"
+																			class="btn btn-light btn-active-light-primary btn-sm dropdown-toggle"
+																			data-bs-toggle="dropdown"
+																			aria-expanded="false">
+																			Acción
+																		</button>
+																		<ul class="dropdown-menu"
+																			aria-labelledby="btnGroupDrop1">
+																			<!-- <li><a href="javascript:void(0)"
+																					class="dropdown-item"
+																					data-toggle="tooltip" title="Editar"
+																					v-on:click="">
+																					<span
+																						class="svg-icon svg-icon-3 me-3"><svg
+																							xmlns="http://www.w3.org/2000/svg"
+																							width="24" height="24"
+																							viewBox="0 0 24 24"
+																							fill="none">
+																							<path opacity="0.3"
+																								d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z"
+																								fill="currentColor">
+																							</path>
+																							<path
+																								d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z"
+																								fill="currentColor">
+																							</path>
+																						</svg></span>
+																					Editar</a>
+																			</li> -->
+																			<li><a href="javascript:void(0)"
+																					class="dropdown-item"
+																					data-toggle="tooltip"
+																					title="Eliminar" v-on:click="">
+																					<span
+																						class="svg-icon svg-icon-3 me-3"><svg
+																							xmlns="http://www.w3.org/2000/svg"
+																							width="24" height="24"
+																							viewBox="0 0 24 24"
+																							fill="none">
+																							<path
+																								d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z"
+																								fill="currentColor">
+																							</path>
+																							<path opacity="0.5"
+																								d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z"
+																								fill="currentColor">
+																							</path>
+																							<path opacity="0.5"
+																								d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z"
+																								fill="currentColor">
+																							</path>
+																						</svg></span>
+
+																					Eliminar</a>
+																			</li>
+																			<li><a href="javascript:void(0)"
+																				class="dropdown-item"
+																				data-toggle="tooltip"
+																				title="PDF" v-on:click="generarPDF(item.ID_VENTA)">
+																				<i class="bi bi-file-earmark-pdf-fill me-3"></i>
+
+																				Imprimir PDF</a>
+																		</li>
+																		<li><a href="javascript:void(0)"
+																			class="dropdown-item"
+																			data-toggle="tooltip"
+																			title="PDF" v-on:click="generarXML(item.ID_VENTA)">
+																			<i class="bi bi-file-earmark-pdf-fill me-3"></i>
+
+																			Descargar XML</a>
+																	</li>
+																		<li><a href="javascript:void(0)"
+																			class="dropdown-item"
+																			data-toggle="tooltip"
+																			title="XLS" v-on:click="">
+																			<i class="bi bi-file-earmark-excel-fill me-3"></i>
+
+																			Descargar Excel</a>
+																	</li>
+
+																			<div v-if="item.ID_USUARIO_MODIFICACION = ' ' ">
+																				<div class="separator"></div>
+																				<div
+																					class="d-flex align-items-center p-2 ">
+																					<!--begin::Text-->
+																					<div class="fs-9 fw-bold">
+																						<span class="text-muted"> Creado
+																							por:</span> <br>
+																						<a href="javascript:void(0)"
+																							class="text-gray-700 text-hover-primary">
+																							{{item.USUARIO_REG}} </a>
+																						<span class="text-muted"> el
+																							{{item.FECHA_REGISTRO}} </span>
+																					</div>
+																					<!--end::Text-->
+																				</div>
+																			</div>
+
+																			<div v-else>
+																				<div class="separator"></div>
+																				<div
+																					class="d-flex align-items-center p-2 ">
+																					<!--begin::Text-->
+																					<div class="fs-9 fw-bold">
+																						<span class="text-muted"> Creado
+																							por:</span> <br>
+																						<a href="javascript:void(0)"
+																							class="text-gray-700 text-hover-primary">
+																							{{item.USUARIO_REG}} </a>
+																						<span class="text-muted"> el
+																							{{item.FECHA_REGISTRO}} </span>
+																					</div>
+																					<!--end::Text-->
+																				</div>
+
+																				<div class="separator pt-3"></div>
+																				<div
+																					class="d-flex align-items-center p-2">
+
+																					<!--begin::Text-->
+																					<div class="fs-9 fw-bold">
+																						<span class="text-muted">
+																							Actualizado por:</span> <br>
+																						<a href="javascript:void(0)"
+																							class="text-gray-700 text-hover-primary">
+																							{{item.USUARIO_MOD}}</a><br>
+																						<span class="text-muted"> el
+																							{{item.FECHA_MODIFICACION}} </span>
+																					</div>
+																					<!--end::Text-->
+																				</div>
+																			</div>
+
+																		</ul>
+																	</div>
+
+
+																</td>
+
+
+
+															</tr>
+														</tbody>
+													</table>
+												</div>
+
+
+
+											</div>
+										</div>
+									</div>
+									<!--end::Card body-->
+								</div>
+								<!--end::Card-->
+							</div>
+							<!--end::Content-->
+						</div>
+						<!--end::Layout-->
+					</div>
+					<!--end::Content-->
+				</div>
+
+
+
+
+
+				<script src="scripts/factura.js?op=10214"></script>
+
+
+				<%- include("footer") %>

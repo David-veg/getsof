@@ -1,0 +1,157 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	   font-family: Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";
+	}
+	  
+p {margin: 2px 0;}
+	  
+	  
+table{
+    
+     border-collapse: collapse;
+    border: none;
+	
+}
+	
+td{
+    padding-bottom:3px; 
+	padding-top:3px; 
+	left:1px; 
+}
+th{
+    padding-bottom:7px; 
+	padding-top:3px; 
+	left:1px;
+}
+.header{
+	position: absolute;
+
+	height: 120px;
+	width: 100%;
+	
+
+	  }
+
+.header_info_empresa{
+	position: absolute;
+	width: 424px;
+	left: 30px;
+	border-radius: 10px;
+	padding-top: 15px;
+	height: 90px;
+	  }
+	.header_info_adicional{
+	top: 10px;
+	position: absolute;
+	left: 470px;
+	padding-top: 30px;
+	width: 260px;
+
+	}
+	.linea{
+		position: absolute;
+		height:4px;
+		top: 125;
+		width:100%; 
+		border-bottom: solid 4px #1e88e5; 
+	}
+	
+	.content{
+		position: relative;
+		left:40px;  
+		top: 150px;
+	}
+	
+	.tituloReporte{
+	position: absolute;
+	width: 520px;
+	
+	height:15px; 
+	left: 100px;
+	
+	
+	background-color: #1e88e5;
+	border-radius:10px;
+	font-size:15px;
+	color: #FFF;
+	font-weight:900; 
+		
+		
+	}
+	
+	.tabla_info_general{
+	position: absolute;
+	top: 70px;
+	width: 690px;
+	padding:10px;
+
+	}
+	
+	.tabla_detalle{
+	position: relative;
+	top: 110px;
+	width: 690px;
+	padding:10px;
+	left: -8;
+	
+	}
+
+	.tabla_detalle_garcia{
+	position: relative;
+	top: 110px;
+	width: 690px;
+	padding:20px;
+	left: -8;
+	
+	}
+	
+	.tabla_totales{
+	 padding-left:455px; 
+	}
+.contenedorcierre{
+	position: relative;
+}
+   .tabla_cierre{
+	position: absolute;
+	
+	width: 300px;
+	
+	}
+   .tabla_arqueo{
+	position: absolute;
+	left: 346px;
+	width: 350px;
+    
+	}
+
+.txtTitulos{
+		  
+		 font-size: 10px;
+	    
+	}
+	
+.txtTitulosNegrita{
+		  
+		 font-size: 10px;
+	     font-weight: bold;
+	    
+	}
+	
+.footer { }
+
+.img-cabecera {
+    padding: 5px;
+	text-align:center;
+    
+}
+
+
+.txt-cabecera {
+    padding: 5px;
+	font-size: 12px;
+    
+}
+      
+
+

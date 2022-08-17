@@ -1,0 +1,710 @@
+<%- include("header") %>
+    <!--begin::Wrapper-->
+    <div class="app-wrapper flex-column flex-row-fluid" id="ViewCategoriaConfigCliProv">
+        <!--begin::Wrapper container-->
+        <div class="app-container container-xxl d-flex flex-row flex-column-fluid">
+            <!--begin::Main-->
+            <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                <!--begin::Content wrapper-->
+                <div class="d-flex flex-column flex-column-fluid">
+                    <!-- <pre> {{dataProveedor}}</pre> -->
+                    <!--begin::Content-->
+                    <div class="app-content flex-column-fluid" id="kt_app_content">
+                        <!--begin::Content-->
+                        <div class="card mb-12" >
+                            
+                            <div class="card-body pt-5 pb-5">
+                                <div class="row">                                                                                             
+
+                                    <div class="d-flex flex-column align-items-start me-3 gap-2 col-md-12">
+                                        <!--begin::Title-->
+                                        <h1 class="d-flex text-dark fw-bolder m-0 fs-3 align-center">CONFIGURACION DE CATEGORIAS</h1>
+                                        <!--end::Title-->
+                                    </div>
+
+                                    <div class="col-md-12 mt-10">
+                                        <ul class="nav nav-tabs nav-line-tabs mb-5 fs-6">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" data-bs-toggle="tab" href="#kt_tab_pane_1"
+                                                @click="verFormularioGeneral">Cliente</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-bs-toggle="tab" href="#kt_tab_pane_2"
+                                                @click="verFormularioGeneral">Proveedor</a>
+                                            </li>
+                                        </ul>
+                                        
+                                        <div class="tab-content" id="myTabContent">
+                                            <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel">
+                                                <div class="row">                                                                                                                                                                                                                   
+
+                                                    <!--begin::Toolbar-->
+                    <div class="app-toolbar align-items-center justify-content-between">
+                        <!--begin::Toolbar wrapper-->
+                        <div class="d-flex flex-grow-1 flex-stack flex-wrap gap-2 mb-n10" id="kt_toolbar">
+                            <!--begin::Page title-->
+                            <div class="d-flex flex-column align-items-start me-3 gap-2">
+                                <!--begin::Title-->
+                                <h1 class="d-flex text-dark fw-bolder m-0 fs-3">Gestión de Clientes</h1>
+                                <!--end::Title-->
+                            </div>
+                            <!--end::Page title-->
+                            <!--begin::Actions-->
+                            <div class="d-flex align-items-center py-2">
+
+                                <div class="row" v-show="dom.mostrarBtnsCli">
+                                <!--begin::Button-->
+                                    <div class="col-md-7">
+                                        <a class="btn btn-sm btn-primary" v-on:click="verFormularioCli();">Nuevo</a>
+                                    </div>
+                                    <div class="col-md-3">                                
+                                        <a class="btn btn-sm btn-primary" v-on:click="verFiltroCli();">Filtros</a>
+                                    </div>
+                                <!--end::Button-->
+                                </div>
+                            </div>
+                            <!--end::Actions-->
+                        </div>
+                        <!--end::Toolbar wrapper-->
+                    </div>
+                    <!--end::Toolbar-->
+                    
+                    <div class="card mb-12" v-show="dom.mostrarBusquedaCli">
+                        <div class="card-body">
+                           
+                            <!-- {{dataBusquedaCli}} -->
+                                <div class="d-flex align-items-center">
+
+                                    <div class="position-relative w-md-400px me-md-2">
+                                    <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+                                    <span class="svg-icon svg-icon-3 svg-icon-gray-500 position-absolute top-50 ms-3 translate-middle-y">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="50" viewBox="0 0 20 20" fill="none">
+										<rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="5" rx="1"
+											transform="rotate(45 17.0365 15.1223)" fill="currentColor"></rect>
+										<path
+											d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z"
+											fill="currentColor"></path>
+									</svg>
+								    </span>
+                                    <!--end::Svg Icon-->
+                                    <!--end::Icon-->
+                                    <!--begin::Input-->
+                                    <input type="text" class="form-control form-control-solid ps-10" name="Buscar" placeholder="Buscar" 
+                                    v-model="dataBusquedaCli.busquedaCategoriaCli" v-on:keyup="validarBusquedaEnterCli">
+                                    <!--end::Input-->
+                                    </div>
+                                    <div class="col-md-3"></div>
+
+                                    <div class="d-flex align-items-center">
+                                        <button type="submit" class="btn btn-sm btn-primary me-5" data-kt-menu-dismiss="true"
+                                        v-on:click="validarBusquedaCategoriaCli();">Aplicar</button>
+                                        <a id="kt_horizontal_search_advanced_link" class="btn btn-link me-5" 
+                                        data-bs-toggle="collapse" href="#kt_advanced_search_form" 
+                                        @click="limpiarFiltroEstadoCli"> Búsqueda Avanzada</a>
+                                        <button type="submit" class="btn btn-sm btn-danger" data-kt-menu-dismiss="true" 
+                                        v-on:click="ocultarFiltroCli();">Cancelar</button>
+                                    </div> 
+                                        
+                                </div>                                
+
+                                <!--begin::Búsqueda Avanzadas-->
+                            <div class="collapse" id="kt_advanced_search_form">
+                                <!--begin::Separator-->
+                                <div class="separator separator-dashed mt-5 mb-5"></div>
+                                <!--end::Separator-->
+                                <!--begin::Row-->
+                                <div class="row g-8 mb-8">                                    
+                                    <!--begin::Col-->
+                                    <div class="col-xxl-2">
+                                        <label class="fs-6 form-label fw-bolder text-dark">Estado</label>
+                                        <select class="form-select form-select-solid" aria-label="Select example"
+                                        v-model="dataBusquedaCli.busquedaEstadoCategoriaCli">
+                                            <option value="">:Todos:</option>
+                                            <option value="R">Activo</option>
+                                            <option value="S">Inactivo</option>
+                                        </select>
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Row-->
+                            </div>
+                            <!--end::Búsqueda Avanzada-->                            
+                            
+                        </div>
+                    </div>
+
+                    <!--begin::Content-->
+                    <div class="app-content flex-column-fluid" id="kt_app_content">
+                        <!--begin::Content-->
+
+                        <!--begin::Formulario cliente-->
+                        <div class="card mb-12" v-show="dom.mostrarFormularioCli" id="viewFormularioCli">
+                            <form role="form" @submit.prevent="validarCreacionEdicionCategoriaCli()" id="formCategoriaCli"
+                            novalidate="novalidate">
+<!-- {{dataCategoriaCli}} -->
+
+                                <div class="card-body pt-5 pb-5">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            
+                                                <div class="fv-row col-md-12">
+                                                    <label class="required form-label">Categoría</label>
+                                                    <input name="categoriaCli" type="text" class="form-control form-control-solid" placeholder="--Categoría--" maxlength="50"
+                                                    v-model="dataCategoriaCli.categoriaCli"/>
+                                                </div>                                                                                                                                        
+
+                                        </div>                                        
+
+                                        <div class="col-md-1"></div>
+
+                                        <div class="col-md-5">
+                                            <div class="pt-10">
+                                                    <!--begin::Switch-->
+                                                    <label class="form-check form-switch form-check-custom form-check-solid">
+                                                <input class="form-check-input" type="checkbox" checked="checked"
+                                                v-model="dataCategoriaCli.movimientoCli"/>
+                                                <span class="form-check-label fw-bold text-muted">
+                                                    Movimiento
+                                                </span>
+                                            </label>
+                                                    <!--end::Switch-->
+                                            </div>
+                                        </div><br>
+                                        
+                                        <div class="col-md-12 pt-10 fv-row">
+                                            <label class="required form-label">Cuenta Contable</label>
+                                            <select name="cuentaCli" class="form-select form-select-solid" aria-label="Select example" v-model="dataCategoriaCli.idTipoCuentaCli">
+                                                <option value="">--SELECCIONE--</option>                                    
+                                                <option v-for="option in datosGenerales.tipoCuenta"
+                                        v-bind:value="option.ID_CUENTA">{{ option.NOMBRE }}</option>
+                                    </select>
+                                        </div>
+
+                                        <div class="col-md-12 text-center pt-10">
+
+                                            <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" v-if="!dataCategoriaCli.idCategoriaCli">
+                                                {{dom.nombreBotonRegistrar}}
+                                            </button>
+                                            <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" v-else>
+                                                {{dom.nombreBotonEditar}}
+                                            </button>
+                                            <button type="button" class="btn btn-bg-dark text-inverse-dark  me-2 mb-2"v-on:click="ocultarFormularioCli();" >Cancelar</button>                                           
+        
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!--end::Formulario cliente-->
+
+
+
+                        <!--begin::Lista de cliente tabla-->
+                        <div class="card mb-12" v-show="dom.mostrarListadoCli" id="viewListadoCli">
+                            <div class="card-body pt-5 pb-5">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="notice d-flex bg-light-warning rounded border-warning border border-dashed p-6">
+                                            <!--begin::Icon-->
+                                            <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
+                                            <span class="svg-icon svg-icon-2tx svg-icon-warning me-4">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+												<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
+												<rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor"></rect>
+												<rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor"></rect>
+											</svg>
+										    </span>
+                                            <!--end::Svg Icon-->
+                                            <!--end::Icon-->
+                                            <!--begin::Wrapper-->
+                                            <div class="d-flex flex-stack flex-grow-1">
+                                                <!--begin::Content-->
+                                                <div class="fw-bold">
+                                                    <h4 class="text-gray-900 fw-bolder">¡Necesitamos su atención!</h4>
+                                                    <div class="fs-6 text-gray-700">En la siguiente lista encontrará los <a class="fw-bolder"><!--<font color="#66D2F4">--> 50 últimos vendedores registrados<!--</font>--></a>, si desea obtener mas información por favor usuar los filtros.</div>
+                                                </div>
+                                                <!--end::Content-->
+                                            </div>
+                                            <!--end::Wrapper-->
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row pt-5">
+                                    <div class="col-md-12 table-responsive" style="max-height: 450px; height: 450px; overflow-y: scroll;">
+                                        <table class="table table-hover">
+                                            <thead class="bg-primary text-white fw-bolder">
+                                                <tr>
+                                                    <th width="3%">#</th>
+                                                    <th width="10%">Categoría</th>
+                                                    <th width="25%">Movimiento</th>                                                    
+                                                    <th width="6%">Estado</th>
+                                                    <th width="6%">Opciones</th>
+                                                </tr>
+
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(item, i) in datosGenerales.listadoCategoriasCli">
+                                                    <td width="3%" >{{i+1}}</td>
+                                                    <td width="10%" >{{item.CATEGORIA}}</td>
+                                                    <td width="25%" >{{item.MOVIMIENTO}}</td>
+                                                    <td width="6%" >
+
+                                                        <span class="badge badge-success" v-if="item.ESTADO == 'R' " >Activo</span>
+                                                        <span class="badge badge-danger" v-else>Inactivo</span>
+
+
+                                                    </td>
+                                                    <td width="6%" align="center">
+
+                                                            <div class="btn-group" role="group">
+
+                                                                <button id="btnGroupDrop1" type="button" class="btn btn-light btn-active-light-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    Acción
+                                                                  </button>
+                                                                  <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                                    <li><a href="javascript:void(0)" class="dropdown-item"  data-toggle="tooltip" title="Editar" v-on:click="executecargarDataCategoriaCli(item.ID_CATEGORIA)">
+                                                                        <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="currentColor"></path><path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="currentColor"></path></svg></span>
+                                                                        Editar</a>
+                                                                    </li>
+                                                                    <li><a  href="javascript:void(0)" class="dropdown-item" data-toggle="tooltip" title="Eliminar" v-on:click="confirmacionEliminarCategoriaCli(item.ID_CATEGORIA, item.CATEGORIA);">
+                                                                        <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor"></path><path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor"></path><path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor"></path></svg></span>
+                                                                        
+                                                                        Eliminar</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript:void(0)" class="dropdown-item" data-toggle="tooltip" title="Anular" v-on:click="confirmacionAnularCategoriaCli(item.ID_CATEGORIA, item.CATEGORIA);"
+                                                                        v-if="item.ESTADO == 'R'">
+                                                                            <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M22 12C22 17.5 17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2C17.5 2 22 6.5 22 12ZM18 12C18 11.4 17.6 11 17 11H7C6.4 11 6 11.4 6 12C6 12.6 6.4 13 7 13H17C17.6 13 18 12.6 18 12Z" fill="currentColor"></path></svg></span>
+                                                                            Inactivar</a>
+                    
+                                                                            <a href="javascript:void(0)" class="dropdown-item" data-toggle="tooltip" title="Activar" v-on:click="confirmacionActivarCategoriaCLi(item.ID_CATEGORIA, item.CATEGORIA);"
+                                                                            v-else>
+                                                                                <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M22 12C22 17.5 17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2C17.5 2 22 6.5 22 12ZM18 12C18 11.4 17.6 11 17 11H7C6.4 11 6 11.4 6 12C6 12.6 6.4 13 7 13H17C17.6 13 18 12.6 18 12Z" fill="currentColor"></path></svg></span>
+                                                                                Activar</a>
+                                                                    </li>
+                                                                    <br>
+                    
+                                                                <div v-if="item.FECHA_EDICION === ' ' ">
+                                                                    <div class="separator"></div>
+                                                                    <div class="d-flex align-items-center p-2 ">																	
+                                                                        <!--begin::Text-->
+                                                                        <div class="fs-9 fw-bold">
+                                                                            <span class="text-muted"> Creado por:</span> <br>
+                                                                            <a  class="text-gray-700 text-hover-primary"> {{ item.NOMBRE_REG }}</a>
+                                                                            <span class="text-muted"> el {{ item.FECHA_CREACION }}</span>
+                                                                        </div>
+                                                                        <!--end::Text-->
+                                                                    </div>                                                            
+                                                                </div>
+                    
+                                                                <div v-else>
+                                                                    <div class="separator"></div>
+                                                                    <div class="d-flex align-items-center p-2 ">																	
+                                                                        <!--begin::Text-->
+                                                                        <div class="fs-9 fw-bold">
+                                                                            <span class="text-muted"> Creado por:</span> <br>
+                                                                            <a  class="text-gray-700 text-hover-primary"> {{ item.NOMBRE_REG }}</a>
+                                                                            <span class="text-muted"> el {{ item.FECHA_CREACION }}</span>
+                                                                        </div>
+                                                                        <!--end::Text-->
+                                                                    </div>
+                    
+                                                                    <div class="separator pt-3"></div>
+                                                                    <div class="d-flex align-items-center p-2">
+                                                                        
+                                                                        <!--begin::Text-->
+                                                                        <div class="fs-9 fw-bold">
+                                                                            <span class="text-muted"> Actualizado por:</span> <br>
+                                                                            <a  class="text-gray-700 text-hover-primary">{{ item.NOMBRE_EDI}}</a><br>
+                                                                            <span class="text-muted"> el {{item.FECHA_EDICION}}</span>
+                                                                        </div>
+                                                                        <!--end::Text-->
+                                                                    </div>
+                                                                </div>
+                    
+                                                                  </ul>                                                              
+                                                            </div>
+                                                       
+                                                        
+                                                    </td>
+
+
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--end::Lista de cliente tabla-->
+
+                        <!--begin::Content-->
+
+
+
+                    </div>
+                    <!--end::Content-->
+
+                                                </div>
+                                                
+                                            </div>
+
+                                            <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel">
+                                               
+                                                <div class="row">
+                                                   
+<!--begin::Toolbar-->
+<div class="app-toolbar align-items-center justify-content-between">
+    <!--begin::Toolbar wrapper-->
+    <div class="d-flex flex-grow-1 flex-stack flex-wrap gap-2 mb-n10" id="kt_toolbar">
+        <!--begin::Page title-->
+        <div class="d-flex flex-column align-items-start me-3 gap-2">
+            <!--begin::Title-->
+            <h1 class="d-flex text-dark fw-bolder m-0 fs-3">Gestión de Proveedor</h1>
+            <!--end::Title-->
+        </div>
+        <!--end::Page title-->
+        <!--begin::Actions-->
+        <div class="d-flex align-items-center py-2">
+
+            <div class="row" v-show="dom.mostrarBtnsProv">
+            <!--begin::Button-->
+            <div class="col-md-7">
+            <a class="btn btn-sm btn-primary" v-on:click="verFormularioProv();">Nuevo</a>
+            </div>
+            <div class="col-md-3">                                
+            <a class="btn btn-sm btn-primary" v-on:click="verFiltroProv();">Filtros</a>
+            </div>
+            <!--end::Button-->
+            </div>
+        </div>
+        <!--end::Actions-->
+    </div>
+    <!--end::Toolbar wrapper-->
+</div>
+<!--end::Toolbar-->
+
+<div class="card mb-12" v-show="dom.mostrarBusquedaProv">
+    <div class="card-body">
+       
+        <!-- {{dataBusquedaProv}} -->
+            <div class="d-flex align-items-center">
+
+                <div class="position-relative w-md-400px me-md-2">
+                <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+                <span class="svg-icon svg-icon-3 svg-icon-gray-500 position-absolute top-50 ms-3 translate-middle-y">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="50" viewBox="0 0 20 20" fill="none">
+                    <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="5" rx="1"
+                        transform="rotate(45 17.0365 15.1223)" fill="currentColor"></rect>
+                    <path
+                        d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z"
+                        fill="currentColor"></path>
+                </svg>
+                </span>
+                <!--end::Svg Icon-->
+                <!--end::Icon-->
+                <!--begin::Input-->
+                <input type="text" class="form-control form-control-solid ps-10" name="Buscar" placeholder="Buscar"
+                v-model="dataBusquedaProv.busquedaCategoriaProv" v-on:keyup="validarBusquedaEnterProv">
+                <!--end::Input-->
+                </div>
+                <div class="col-md-3"></div>
+
+                <div class="d-flex align-items-center">
+                    <button type="submit" class="btn btn-sm btn-primary me-5" data-kt-menu-dismiss="true"
+                    v-on:click="validarBusquedaCategoriaProv();">Aplicar</button>
+                    <a id="kt_horizontal_search_advanced_link" class="btn btn-link me-5" 
+                    data-bs-toggle="collapse" href="#kt_advanced_search_form" 
+                    @click="limpiarFiltroEstadoProv"> Búsqueda Avanzada</a>
+                    <button type="submit" class="btn btn-sm btn-danger" data-kt-menu-dismiss="true" 
+                    v-on:click="ocultarFiltroProv();">Cancelar</button>
+                </div> 
+                    
+            </div>                                
+
+            <!--begin::Búsqueda Avanzadas-->
+        <div class="collapse" id="kt_advanced_search_form">
+            <!--begin::Separator-->
+            <div class="separator separator-dashed mt-9 mb-6"></div>
+            <!--end::Separator-->
+            <!--begin::Row-->
+            <div class="row g-8 mb-8">                                    
+                <!--begin::Col-->
+                <div class="col-xxl-2">
+                    <label class="fs-6 form-label fw-bolder text-dark">Estado</label>
+                    <select class="form-select form-select-solid" aria-label="Select example"
+                    v-model="dataBusquedaProv.busquedaEstadoCategoriaProv">
+                        <option value="">:Todos:</option>
+                        <option value="R">Activo</option>
+                        <option value="S">Inactivo</option>
+                    </select>
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Row-->
+        </div>
+        <!--end::Búsqueda Avanzada-->                            
+        
+    </div>
+</div>
+
+<!--begin::Content-->
+<div class="app-content flex-column-fluid" id="kt_app_content">
+    <!--begin::Content-->
+
+    <!--begin::Formulario CategoriaProv-->
+    <div class="card mb-12" v-show="dom.mostrarFormularioProv" id="viewFormularioProv">
+        <form role="form" @submit.prevent="validarCreacionEdicionCategoriaProv()" id="formCategoriaProv"
+        novalidate="novalidate">
+
+
+            <div class="card-body pt-5 pb-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+
+                            <div class="fv-row col-md-12">
+                                <label class="required form-label">Categoría</label>
+                                <input name="categoriaProv" type="text" class="form-control form-control-solid" placeholder="--Categoría--" 
+                                maxlength="50" v-model="dataCategoriaProv.categoriaProv"/>
+                            </div>                                            
+                            
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-1"></div>
+
+                                        <div class="col-md-5">
+                                            <div class="pt-10">
+                                                    <!--begin::Switch-->
+                                                    <label class="form-check form-switch form-check-custom form-check-solid">
+                                                <input class="form-check-input" type="checkbox" checked="checked"
+                                                v-model="dataCategoriaProv.movimientoProv"/>
+                                                <span class="form-check-label fw-bold text-muted">
+                                                    Movimiento
+                                                </span>
+                                            </label>
+                                                    <!--end::Switch-->
+                                            </div>
+                                        </div>
+
+                                        <div class="fv-row col-md-12 pt-10">
+                                            <label class="required form-label">Cuenta Contable</label>
+                                            <select name="cuentaProv" class="form-select form-select-solid" aria-label="Select example" v-model="dataCategoriaProv.idTipoCuentaProv">
+                                                <option value="">--SELECCIONE--</option>                                    
+                                                <option v-for="option in datosGenerales.tipoCuenta"
+                                        v-bind:value="option.ID_CUENTA">{{ option.NOMBRE }}</option>
+                                    </select>
+                                        </div>  
+
+                    <div class="col-md-12 text-center pt-10">
+
+                        <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" v-if="!dataCategoriaProv.idCategoriaProv">{{dom.nombreBotonRegistrar}}</button>
+                        <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" v-else>{{dom.nombreBotonEditar}}</button>
+                        <button type="button" class="btn btn-bg-dark text-inverse-dark  me-2 mb-2" v-on:click="ocultarFormularioProv()">Cancelar</button>                                           
+
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--end::Formulario CategoriaProv-->
+
+
+
+    <!--begin::Lista de usuarios tabla-->
+    <div class="card mb-12" v-show="dom.mostrarListadoProv" id="viewListadoProv">
+        <div class="card-body pt-5 pb-5">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="notice d-flex bg-light-warning rounded border-warning border border-dashed p-6">
+                        <!--begin::Icon-->
+                        <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
+                        <span class="svg-icon svg-icon-2tx svg-icon-warning me-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
+                            <rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor"></rect>
+                            <rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor"></rect>
+                        </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                        <!--end::Icon-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-stack flex-grow-1">
+                            <!--begin::Content-->
+                            <div class="fw-bold">
+                                <h4 class="text-gray-900 fw-bolder">¡Necesitamos su atención!</h4>
+                                <div class="fs-6 text-gray-700">En la siguiente lista encontrará los <a class="fw-bolder"><!--<font color="#66D2F4">--> 50 últimos vendedores registrados<!--</font>--></a>, si desea obtener mas información por favor usuar los filtros.</div>
+                            </div>
+                            <!--end::Content-->
+                        </div>
+                        <!--end::Wrapper-->
+
+                        <!-- {{datosGenerales.listadoVendedores}} -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="row pt-5">
+                <div class="col-md-12 table-responsive" style="max-height: 450px; height: 450px; overflow-y: scroll;">
+                    <table class="table">
+                        <thead class="bg-primary text-white fw-bolder">
+                            <tr>
+                                <th width="3%">#</th>
+                                <th width="10%">Categoría</th>
+                                <th width="25%">Cuenta</th>                                                    
+                                <th width="6%">Estado</th>
+                                <th width="6%">Opciones</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, i) in datosGenerales.listadoCategoriasProv">
+                                <td width="3%" >{{i+1}}</td>
+                                <td width="10%" >{{item.CATEGORIA}}</td>
+                                <td width="25%" >{{item.MOVIMIENTO}}</td>
+                                <td width="6%" >
+
+                                    <span class="badge badge-success" v-if="item.ESTADO == 'R' ">Activo</span>
+                                    <span class="badge badge-danger" v-else>Inactivo</span>
+
+
+                                </td>
+                                <td width="6%" align="center">
+
+                                        <div class="btn-group" role="group">
+
+                                            <button id="btnGroupDrop1" type="button" class="btn btn-light btn-active-light-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Acción
+                                              </button>
+                                              <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                <li><a href="javascript:void(0)" class="dropdown-item"  data-toggle="tooltip" title="Editar" v-on:click="executecargarDataCategoriaProv(item.ID_CATEGORIA)">
+                                                    <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="currentColor"></path><path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="currentColor"></path></svg></span>
+                                                    Editar</a>
+                                                </li>
+                                                <li><a  href="javascript:void(0)" class="dropdown-item" data-toggle="tooltip" title="Eliminar" v-on:click="confirmacionEliminarCategoriaProv(item.ID_CATEGORIA, item.CATEGORIA);">
+                                                    <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor"></path><path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor"></path><path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor"></path></svg></span>
+                                                    
+                                                    Eliminar</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)" class="dropdown-item" data-toggle="tooltip" title="Anular" v-on:click="confirmacionAnularCategoriaProv(item.ID_CATEGORIA, item.CATEGORIA);"
+                                                    v-if="item.ESTADO == 'R'">
+                                                        <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M22 12C22 17.5 17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2C17.5 2 22 6.5 22 12ZM18 12C18 11.4 17.6 11 17 11H7C6.4 11 6 11.4 6 12C6 12.6 6.4 13 7 13H17C17.6 13 18 12.6 18 12Z" fill="currentColor"></path></svg></span>
+                                                        Inactivar</a>
+
+                                                        <a href="javascript:void(0)" class="dropdown-item" data-toggle="tooltip" title="Activar" v-on:click="confirmacionActivarCategoriaProv(item.ID_CATEGORIA, item.CATEGORIA);"
+                                                        v-else>
+                                                            <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M22 12C22 17.5 17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2C17.5 2 22 6.5 22 12ZM18 12C18 11.4 17.6 11 17 11H7C6.4 11 6 11.4 6 12C6 12.6 6.4 13 7 13H17C17.6 13 18 12.6 18 12Z" fill="currentColor"></path></svg></span>
+                                                            Activar</a>
+                                                </li>
+                                                <br>
+
+                                            <div v-if="item.FECHA_EDICION === ' ' ">
+                                                <div class="separator"></div>
+                                                <div class="d-flex align-items-center p-2 ">																	
+                                                    <!--begin::Text-->
+                                                    <div class="fs-9 fw-bold">
+                                                        <span class="text-muted"> Creado por:</span> <br>
+                                                        <a  class="text-gray-700 text-hover-primary"> {{ item.NOMBRE_REG }}</a>
+                                                        <span class="text-muted"> el {{ item.FECHA_CREACION }}</span>
+                                                    </div>
+                                                    <!--end::Text-->
+                                                </div>                                                            
+                                            </div>
+
+                                            <div v-else>
+                                                <div class="separator"></div>
+                                                <div class="d-flex align-items-center p-2 ">																	
+                                                    <!--begin::Text-->
+                                                    <div class="fs-9 fw-bold">
+                                                        <span class="text-muted"> Creado por:</span> <br>
+                                                        <a  class="text-gray-700 text-hover-primary"> {{ item.NOMBRE_REG }}</a>
+                                                        <span class="text-muted"> el {{ item.FECHA_CREACION }}</span>
+                                                    </div>
+                                                    <!--end::Text-->
+                                                </div>
+
+                                                <div class="separator pt-3"></div>
+                                                <div class="d-flex align-items-center p-2">
+                                                    
+                                                    <!--begin::Text-->
+                                                    <div class="fs-9 fw-bold">
+                                                        <span class="text-muted"> Actualizado por:</span> <br>
+                                                        <a  class="text-gray-700 text-hover-primary">{{ item.NOMBRE_EDI}}</a><br>
+                                                        <span class="text-muted"> el {{item.FECHA_EDICION}}</span>
+                                                    </div>
+                                                    <!--end::Text-->
+                                                </div>
+                                            </div>
+
+                                              </ul>                                        
+                                        </div>
+                                   
+                                    
+                                </td>
+
+
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <!--end::Lista de usuarios tabla-->
+
+    <!--begin::Content-->
+
+
+
+</div>
+<!--end::Content-->
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12 text-center pt-10">
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            </form>
+                        </div>
+
+                        <!--end::Formulario Usuario-->                        
+
+                        <!--begin::Content-->
+
+
+
+                    </div>
+                    <!--end::Content-->
+                </div>
+
+                <script src="scripts/CategoriasConfigCliProv.js?op=prb001"></script>
+
+                <%- include("footer") %>

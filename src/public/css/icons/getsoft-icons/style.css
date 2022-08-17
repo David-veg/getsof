@@ -1,0 +1,709 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?7w7nar');
+  src:  url('fonts/icomoon.eot?7w7nar#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?7w7nar') format('truetype'),
+    url('fonts/icomoon.woff?7w7nar') format('woff'),
+    url('fonts/icomoon.svg?7w7nar#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-add:before {
+  content: "\e900";
+}
+.icon-add-user-b:before {
+  content: "\e901";
+}
+.icon-agenada-reloj:before {
+  content: "\e902";
+}
+.icon-agenda:before {
+  content: "\e903";
+}
+.icon-agenda-alt:before {
+  content: "\e904";
+}
+.icon-agregar:before {
+  content: "\e905";
+}
+.icon-agregar_usuario:before {
+  content: "\e906";
+}
+.icon-agregar-usuario-alt:before {
+  content: "\e907";
+}
+.icon-alamacen:before {
+  content: "\e908";
+}
+.icon-alicade:before {
+  content: "\e909";
+}
+.icon-almacen:before {
+  content: "\e90a";
+}
+.icon-almacen-alt:before {
+  content: "\e90b";
+}
+.icon-anterior:before {
+  content: "\e90c";
+}
+.icon-apagar:before {
+  content: "\e90d";
+}
+.icon-auto:before {
+  content: "\e90e";
+}
+.icon-auto-alt:before {
+  content: "\e90f";
+}
+.icon-automotores:before {
+  content: "\e910";
+}
+.icon-ayuda:before {
+  content: "\e911";
+}
+.icon-bancos:before {
+  content: "\e912";
+}
+.icon-bandera:before {
+  content: "\e913";
+}
+.icon-barco:before {
+  content: "\e914";
+}
+.icon-bebe:before {
+  content: "\e915";
+}
+.icon-birrete:before {
+  content: "\e916";
+}
+.icon-bmw:before {
+  content: "\e917";
+}
+.icon-boy:before {
+  content: "\e918";
+}
+.icon-buscar:before {
+  content: "\e919";
+}
+.icon-businessman:before {
+  content: "\e91a";
+}
+.icon-caja:before {
+  content: "\e91b";
+}
+.icon-caja_alt:before {
+  content: "\e91c";
+}
+.icon-calc:before {
+  content: "\e91d";
+}
+.icon-calculadora:before {
+  content: "\e91e";
+}
+.icon-calculos:before {
+  content: "\e91f";
+}
+.icon-camara:before {
+  content: "\e920";
+}
+.icon-camara-alt:before {
+  content: "\e921";
+}
+.icon-campanna:before {
+  content: "\e922";
+}
+.icon-cancel-t:before {
+  content: "\e923";
+}
+.icon-cat:before {
+  content: "\e924";
+}
+.icon-cedula:before {
+  content: "\e925";
+}
+.icon-celular:before {
+  content: "\e926";
+}
+.icon-certificado:before {
+  content: "\e927";
+}
+.icon-certificado-medico:before {
+  content: "\e928";
+}
+.icon-check:before {
+  content: "\e929";
+}
+.icon-children:before {
+  content: "\e92a";
+}
+.icon-cirugia:before {
+  content: "\e92b";
+}
+.icon-cliente:before {
+  content: "\e92c";
+}
+.icon-clinica:before {
+  content: "\e92d";
+}
+.icon-comercial:before {
+  content: "\e92e";
+}
+.icon-compras:before {
+  content: "\e92f";
+}
+.icon-compras_alt:before {
+  content: "\e930";
+}
+.icon-configuracion:before {
+  content: "\e931";
+}
+.icon-conta:before {
+  content: "\e932";
+}
+.icon-contabilidad:before {
+  content: "\e933";
+}
+.icon-contabilidad-alt:before {
+  content: "\e934";
+}
+.icon-contact-book:before {
+  content: "\e935";
+}
+.icon-contrato:before {
+  content: "\e936";
+}
+.icon-credit-cards:before {
+  content: "\e937";
+}
+.icon-cuaderno-clases:before {
+  content: "\e938";
+}
+.icon-cuadro-dos:before {
+  content: "\e939";
+}
+.icon-dashboard:before {
+  content: "\e93a";
+}
+.icon-direccional-circular-isquierda:before {
+  content: "\e93b";
+}
+.icon-discapacidad:before {
+  content: "\e93c";
+}
+.icon-discont:before {
+  content: "\e93d";
+}
+.icon-doc-num:before {
+  content: "\e93e";
+}
+.icon-doctor:before {
+  content: "\e93f";
+}
+.icon-documento:before {
+  content: "\e940";
+}
+.icon-edit_alt:before {
+  content: "\e941";
+}
+.icon-editar:before {
+  content: "\e942";
+}
+.icon-eliminar:before {
+  content: "\e943";
+}
+.icon-email:before {
+  content: "\e944";
+}
+.icon-email-o:before {
+  content: "\e945";
+}
+.icon-empresa:before {
+  content: "\e946";
+}
+.icon-enfermera:before {
+  content: "\e947";
+}
+.icon-estadisticas:before {
+  content: "\e948";
+}
+.icon-estadisticas-laptop:before {
+  content: "\e949";
+}
+.icon-estado-p:before {
+  content: "\e94a";
+}
+.icon-excel:before {
+  content: "\e94b";
+}
+.icon-facebook:before {
+  content: "\e94c";
+}
+.icon-factura:before {
+  content: "\e94d";
+}
+.icon-fecha-n:before {
+  content: "\e94e";
+}
+.icon-fecha-p:before {
+  content: "\e94f";
+}
+.icon-fecha-v:before {
+  content: "\e950";
+}
+.icon-feria-salud:before {
+  content: "\e951";
+}
+.icon-filtro:before {
+  content: "\e952";
+}
+.icon-firma:before {
+  content: "\e953";
+}
+.icon-firma-alt:before {
+  content: "\e954";
+}
+.icon-fullscreen:before {
+  content: "\e955";
+}
+.icon-group-a:before {
+  content: "\e956";
+}
+.icon-guardar:before {
+  content: "\e957";
+}
+.icon-handphone-o:before {
+  content: "\e958";
+}
+.icon-help:before {
+  content: "\e959";
+}
+.icon-hijos:before {
+  content: "\e95a";
+}
+.icon-historia-clinica:before {
+  content: "\e95b";
+}
+.icon-hora:before {
+  content: "\e95c";
+}
+.icon-hospital:before {
+  content: "\e95d";
+}
+.icon-import:before {
+  content: "\e95e";
+}
+.icon-importacion:before {
+  content: "\e95f";
+}
+.icon-importacion-alterno:before {
+  content: "\e960";
+}
+.icon-import-alt:before {
+  content: "\e961";
+}
+.icon-impresora:before {
+  content: "\e962";
+}
+.icon-impuestos:before {
+  content: "\e963";
+}
+.icon-informacion-personal:before {
+  content: "\e964";
+}
+.icon-informacion-personal-alt:before {
+  content: "\e965";
+}
+.icon-inicio:before {
+  content: "\e966";
+}
+.icon-inicio_alt:before {
+  content: "\e967";
+}
+.icon-instagram:before {
+  content: "\e968";
+}
+.icon-inventario:before {
+  content: "\e969";
+}
+.icon-inventario_alt:before {
+  content: "\e96a";
+}
+.icon-kilometraje:before {
+  content: "\e96b";
+}
+.icon-laptop-graficos:before {
+  content: "\e96c";
+}
+.icon-lista-b:before {
+  content: "\e96d";
+}
+.icon-llamadas_pendientes:before {
+  content: "\e96e";
+}
+.icon-llamada-saliente:before {
+  content: "\e96f";
+}
+.icon-login:before {
+  content: "\e970";
+}
+.icon-lugar-n:before {
+  content: "\e971";
+}
+.icon-man:before {
+  content: "\e972";
+}
+.icon-mano-co:before {
+  content: "\e973";
+}
+.icon-matrimonio-b:before {
+  content: "\e974";
+}
+.icon-mecanica:before {
+  content: "\e975";
+}
+.icon-medical-b:before {
+  content: "\e976";
+}
+.icon-medical-sub:before {
+  content: "\e977";
+}
+.icon-medicamento:before {
+  content: "\e978";
+}
+.icon-medicamentos:before {
+  content: "\e979";
+}
+.icon-medico:before {
+  content: "\e97a";
+}
+.icon-menu:before {
+  content: "\e97b";
+}
+.icon-menu-food:before {
+  content: "\e97c";
+}
+.icon-menu-vertical:before {
+  content: "\e97d";
+}
+.icon-mesa:before {
+  content: "\e97e";
+}
+.icon-mesa-o:before {
+  content: "\e97f";
+}
+.icon-micro:before {
+  content: "\e980";
+}
+.icon-micro-disable:before {
+  content: "\e981";
+}
+.icon-money-c:before {
+  content: "\e982";
+}
+.icon-mujer-con-headset:before {
+  content: "\e983";
+}
+.icon-mundo:before {
+  content: "\e984";
+}
+.icon-nomina:before {
+  content: "\e985";
+}
+.icon-notificacion_alt:before {
+  content: "\e986";
+}
+.icon-Nueva-cuenta:before {
+  content: "\e987";
+}
+.icon-obs:before {
+  content: "\e988";
+}
+.icon-op-doc:before {
+  content: "\e989";
+}
+.icon-paciente:before {
+  content: "\e98a";
+}
+.icon-paciente_alt:before {
+  content: "\e98b";
+}
+.icon-paciente-corazon:before {
+  content: "\e98c";
+}
+.icon-pass-b:before {
+  content: "\e98d";
+}
+.icon-password_alt:before {
+  content: "\e98e";
+}
+.icon-pause:before {
+  content: "\e98f";
+}
+.icon-pdf:before {
+  content: "\e990";
+}
+.icon-pdf-alt:before {
+  content: "\e991";
+}
+.icon-pdf-material-alt:before {
+  content: "\e992";
+}
+.icon-perfil:before {
+  content: "\e993";
+}
+.icon-phone-m:before {
+  content: "\e994";
+}
+.icon-pie-chart:before {
+  content: "\e995";
+}
+.icon-plan:before {
+  content: "\e996";
+}
+.icon-pregunta:before {
+  content: "\e997";
+}
+.icon-preinscripcion:before {
+  content: "\e998";
+}
+.icon-presupuesto:before {
+  content: "\e999";
+}
+.icon-presupuestos:before {
+  content: "\e99a";
+}
+.icon-produccion:before {
+  content: "\e99b";
+}
+.icon-produccion-alt:before {
+  content: "\e99c";
+}
+.icon-producto:before {
+  content: "\e99d";
+}
+.icon-proforma:before {
+  content: "\e99e";
+}
+.icon-quitar-usuario:before {
+  content: "\e99f";
+}
+.icon-radiologia:before {
+  content: "\e9a0";
+}
+.icon-receta:before {
+  content: "\e9a1";
+}
+.icon-reloj:before {
+  content: "\e9a2";
+}
+.icon-remove-user-alt:before {
+  content: "\e9a3";
+}
+.icon-reportes:before {
+  content: "\e9a4";
+}
+.icon-reportes-administrativos:before {
+  content: "\e9a5";
+}
+.icon-reporte-tabla:before {
+  content: "\e9a6";
+}
+.icon-reporte-ventas:before {
+  content: "\e9a7";
+}
+.icon-requerimiento:before {
+  content: "\e9a8";
+}
+.icon-restaurant-menu:before {
+  content: "\e9a9";
+}
+.icon-sala-espera:before {
+  content: "\e9aa";
+}
+.icon-salir_alt:before {
+  content: "\e9ab";
+}
+.icon-seguro-vehiculo:before {
+  content: "\e9ac";
+}
+.icon-sexo:before {
+  content: "\e9ad";
+}
+.icon-signos-vitales:before {
+  content: "\e9ae";
+}
+.icon-siguiente:before {
+  content: "\e9af";
+}
+.icon-sri .path1:before {
+  content: "\e9b0";
+  color: rgb(225, 38, 28);
+}
+.icon-sri .path2:before {
+  content: "\e9b1";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-sri .path3:before {
+  content: "\e9b2";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-sri .path4:before {
+  content: "\e9b3";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-sri .path5:before {
+  content: "\e9b4";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-sri .path6:before {
+  content: "\e9b5";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-sri .path7:before {
+  content: "\e9b6";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-stop:before {
+  content: "\e9b7";
+}
+.icon-stop-alt:before {
+  content: "\e9b8";
+}
+.icon-subproducto:before {
+  content: "\e9b9";
+}
+.icon-table:before {
+  content: "\e9ba";
+}
+.icon-telefono-24-horas:before {
+  content: "\e9bb";
+}
+.icon-telefono-c:before {
+  content: "\e9bc";
+}
+.icon-telefono-o:before {
+  content: "\e9bd";
+}
+.icon-telephone-ca:before {
+  content: "\e9be";
+}
+.icon-test-tube-and-flask:before {
+  content: "\e9bf";
+}
+.icon-ticket:before {
+  content: "\e9c0";
+}
+.icon-tipo-de-sangre:before {
+  content: "\e9c1";
+}
+.icon-trash:before {
+  content: "\e9c2";
+}
+.icon-turno_act:before {
+  content: "\e9c3";
+}
+.icon-turno-alt:before {
+  content: "\e9c4";
+}
+.icon-twitter:before {
+  content: "\e9c5";
+}
+.icon-ubicacion-c:before {
+  content: "\e9c6";
+}
+.icon-ubicacion-p:before {
+  content: "\e9c7";
+}
+.icon-ubicacion-pa:before {
+  content: "\e9c8";
+}
+.icon-update:before {
+  content: "\e9c9";
+}
+.icon-user-com:before {
+  content: "\e9ca";
+}
+.icon-user-dir:before {
+  content: "\e9cb";
+}
+.icon-user-m:before {
+  content: "\e9cc";
+}
+.icon-user-next:before {
+  content: "\e9cd";
+}
+.icon-user-remove:before {
+  content: "\e9ce";
+}
+.icon-user-s:before {
+  content: "\e9cf";
+}
+.icon-vacunas:before {
+  content: "\e9d0";
+}
+.icon-vacunas_alt:before {
+  content: "\e9d1";
+}
+.icon-ventas:before {
+  content: "\e9d2";
+}
+.icon-ventas_alt:before {
+  content: "\e9d3";
+}
+.icon-ver:before {
+  content: "\e9d4";
+}
+.icon-ver-documento:before {
+  content: "\e9d5";
+}
+.icon-visto:before {
+  content: "\e9d6";
+}
+.icon-whatsapp:before {
+  content: "\e9d7";
+}
+.icon-wincha:before {
+  content: "\e9d8";
+}
+.icon-woman:before {
+  content: "\e9d9";
+}
+.icon-word:before {
+  content: "\e9da";
+}
+.icon-x:before {
+  content: "\e9db";
+}
+.icon-xlsx:before {
+  content: "\e9dc";
+}
+.icon-xml:before {
+  content: "\e9dd";
+}
+.icon-x-ray:before {
+  content: "\e9de";
+}

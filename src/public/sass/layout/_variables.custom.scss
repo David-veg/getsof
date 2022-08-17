@@ -1,0 +1,31 @@
+//
+// Custom Variables
+//
+
+// Layouts
+$app-body-bg-color: if(isDarkMode(), #151521, #FBF6F0);
+
+// Header
+$app-header-base-height-mobile: 60px;
+
+// Header primary
+$app-header-primary-base-height: 77px;
+$app-header-primary-base-bg-color: $primary;
+$app-header-primary-base-bg-color-mobile: $primary;
+
+// Header secondary
+$app-header-secondary-base-height: 100px;
+$app-header-secondary-base-bg-color: $body-bg;
+$app-header-secondary-base-bg-color-mobile: $body-bg;
+$app-header-secondary-sticky-box-shadow: if(isDarkMode(), none, 0px 10px 30px 0px rgba(82,63,105,0.05));
+
+// Aside
+$app-aside-base-width: 250px;
+$app-aside-base-width-mobile: 250px; 
+$app-aside-base-gap-end: 30px;
+$app-aside-base-gap-top: 30px;
+$app-aside-base-gap-bottom: 30px;
+
+$app-aside-sticky-gap-end: 30px;
+$app-aside-sticky-gap-top: 30px;
+$app-aside-sticky-gap-bottom: 30px;

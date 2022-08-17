@@ -1,0 +1,332 @@
+<%- include("header") %>
+    <!--begin::Wrapper-->
+    <div class="app-wrapper flex-column flex-row-fluid" id="ViewPlan" >
+        <!--begin::Wrapper container-->
+        <div class="app-container container-xxl d-flex flex-row flex-column-fluid">
+            <!--begin::Main-->
+            <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                <!--begin::Content wrapper-->
+                <div class="d-flex flex-column flex-column-fluid">
+                    <!--begin::Toolbar-->
+                    <div class="app-toolbar align-items-center justify-content-between">
+                        <!--begin::Toolbar wrapper-->
+                        <div class="d-flex flex-grow-1 flex-stack flex-wrap gap-2 mb-n10" id="kt_toolbar">
+                            <!--begin::Page title-->
+                            <div class="d-flex flex-column align-items-start me-3 gap-2">
+                                <!--begin::Title-->
+                                <h1 class="d-flex text-dark fw-bolder m-0 fs-3">Gestión de Planes</h1>
+                                <!--end::Title-->
+                            </div>
+                            <!--end::Page title-->
+                            <!--begin::Actions-->
+                            <div class="d-flex align-items-center py-2">
+
+                                <div class="row" v-show="dom.mostrarBtns">
+                                <!--begin::Button-->
+                                <div class="col-md-8">
+                                <a class="btn btn-sm btn-primary" v-on:click="verFormulario();">Nuevo Plan</a>
+                                </div>
+                                <div class="col-md-3">                                
+                                <a class="btn btn-sm btn-primary" v-on:click="verFiltro();">Filtros</a>
+                                </div>
+                                <!--end::Button-->
+                                </div>
+                            </div>
+                            <!--end::Actions-->
+                        </div>
+                        <!--end::Toolbar wrapper-->
+                    </div>
+                    <!--end::Toolbar-->
+
+                    <div class="card mb-12" v-show="dom.mostrarBusqueda">
+                        <div class="card-body">                                                       
+                                <div class="d-flex align-items-center">
+                                    <div class="position-relative w-md-400px me-md-2">
+                                    <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+                                    <span class="svg-icon svg-icon-3 svg-icon-gray-500 position-absolute top-50 ms-3 translate-middle-y">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="50" viewBox="0 0 20 20" fill="none">
+										<rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="5" rx="1"
+											transform="rotate(45 17.0365 15.1223)" fill="currentColor"></rect>
+										<path
+											d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z"
+											fill="currentColor"></path>
+									</svg>
+								    </span>
+                                    <!--end::Svg Icon-->
+                                    <!--end::Icon-->
+                                    <!--begin::Input-->
+                                    <input type="text" class="form-control form-control-solid ps-10" name="Buscar" value="" placeholder="Buscar Plan" v-model="dataBusqueda.busquedaPlan"
+                                    v-on:keyup="validarBusquedaEnter">
+                                    <!--end::Input-->
+                                    </div>
+                                    <div class="col-md-3"></div>
+
+                                    <div class="d-flex align-items-center">
+                                        <button type="submit" class="btn btn-sm btn-primary me-5" data-kt-menu-dismiss="true"
+                                        v-on:click="validarBusquedaPlan();">Aplicar</button>
+                                        <a id="kt_horizontal_search_advanced_link" class="btn btn-link me-5" 
+                                        data-bs-toggle="collapse" href="#kt_advanced_search_form" > Búsqueda Avanzada</a>
+                                        <button type="submit" class="btn btn-sm btn-danger" data-kt-menu-dismiss="true" 
+                                        v-on:click="ocultarFiltro();" >Cancelar</button>
+                                    </div>                                    
+                                </div>                                
+
+                                <!--begin::Búsqueda Avanzadas-->
+                            <div class="collapse" id="kt_advanced_search_form">
+                                <!--begin::Separator-->
+                                <div class="separator separator-dashed mt-9 mb-6"></div>
+                                <!--end::Separator-->
+                                <!--begin::Row-->
+                                <div class="row g-8 mb-8">                                    
+                                    <!--begin::Col-->
+                                    <div class="col-md-6">
+                                        <label class="fs-6 form-label fw-bolder text-dark">Tipo de Plan</label>
+                                        <select class="form-select form-select-solid" aria-label="Select example" v-model="dataBusqueda.busquedaTipoPlan">
+                                            <option value="">::Seleccione::</option>
+                                            <option value="1">PostPago</option>
+                                            <option value="2">Prepago</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="fs-6 form-label fw-bolder text-dark">Estado</label>
+                                        <select class="form-select form-select-solid" aria-label="Select example" v-model="dataBusqueda.busquedaEstado">
+                                            <option value="">:Todos:</option>
+                                            <option value="R">Activo</option>
+                                            <option value="S">Inactivo</option>
+                                        </select>
+                                    </div>                                    
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Row-->
+                            </div>
+                            <!--end::Búsqueda Avanzada-->                            
+                            
+                        </div>
+                    </div>
+                    <!--begin::Content-->
+                    <div class="app-content flex-column-fluid" id="kt_app_content">
+                        <!--begin::Content-->
+
+                        <!--begin::Formulario plan-->
+                        <div class="card mb-12" v-show="dom.mostrarFormulario" id="viewFormulario">
+                            <form role="form" @submit.prevent="validarCreacionEdicionPlan()" id="formPlan"
+                            novalidate="novalidate">
+
+<!-- <pre>{{dataPlan}}</pre> -->
+                                <div class="card-body pt-5 pb-5">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+
+
+                                                <div class="fv-row col-md-12">
+                                                    <label class="required form-label">Tipo de Plan</label>
+                                                    <select name="tipoPlan" class="form-select form-select-solid" data-placeholder="Select an option"
+                                                    v-model="dataPlan.tipoPlan">
+                                                        <option value="">::Seleccione::</option>
+                                                        <option value="1">PostPago</option>
+                                                        <option value="2">Prepago</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="fv-row col-md-12">
+                                                    <label class="required form-label">Nombre del Plan</label>
+                                                    <input name="nombrePlan" type="text" class="form-control form-control-solid"  v-model="dataPlan.nombrePlan" maxlength="50"
+                                                    />
+                                                </div>
+                                                
+
+                                                <div class="fv-row col-md-12">
+                                                    <label class="required form-label">N° de Documentos</label>
+                                                    <input name="numeroDocumentos" type="text" class="form-control form-control-solid"  v-model="dataPlan.numeroDocumentos" 
+                                                    maxlength="4" @keypress="isNumber($event)"/>
+                                                </div>                                                
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+												<div class="fv-row col-md-12">
+                                                    <label class="form-label">Precio</label>
+                                                    <input name="precioPlan" type="text" class="form-control form-control-solid"  v-model="dataPlan.precioPlan"
+                                                    @input="restrictDecimal"/>
+                                                </div>                                            
+
+                                                <div class="col-md-12">
+                                                    <label class=" form-label">Estado</label>
+                                                    <select class="form-select form-select-solid" aria-label="Select example" v-model="dataPlan.estado">
+
+												<option value="R">Activo</option>
+												<option value="S">Inactivo</option>
+
+											</select>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 text-center pt-10">
+
+                                            <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" v-if="!dataPlan.idPlan">{{dom.nombreBotonRegistrar}}</button>
+                                            <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" v-else>{{dom.nombreBotonEditar}}</button>
+                                            <button type="button" class="btn btn-bg-dark text-inverse-dark  me-2 mb-2" v-on:click="ocultarFormulario()">Cancelar</button>                                           
+        
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!--end::Formulario plan-->
+
+
+
+                        <!--begin::Lista de plan tabla-->
+                        <div class="card mb-12" v-show="dom.mostrarListado" id="viewListado">
+                            <div class="card-body pt-5 pb-5">
+                               
+
+                                <div class="row pt-5">
+
+                                    <div class="col-md-12">
+                                        <div class="notice d-flex bg-light-warning rounded border-warning border border-dashed p-6">
+                                            <!--begin::Icon-->
+                                            <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg--><span class="svg-icon svg-icon-2tx svg-icon-warning me-4"><svg xmlns="http://www.w3.org/2000/svg"
+													width="24" height="24" viewBox="0 0 24 24" fill="none">
+													<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
+													<rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)"
+														fill="currentColor"></rect>
+													<rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)"
+														fill="currentColor"></rect>
+												</svg></span>
+                                            <!--end::Svg Icon-->
+                                            <!--end::Icon-->
+                                            <!--begin::Wrapper-->
+                                            <div class="d-flex flex-stack flex-grow-1">
+                                                <!--begin::Content-->
+                                                <div class="fw-bold">
+                                                    <h4 class="text-gray-900 fw-bolder">¡Necesitamos su atención!</h4>
+                                                    <div class="fs-6 text-gray-700">En la siguiente lista encontrará los <a class="fw-bolder"> 50
+															últimos productos y servicios registrados</a>, si desea obtener mas información por favor usuar los filtros.
+                                                    </div>
+                                                </div>
+                                                <!--end::Content-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 table-responsive pt-5" style="max-height: 450px; height: 450px; overflow-y: scroll;">
+                                        <table class="table table-hover table-row-bordered" id="tablePlan">
+                                            <thead class="bg-primary text-white fw-bolder">
+                                                <tr>
+                                                    <th width="3%">#</th>
+                                                    <th width="20%">Tipo de Plan</th>
+                                                    <th width="20%">Nombres</th>
+                                                    <th width="15%">N° Documentos</th>
+                                                    <th width="6%">Estado</th>
+                                                    <th width="6%">Opciones</th>
+                                                </tr>
+
+                                            </thead>
+                                            <tbody class="text-gray-600 fw-bold">
+                                                <tr v-for="(item, i) in datosGenerales.listadoPlan">
+                                                    <td width="3%" >{{ i+1 }}</td>
+                                                    <td width="20%" v-if="item.TIPO_PLAN == '2' ">PREPAGO</td>
+                                                    <td width="20%" v-else>POSTPAGO</td>
+                                                    <td width="20%" >{{ item.NOMBRE_PLAN }}</td>
+                                                    <td width="15%" >{{ item.NUMERO_DOCUMENTOS }}</td>
+                                                    <td width="6%" >
+
+                                                        <span class="badge badge-success" v-if="item.ESTADO == 'R'">Activo</span>
+                                                        <span v-else class="badge badge-danger">Inactivo</span>
+
+
+                                                    </td>
+                                                    <td width="6%" align="center">
+
+                                                            <div class="btn-group" role="group">
+                                                              <button id="btnGroupDrop1" type="button" class="btn btn-light btn-active-light-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                Acción
+                                                              </button>
+                                                              <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                                <li><a href="javascript:void(0)" class="dropdown-item"  data-toggle="tooltip" title="Editar" v-on:click="executecargarDataPlan(item.ID_PLAN)">
+                                                                    <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="currentColor"></path><path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="currentColor"></path></svg></span>
+                                                                    Editar</a>
+                                                                </li>
+                                                                <li><a  href="javascript:void(0)" class="dropdown-item" data-toggle="tooltip" title="Eliminar" v-on:click="confirmacionEliminarPlan(item.ID_PLAN, item.NOMBRE_PLAN);">
+                                                                    <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor"></path><path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor"></path><path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor"></path></svg></span>
+                                                                    
+                                                                    Eliminar</a>
+                                                                </li>                                                                
+                                                                
+                                                                <div v-if="item.FECHA_MOD === ' ' ">
+                                                                    <div class="separator"></div>
+                                                                    <div class="d-flex align-items-center p-2 ">																	
+                                                                        <!--begin::Text-->
+                                                                        <div class="fs-9 fw-bold">
+                                                                            <span class="text-muted"> Creado por:</span> <br>
+                                                                            <a href="javascript:void(0)" class="text-gray-700 text-hover-primary"> {{ item.NOMBRE_REG }}</a>
+                                                                            <span class="text-muted"> el {{ item.FECHA_REG }}</span>
+                                                                        </div>
+                                                                        <!--end::Text-->
+                                                                    </div>                                                            
+                                                                </div>
+    
+                                                                <div v-else>
+                                                                    <div class="separator"></div>
+                                                                    <div class="d-flex align-items-center p-2 ">																	
+                                                                        <!--begin::Text-->
+                                                                        <div class="fs-9 fw-bold">
+                                                                            <span class="text-muted"> Creado por:</span> <br>
+                                                                            <a href="javascript:void(0)" class="text-gray-700 text-hover-primary"> {{ item.NOMBRE_REG }}</a>
+                                                                            <span class="text-muted"> el {{ item.FECHA_REG }}</span>
+                                                                        </div>
+                                                                        <!--end::Text-->
+                                                                    </div>
+    
+                                                                    <div class="separator pt-3"></div>
+                                                                    <div class="d-flex align-items-center p-2">
+                                                                        
+                                                                        <!--begin::Text-->
+                                                                        <div class="fs-9 fw-bold">
+                                                                            <span class="text-muted"> Actualizado por:</span> <br>
+                                                                            <a href="javascript:void(0)" class="text-gray-700 text-hover-primary">{{ item.NOMBRE_MOD}}</a><br>
+                                                                            <span class="text-muted"> el {{item.FECHA_MOD}}</span>
+                                                                        </div>
+                                                                        <!--end::Text-->
+                                                                    </div>
+                                                                </div>
+
+                                                              </ul>
+                                                            </div>
+                                                       
+                                                        
+                                                    </td>
+
+
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--end::Lista de usuarios tabla-->
+
+                        <!--begin::Content-->
+
+
+
+                    </div>
+                    <!--end::Content-->
+                </div>                                
+                <script src="scripts/plan.js?op=PRB00043"></script>
+
+                <%- include("footer") %>

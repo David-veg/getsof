@@ -1,0 +1,1486 @@
+<%- include("header") %>
+<!--begin::Wrapper-->
+<div class="app-wrapper flex-column flex-row-fluid" id="ViewNotaCredito">
+  <!--begin::Wrapper container-->
+  <div class="app-container container-xxl d-flex flex-row flex-column-fluid">
+    <!--begin::Main-->
+    <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+      <!--begin::Content wrapper-->
+      <div class="d-flex flex-column flex-column-fluid">
+
+        <!--begin::Toolbar-->
+        <div class="app-toolbar align-items-center justify-content-between">
+          <!--begin::Toolbar wrapper-->
+          <div class="d-flex flex-grow-1 flex-stack flex-wrap gap-2 mb-n10" id="kt_toolbar">
+            <!--begin::Page title-->
+            <div class="d-flex flex-column align-items-start me-3 gap-2">
+              <!--begin::Title-->
+              <h1 class="d-flex text-dark fw-bolder m-0 fs-3">Gestión de Notas de Crédito</h1>
+              <!--end::Title-->
+            </div>
+            <!--end::Page title-->
+            <!--begin::Actions-->
+            <div class="d-flex align-items-center py-2">
+
+              <div class="row" v-show="dom.mostrarBtns">
+                <!--begin::Button-->
+                <div class="col-md-6">
+                  <a class="btn btn-sm btn-primary" @click="verFormulario();">Nuevo </a>
+                </div>
+                <div class="col-md-4">
+                  <a class="btn btn-sm btn-primary" @click="verFiltro();">Filtros</a>
+                </div>
+                <!--end::Button-->
+              </div>
+
+            </div>
+            <!--end::Actions-->
+          </div>
+          <!--end::Toolbar wrapper-->
+        </div>
+        <!--end::Toolbar-->
+
+        <div class="card mb-12 mt-10" v-show="dom.mostarBusqueda">
+          <div class="card-body ">
+
+            <div class="d-flex align-items-center">
+
+              <div class="position-relative w-md-400px me-md-2">
+                <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+                <span class="svg-icon svg-icon-3 svg-icon-gray-500 position-absolute top-50 ms-5 translate-middle-y">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="currentColor"></rect>
+                    <path
+                      d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z"
+                      fill="currentColor"></path>
+                  </svg>
+                </span>
+                <!--end::Svg Icon-->
+                <!--end::Icon-->
+                <!--begin::Input-->
+                <input type="text" class="form-control form-control-solid ps-13" name="Buscar" value="" placeholder="Buscar por N° Nota de Crédito." v-model="dataBusqueda.busquedaNumRemi">
+                <!--end::Input-->
+
+              </div>
+
+              <div class="col-md-4"></div>
+
+              <div class="d-flex align-items-center">
+                <button type="submit" class="btn btn-sm btn-primary me-5" data-kt-menu-dismiss="true" v-on:click="">Aplicar</button>
+                <a id="kt_horizontal_search_advanced_link" class="btn btn-link me-5" data-bs-toggle="collapse" href="#kt_advanced_search_form"> Búsqueda Avanzada</a>
+                <button type="submit" class="btn btn-sm btn-danger" data-kt-menu-dismiss="true" v-on:click="ocultarFiltro();">Cancelar</button>
+              </div>
+            </div>
+
+            <!--begin::Búsqueda Avanzadas-->
+            <div class="collapse" id="kt_advanced_search_form">
+              <!--begin::Separator-->
+              <!-- {{dataBusqueda}} -->
+              <div class="separator separator-dashed mt-9 mb-6"></div>
+              <!--end::Separator-->
+              <!--begin::Row-->
+              <div class="row g-8 mb-8">
+                <!--begin::Col-->
+
+                <!--begin::Col-->
+                <div class="col-md-6">
+                  <label class="fs-6 form-label fw-bolder text-dark">FECHA DESDE - HASTA</label>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <input type="date" class="form-control form-control form-control-solid" v-model="dataBusqueda.fechaDesde">
+                    </div>
+                    <div class="col-md-6">
+                      <input type="date" class="form-control form-control form-control-solid" v-model="dataBusqueda.fechaHasta">
+                    </div>
+                  </div>
+
+                </div>
+                <!--end::Col-->
+
+                <!--begin::Col-->
+                <div class="col-md-6">
+                  <label class="fs-6 form-label fw-bolder text-dark">Cliente:</label>
+                  <select ref="busquedaCliente" class="form-select form-select-solid" aria-label="Select example">
+                  </select>
+                </div>
+                <!--end::Col-->
+
+                <!--begin::Col-->
+                <div class="col-md-6">
+                  <label class="fs-6 form-label fw-bolder text-dark">Vendedor:</label>
+                  <select ref="busquedaCliente" class="form-select form-select-solid" aria-label="Select example">
+                  </select>
+                </div>
+                <!--end::Col-->
+
+                <!--begin::Col-->
+                <div class="col-md-6">
+                  <label class="fs-6 form-label fw-bolder text-dark">N° Factura</label>
+                  <input type="text" class="form-control form-control form-control-solid" v-model="dataBusqueda.busquedaComprobante">
+                </div>
+                <!--end::Col-->
+
+                <!--begin::Col-->
+                <div class="col-md-6">
+                  <label class="fs-6 form-label fw-bolder text-dark">Refacturación:</label>
+                  <select class="form-select form-select-solid" aria-label="Select example" v-model="dataBusqueda.busquedaEstEntrega">
+                    <option value="">:Todos:</option>
+                    <option value="SI">SI</option>
+                    <option value="NO">NO</option>
+                  </select>
+                </div>
+                <!--end::Col-->
+
+                <!--begin::Col-->
+                <div class="col-md-6">
+                  <label class="fs-6 form-label fw-bolder text-dark">Estado:</label>
+                  <select class="form-select form-select-solid" aria-label="Select example" v-model="dataBusqueda.busquedaEstado">
+                    <option value="">:Todos:</option>
+                    <option value="R">Activo</option>
+                    <option value="S">Inactivo</option>
+                  </select>
+                </div>
+                <!--end::Col-->
+
+                <!--begin::Col-->
+                <div class="col-md-6">
+                  <label class="fs-6 form-label fw-bolder text-dark">Transportista:</label>
+                  <select ref="busquedaTrasnportista" class="form-select form-select-solid" aria-label="Select example">
+                  </select>
+                </div>
+                <!--end::Col-->
+
+              </div>
+              <!--end::Row-->
+            </div>
+            <!--end::Búsqueda Avanzada-->
+
+          </div>
+        </div>
+
+
+        <!--begin::Content-->
+        <div class="app-content flex-column-fluid" id="kt_app_content">
+          <!--begin::Layout-->
+          <!--begin::Card-->
+          <div class="card" v-show="dom.mostrarFomulario" id="viewFormulario">
+            <!--begin::Card body-->
+            <!-- {{dataNotaCredito}} -->
+            <!--begin::Form-->
+            <form role="form" novalidate="novalidate" @submit.prevent="validarCreacionNotaCredito()" id="formNotaCredito">
+              <div class="card-body p-12">
+                <div class="row">
+
+
+                  <!--begin::Col-->
+
+                  <div class="col-12 border border-1 border-top border-top-5 border-left border-left-5 border-right border-right-5 border-bottom border-bottom-5">
+                    <label class="fs-4 form-label fw-bolder text-dark">Datos Generales</label>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+
+                  <div class="col-1 border border-1 border-left border-left-5">
+                    <label class="fs-6 form-label mt-3">CI/RUC:</label>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-2 border border-1">
+                    <div class="input-group input-group-sm  mt-1 mb-1">
+                      <input type="text" class="form-control form-control-sm form-control-solid" v-model="dataNotaCredito.numDocumentoNC" @keypress="isNumber($event)" maxlength="13" />
+                      <a class="btn btn-light-primary btn-sm" @click="executeBuscarDataCliente()">
+                        <i class="bi bi-search fs-2"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-1 border border-1">
+                    <label class="fs-6 form-label mt-3">Nombre:</label>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-4 border border-1">
+                    <div class="input-group input-group-sm mt-2 mb-1">
+                      <select class="form-select form-select-sm form-select-solid" ref="cboCliente" aria-label="Select example"></select>
+                    </div>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-1 border border-1">
+                    <label class="fs-6 form-label mt-3">Vendedor:</label>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-3 border border-1 border-right border-right-5">
+                    <div class="input-group input-group-sm mt-2 mb-1">
+                      <select class="form-select form-select-solid" ref="cboVendedor" aria-label="Select example">
+                      </select>
+
+                    </div>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-1 border border-1 border-left border-left-5">
+                    <label class="fs-md-7 form-label mt-3">Factura Nº:</label>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-4 border border-1">
+                    <div class="input-group input-group-sm mt-2 mb-2 row">
+                      <div class="col-3">
+                        <input type="text" class=" form-control form-control-sm form-control-solid" v-model="dataNotaCredito.numEstablecimientoFactura" />
+
+                      </div>
+                      <div class="col-3">
+                        <input type="text" class="form-control form-control-sm form-control-solid" v-model="dataNotaCredito.serieFactura" />
+                      </div>
+                      <div class="col-6">
+                        <div class="input-group input-group-sm">
+                          <input type="text" class="form-control form-control-sm form-control-solid" v-model="dataNotaCredito.numCorrelativoFactura" />
+                          <a class="btn btn-light-primary btn-sm">
+                            <i class="bi bi-search fs-2 "></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-1  border border-1">
+                    <label class="fs-8 form-label mt-3">Total Factura:</label>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-2  border border-1 ">
+                    <div class="input-group input-group-sm mt-2 mb-2">
+                      <input type="text" class="form-control form-control-solid" v-model="dataNotaCredito.totalFactura" readonly />
+                    </div>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-2  border border-1">
+                    <label class="fs-7 form-label mt-4">Num Autorización Factura:</label>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-2  border border-1 border-right border-right-5">
+                    <div class="input-group input-group-sm mt-2 mb-2">
+                      <input type="text" class="form-control form-control-solid" v-model="dataNotaCredito.numAutorizacionFactura" @keypress="isNumber($event)" readonly />
+                    </div>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-1  border border-1 border-left border-left-5">
+                    <label class="fs-md-7 form-label mt-3">Fecha Fac:</label>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-2  border border-1">
+                    <div class="input-group-sm mt-1 mb-1">
+                      <input type="text" ref="txtFechaEmisionFactura" class="form-control form-control form-control-solid" v-model="dataNotaCredito.fechaEmisionFactura" v-on:keyup="">
+                    </div>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-1  border border-1">
+                    <label class="fs-6 form-label mt-3">Punto E:</label>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-2  border border-1">
+                    <div class="input-group input-group-sm mt-2 mb-1">
+                      <select class="form-select form-select-sm form-select-solid rounded-pill rounded-end-0" aria-label="Select example" v-model="dataNotaCredito.idPuntoEmision">
+                        <option v-for="formaPago in datosGenerales.puntosEmision" v-bind:value="formaPago.ID_PUNTO_EMISION">{{formaPago.SERIE}}</option>
+                      </select><label class="mt-3">-</label>
+                      <input type="text" class="form-control form-control-sm form-control-solid rounded-pill rounded-start-0" v-model="dataNotaCredito.correlativo" @keypress="isNumber($event)" readonly />
+                    </div>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-1 border border-1 ">
+                    <label class="fs-md-7 form-label">Fecha Emisión:</label>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-2  border border-1">
+                    <div class="input-group-sm mt-1 mb-1">
+                      <input type="text" ref="fechaEmisionNC" class="form-control form-control form-control-solid" v-model="dataNotaCredito.fechaNC">
+                    </div>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-3 border border-1 border-right border-right-5 border-bottom border-bottom-5">
+                    <div class="input-group input-group-sm mt-2 mb-1">
+                      <input type="text" class="rounded rounded-pill form-control form-control-solid bg-dark text-white text-right" v-model="dataNotaCredito.saldoNC" @keypress="isNumber($event)" readonly />
+                    </div>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-1  border border-1 border-bottom border-bottom-5 border-left border-left-5">
+                    <label class="fs-8 form-label mt-2">Num Autorización:</label>
+                  </div>
+                  <!--end::Col-->
+
+                  <!--begin::Col-->
+                  <div class="col-2  border border-1 border-bottom border-bottom-5">
+                    <div class="input-group input-group-sm mt-2 mb-2">
+                      <input type="text" class="form-control form-control-solid" v-model="dataNotaCredito.numAutorizacoinNC" @keypress="isNumber($event)" readonly />
+                    </div>
+                  </div>
+                  <!--end::Col-->
+
+                  <div class="col-md-12 table-responsive mt-5">
+                    <label class="fs-4 form-label fw-bolder text-dark">Datos del Producto</label>
+                    <div class="separator separator-dotted border-primary my-2"></div>
+                    <table class="table table-sm table-row-bordered">
+                      <thead class="bg-primary text-white fw-bolder">
+                        <tr>
+                          <th width="1%">#</th>
+                          <th width="1%">Código</th>
+                          <th width="25%">Producto</th>
+                          <th width="10%">Cantidad</th>
+                          <th width="10%">IVA</th>
+                          <th width="10%">Precio</th>
+                          <th width="10%">% Dcto</th>
+                          <th width="10%">Dcto Tot</th>
+                          <th width="10%">Total</th>
+                          <th width="5%">Opciones</th>
+                        </tr>
+
+                      </thead>
+                      <tbody class="text-gray-600 fw-bold">
+                        <tr v-for="(item, i) in dataNotaCredito.arrayItemsNC">
+                          <td width="1%">{{i+1}}</td>
+                          <td width="1%">
+                            <div class="fv-row">
+                              <div class="input-group input-group-sm">
+                                <input type="text" class="form-control form-control-solid" v-model="item.Codigo" />
+                              </div>
+                            </div>
+                          </td>
+                          <td width="25%">
+                            <div class="fv-row">
+                              <div class="input-group flex-nowrap">
+                                <select ref="cboProducto" class="form-select form-select-sm form-select-solid" aria-label="Select example">
+                                </select>
+                                <a class="btn btn-light-primary btn-sm " data-bs-toggle="modal" data-bs-target="#Items">
+                                  <i class="bi bi-search"></i>
+                                </a>
+                              </div>
+                            </div>
+                          </td>
+                          <td width="10%">
+                            <div class="fv-row">
+                              <div class="input-group input-group-sm">
+                                <input type="text" ref="Cant" class="form-control form-control-solid" v-model="item.Cantidad" @keypress="isNumber($event)" />
+                              </div>
+                            </div>
+                          </td>
+                          <td width="10%">
+                            <div class="fv-row">
+                              <div class="input-group input-group-sm">
+                                <select class="form-select form-select-solid" aria-label="Select example" v-model="item.codIva">
+                                  <option value="0">0%</option>
+                                  <option value="2">12%</option>
+                                </select>
+                              </div>
+                            </div>
+                          </td>
+                          <td width="10%">
+                            <div class="fv-row">
+                              <div class="input-group input-group-sm">
+                                <input type="text" class="form-control form-control-solid" v-model="item.Precio" />
+                              </div>
+                            </div>
+                          </td>
+                          <td width="10%">
+                            <div class="fv-row">
+                              <div class="input-group input-group-sm">
+                                <input type="text" ref="Pdcto" class="form-control form-control-solid" v-model="item.Pdcto" />
+                              </div>
+                            </div>
+                          </td>
+                          <td width="10%">
+                            <div class="fv-row">
+                              <div class="input-group input-group-sm">
+                                <input type="text" class="form-control form-control-solid" v-model="item.Tdcto" />
+                              </div>
+                            </div>
+                          </td>
+                          <td width="10%">
+                            <div class="fv-row">
+                              <div class="input-group input-group-sm">
+                                <input type="text" class="form-control form-control-solid" v-model="item.Total" readonly />
+                              </div>
+                            </div>
+                          </td>
+                          <td width="5%">
+                            <div class="btn-group input-group-sm" role="group">
+                              <a href="javascript:void(0)" class="btn btn-sm btn-active-light-success" data-toggle="tooltip" title="Editar" v-on:click="abrirModalDatosAdicionales(i)">
+                                <i class="bi bi-plus-circle-fill fs-3"></i>
+                              </a>
+
+                              <a href="javascript:void(0)" class="btn btn-sm btn-active-light-danger" data-toggle="tooltip" title="Eliminar" v-on:click="removeArrayProducto(i)">
+                                <i class="bi bi-x-circle-fill fs-3"></i>
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td width="1%"></td>
+                          <td width="1%"></td>
+                          <td width="25%"></td>
+                          <td width="5%">
+                            <div class="fv-row">
+                              <div class="input-group input-group-sm">
+                                <input type="text" class="form-control form-control-solid" value="0.00" readonly />
+                              </div>
+                            </div>
+                          </td>
+                          <td width="5%"></td>
+                          <td width="5%"></td>
+                          <td width="5%"></td>
+                          <td width="5%"></td>
+                          <td width="10%">
+                            <div class="fv-row">
+                              <div class="input-group input-group-sm">
+                                <input type="text" class="form-control form-control-solid" value="0.00" readonly />
+                              </div>
+                            </div>
+                          </td>
+                          <td width="10%">
+                            <div class="fv-row">
+                              <div class="input-group input-group-sm">
+                                <input type="text" class="form-control form-control-solid" value="0.00" readonly />
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+
+                </div>
+                <div class="row">
+
+                  <div class="col-7">
+                    <div class="row">
+                      <div class="col-4">
+                        <button type="button" class="rounded rounded-pill btn btn-sm btn-primary btn-hover-scale" @click="agregarArrayProducto();">
+                          Agregar Item</button>
+                      </div>
+                      <div class="col-4">
+                        <div class="input-group input-group-sm">
+                          <input type="text" class="form-control form-control-solid" placeholder="Ingrese una Observación" v-model="dataNotaCredito.observacionNC" />
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="input-group input-group-sm">
+                          <input type="text" class="form-control form-control-solid" placeholder="Ingrese el motivo de anulación" v-model="dataNotaCredito.motivoAnulacionNC" />
+                        </div>
+                      </div>
+                      <div class="col-12 table-responsive table-responsive-sm mt-10">
+                        <label class="fs-4 form-label fw-bolder text-dark">Datos del Pago</label>
+                        <div class="separator separator-dotted border-primary my-2"></div>
+                        <table class="table table-sm table-row-bordered">
+                          <thead class="bg-primary text-white fw-bolder">
+                            <tr>
+                              <th width="5%">#</th>
+                              <th width="30%">Forma Pago</th>
+                              <th width="50%">Valor</th>
+                              <th width="10%">Opc.</th>
+
+                            </tr>
+
+                          </thead>
+                          <tbody class="text-gray-600 fw-bold">
+                            <tr v-for="(item, i) in dataNotaCredito.arrayPagoNC">
+                              <td width="10%">
+                                {{1+i}}
+                              </td>
+                              <td width="5%">
+                                <select class="form-select form-select-sm form-select-solid" aria-label="Select example" v-model="item.codigo">
+                                  <option value="01">EFECTIVO</option>
+                                  <option value="03">CHEQUE</option>
+                                  <option value="04">DEP/TRANS</option>
+                                  <option value="05">TARJETA CRÉDITO /
+                                    DÉBITO</option>
+                                  <option value="08">DEBITO BANCARIO
+                                  </option>
+                                  <option value="09">CHEQUE POSTFECHADO
+                                  </option>
+                                </select>
+                              </td>
+                              <td width="10%">
+                                <div class="fv-row">
+                                  <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-solid" v-model="item.valor" @keypress="isNumber($event)" />
+                                  </div>
+                                </div>
+                              </td>
+                              <td width="5%">
+                                <div class="btn-group input-group-sm" role="group">
+                                  <a href="javascript:void(0)" class="btn btn-sm btn-active-light-danger" data-toggle="tooltip" title="Eliminar" v-on:click="removeArrayPago(i)">
+                                    <i class="bi bi-x-circle-fill fs-3"></i>
+                                  </a>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                          <tfoot>
+                            <tr>
+                              <td width="10%"></td>
+                              <td width="5%">
+                                <div class="fv-row">
+                                  <label class="fs-md-7 form-label">Diferencia:</label>
+                                  <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-solid rounded rounded-pill" value="0.00" readonly />
+                                  </div>
+                                </div>
+                              </td>
+                              <td width="10%">
+                                <div class="fv-row">
+                                  <label class="fs-md-7 form-label">Total FP:</label>
+                                  <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-solid bg-dark text-white rounded rounded-pill" value="0.00" readonly />
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+
+                      <div class="col-4">
+                        <button type="button" class="rounded rounded-pill btn btn-light-success btn-sm" @click="agregarArrayPago();">
+                          Agregar Forma de Pago</button>
+                      </div>
+
+                      <div class="col-4">
+                        <button type="button" class="rounded rounded-pill btn btn-light-dark btn-sm" @click="Guardar();">
+                          Cruce Cred Pendiente</button>
+                      </div>
+
+                      <!--begin::Col-->
+                      <div class="col-6 mt-10">
+                        <label class="fs-6 form-label fw-bolder text-dark">C. Costos:</label>
+                        <select ref="" class="form-select form-select-solid" aria-label="Select example">
+                        </select>
+                      </div>
+                      <!--end::Col-->
+
+                    </div>
+                  </div>
+
+                  <div class="col-5">
+
+                    <div class="table-responsive">
+                      <table class="table border gs-1">
+                        <tr>
+                          <td width="8%" class="border fw-bolder fs-5 text-gray-600">Sub Total 12%</td>
+                          <td width="25%" class="border fw-bolder">
+                            <div class="fv-row col-md-12">
+                              <div class="input-group input-group-sm">
+                                <input type="text" v-model="dataNotaCredito.sub12" class="form-control form-control-solid" />
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="8%" class="border fw-bolder fs-5 text-gray-600">Sub Total 0%</td>
+                          <td width="25%" class="border fw-bolder">
+                            <div class="fv-row col-md-12">
+                              <div class="input-group input-group-sm">
+                                <input type="text" v-model="dataNotaCredito.sub0" class="form-control form-control-solid" />
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="8%" class="border fw-bolder fs-5 text-gray-600">Sub Total No Objeto</td>
+                          <td width="25%" class="border fw-bolder">
+                            <div class="fv-row col-md-12">
+                              <div class="input-group input-group-sm">
+                                <input type="text" v-model="dataNotaCredito.subNo" class="form-control form-control-solid" />
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="8%" class="border fw-bolder fs-5 text-gray-600">Sub Total Exento</td>
+                          <td width="25%" class="border fw-bolder">
+                            <div class="fv-row col-md-12">
+                              <div class="input-group input-group-sm">
+                                <input type="text" v-model="dataNotaCredito.subEx" class="form-control form-control-solid" />
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="8%" class="border fw-bolder fs-5 text-gray-600">Sub Total Sin Imp</td>
+                          <td width="25%" class="border fw-bolder">
+                            <div class="fv-row col-md-12">
+                              <div class="input-group input-group-sm">
+                                <input type="text" v-model="dataNotaCredito.subSinImp" class="form-control form-control-solid" />
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="8%" class="border fw-bolder fs-5 text-gray-600">Descuento</td>
+                          <td width="25%" class="border fw-bolder">
+                            <div class="fv-row col-md-12">
+                              <div class="input-group input-group-sm">
+                                <input type="text" v-model="dataNotaCredito.descuento" class="form-control form-control-solid" />
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="8%" class="border fw-bolder fs-5 text-gray-600">IVA 12%</td>
+                          <td width="25%" class="border fw-bolder">
+                            <div class="fv-row col-md-12">
+                              <div class="input-group input-group-sm">
+                                <input type="text" v-model="dataNotaCredito.iva12" class="form-control form-control-solid" />
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="8%" class="border fw-bolder fs-5 text-gray-600">ICE</td>
+                          <td width="25%" class="border fw-bolder">
+                            <div class="fv-row col-md-12">
+                              <div class="input-group input-group-sm">
+                                <input type="text" v-model="dataNotaCredito.ice" class="form-control form-control-solid" />
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="8%" class="border fw-bolder fs-5 text-gray-600">IRBPNR</td>
+                          <td width="25%" class="border fw-bolder">
+                            <div class="fv-row col-md-12">
+                              <div class="input-group input-group-sm">
+                                <input type="text" v-model="dataNotaCredito.irbpnr" class="form-control form-control-solid" />
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="8%" class="border fw-bolder fs-5 text-gray-600">Propina</td>
+                          <td width="25%" class="border fw-bolder">
+                            <div class="fv-row col-md-12">
+                              <div class="input-group input-group-sm">
+                                <input type="text" v-model="dataNotaCredito.propina" class="form-control form-control-solid" />
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="8%" class="border fw-bolder fs-5 text-gray-600">Valor Total</td>
+                          <td width="25%" class="border fw-bolder">
+                            <div class="fv-row col-md-12">
+                              <div class="input-group input-group-sm">
+                                <input type="text" v-model="dataNotaCredito.total" class="form-control form-control-solid" />
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+
+                      </table>
+                    </div>
+
+                  </div>
+
+                </div>
+                <div class="col-md-12 text-center pt-10">
+
+                  <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" v-if="!dataNotaCredito.idNotaCredito">{{dom.nombreBotonRegistrar}}</button>
+                  <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" data-bs-dismiss="modal" v-else>{{dom.nombreBotonEditar}}</button>
+                  <button type="button" class="btn btn-bg-dark text-inverse-dark  me-2 mb-2" v-on:click="ocultarFormulario();">Cancelar</button>
+
+                </div>
+              </div>
+            </form>
+            <!--end::Form-->
+          </div>
+          <!--end::Card body-->
+          <div class="card mb-12" v-show="dom.mostarListado" id="viewListado">
+            <div class="card-body pt-5 pb-5">
+              <div class="row">
+
+                <div class="col-md-12">
+                  <div class="notice d-flex bg-light-warning rounded border-warning border border-dashed p-6">
+                    <!--begin::Icon-->
+                    <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg--><span class="svg-icon svg-icon-2tx svg-icon-warning me-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
+                        <rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor"></rect>
+                        <rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor"></rect>
+                      </svg></span>
+                    <!--end::Svg Icon-->
+                    <!--end::Icon-->
+                    <!--begin::Wrapper-->
+                    <div class="d-flex flex-stack flex-grow-1">
+                      <!--begin::Content-->
+                      <div class="fw-bold">
+                        <h4 class="text-gray-900 fw-bolder">¡Necesitamos su atención!</h4>
+                        <div class="fs-6 text-gray-700">En la siguiente lista encontrará los <a class="fw-bolder"> 50
+                            últimos productos y servicios registrados</a>, si desea obtener mas información por favor usuar los filtros.
+                        </div>
+                      </div>
+                      <!--end::Content-->
+                    </div>
+                    <!--end::Wrapper-->
+                  </div>
+                </div>
+
+                <div class="col-md-12 table-responsive pt-5" style="max-height: 450px; height: 450px; overflow-y: scroll;">
+                  <table class="table table-hover table-row-bordered">
+                    <thead class="bg-primary text-white fw-bolder">
+                      <tr>
+                        <th width="5%">#</th>
+                        <th width="15%">N° Nota Crédito</th>
+                        <th width="10%">F. Pago</th>
+                        <th width="15%">Cliente</th>
+                        <th width="10%">Fecha</th>
+                        <th width="15%">Nº Factura</th>
+                        <th width="10%">Importe</th>
+                        <th width="5%"><i class="bi bi-envelope-fill text-white"></i></th>
+                        <th width="5%">P.E.</th>
+                        <th width="5%">Estado</th>
+                        <th width="5%">Opciones</th>
+                      </tr>
+
+                    </thead>
+                    <tbody class="text-gray-600 fw-bold">
+                      <tr v-for="(item, i) in datosGenerales.listaNotasCredito">
+                        <td>{{i+1}}</td>
+                        <td>{{item.NUM_COMPROBANTE}}</td>
+                        <td>{{item.FORMA_PAGO}}</td>
+                        <td>{{item.CLIENTE}}</td>
+                        <td>{{item.FECHA_EMISION}}</td>
+                        <td>{{item.NUM_COMPROBANTE_FACTURA}}</td>
+                        <td>{{item.IMP_TOTAL}}</td>
+                        <td>
+                          <span v-if="item.IND_CORREO == 'NO'" class="badge badge-danger">NO</span>
+                          <span v-else class="badge badge-success">NO</span>
+                        </td>
+                        <td>
+                          <span class="badge badge-success">ele</span>
+                        </td>
+                        <td>
+                          <span v-if="item.ESTADO == 'R'" class="badge badge-success">Activo</span>
+                          <span v-else class="badge badge-danger">Inactivo</span>
+                        </td>
+                        <td>
+
+                          <div class="btn-group" role="group">
+
+                            <button id="btnGroupDrop1" type="button" class="btn btn-light btn-active-light-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                              Acción
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                              <li><a href="javascript:void(0)" class="dropdown-item" data-toggle="tooltip" title="Editar" v-on:click="">
+                                  <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                      <path opacity="0.3"
+                                        d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z"
+                                        fill="currentColor"></path>
+                                      <path
+                                        d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z"
+                                        fill="currentColor"></path>
+                                    </svg></span>
+                                  Editar</a>
+                              </li>
+                              <li><a href="javascript:void(0)" class="dropdown-item" data-toggle="tooltip" title="Eliminar" v-on:click="">
+                                  <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                      <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor"></path>
+                                      <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor"></path>
+                                      <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor"></path>
+                                    </svg></span>
+
+                                  Eliminar</a>
+                              </li>
+
+                              <div>
+                                <div class="separator"></div>
+                                <div class="d-flex align-items-center p-2 ">
+                                  <!--begin::Text-->
+                                  <div class="fs-9 fw-bold">
+                                    <span class="text-muted"> Creado por:</span> <br>
+                                    <a href="javascript:void(0)" class="text-gray-700 text-hover-primary"> item.NOMBRE_USUARIO_REG </a>
+                                    <span class="text-muted"> el item.FECHA_REG </span>
+                                  </div>
+                                  <!--end::Text-->
+                                </div>
+                              </div>
+
+                              <div>
+                                <div class="separator"></div>
+                                <div class="d-flex align-items-center p-2 ">
+                                  <!--begin::Text-->
+                                  <div class="fs-9 fw-bold">
+                                    <span class="text-muted"> Creado por:</span> <br>
+                                    <a href="javascript:void(0)" class="text-gray-700 text-hover-primary"> item.NOMBRE_USUARIO_REG </a>
+                                    <span class="text-muted"> el item.FECHA_REG </span>
+                                  </div>
+                                  <!--end::Text-->
+                                </div>
+
+                                <div class="separator pt-3"></div>
+                                <div class="d-flex align-items-center p-2">
+
+                                  <!--begin::Text-->
+                                  <div class="fs-9 fw-bold">
+                                    <span class="text-muted"> Actualizado por:</span> <br>
+                                    <a href="javascript:void(0)" class="text-gray-700 text-hover-primary"> item.NOMBRE_USUARIO_EDI</a><br>
+                                    <span class="text-muted"> el item.FECHA_EDICION </span>
+                                  </div>
+                                  <!--end::Text-->
+                                </div>
+                              </div>
+
+                            </ul>
+                          </div>
+
+
+                        </td>
+
+
+
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+
+
+              </div>
+            </div>
+          </div>
+
+          <!--end::Card-->
+          <!--end::Layout-->
+        </div>
+        <!--end::Content-->
+      </div>
+
+      <!-- beggin::Modal Documentos -->
+      <div class="modal fade" tabindex="-1" id="Documentos">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header bg-primary">
+
+              <h1 class="mb-1 text-white">DOCUMENTOS</h1>
+
+            </div>
+
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <h3 class="mb-1 text-black text-hover-primary">DATOS GENERALES</h3>
+                </div>
+                <!--begin::Separator-->
+                <div class="separator separator-dashed mb-3"></div>
+                <!--end::Separator-->
+
+                <div class="col-md-12 mt-5">
+                  <ul class="nav nav-fill nav-pills mb-5">
+                    <li class="nav-item">
+                      <a class="nav-link active fw-bolder fs-6" data-bs-toggle="tab" href="#kt_tab_pane_1">
+                        Facturas</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link fw-bolder fs-6" data-bs-toggle="tab" href="#kt_tab_pane_2">
+                        Proformas</a>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel">
+                      <div class="row alert alert-dark">
+
+                        <!--begin::Col-->
+                        <div class="col-md-6">
+                          <label class="fs-6 form-label fw-bolder text-dark">FECHA DESDE - HASTA</label>
+                          <div class="row">
+                            <div class="input-group-sm col-md-6">
+                              <input type="date" class="form-control form-control form-control-solid" v-on:keyup="">
+                            </div>
+                            <div class="input-group-sm col-md-6">
+                              <input type="date" class="form-control form-control form-control-solid" v-on:keyup="">
+                            </div>
+                          </div>
+
+                        </div>
+                        <!--end::Col-->
+
+                        <!--begin::Col-->
+                        <div class="col-md-6">
+                          <label class="fs-6 form-label fw-bolder text-dark">N° Factura</label>
+                          <div class="input-group input-group-sm">
+                            <input type="text" class="form-control form-control-solid" />
+                            <a class="btn btn-light-primary btn-sm">
+                              <i class="bi bi-search"></i>
+                            </a>
+                          </div>
+                        </div>
+                        <!--end::Col-->
+
+                        <!--begin::Col-->
+                        <div class="col-md-12">
+                          <div class="col-md-12 table-responsive pt-5">
+                            <table class="table table-hover table-row-bordered">
+                              <thead class="bg-primary text-white fw-bolder">
+                                <tr>
+                                  <th width="1%">#</th>
+                                  <th width="1%">Fecha</th>
+                                  <th width="1%">N° Factura</th>
+                                  <th width="5%">Cliente</th>
+                                  <th width="20%">Observación</th>
+                                  <th width="1%">Total</th>
+
+                                </tr>
+
+                              </thead>
+                              <tbody class="text-gray-600 fw-bold">
+                                <tr>
+                                  <td width="1%">1</td>
+                                  <td width="1%"> 03/08/2022 </td>
+                                  <td width="1%"> 001-031-000001395 <br></td>
+                                  <td width="5%"> GETSOFT </td>
+                                  <td width="20%"> Sin Novedades y probando el modal del formulario Guia de Remisión.</td>
+                                  <td width="1%"> 36.96 </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <!--end::Col-->
+
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel">
+
+                      <div class="row alert alert-dark">
+
+                        <!--begin::Col-->
+                        <div class="col-md-6">
+                          <label class="fs-6 form-label fw-bolder text-dark">FECHA DESDE - HASTA</label>
+                          <div class="row">
+                            <div class="input-group-sm col-md-6">
+                              <input type="date" class="form-control form-control form-control-solid" v-on:keyup="">
+                            </div>
+                            <div class="input-group-sm col-md-6">
+                              <input type="date" class="form-control form-control form-control-solid" v-on:keyup="">
+                            </div>
+                          </div>
+
+                        </div>
+                        <!--end::Col-->
+
+                        <!--begin::Col-->
+                        <div class="col-md-6">
+                          <label class="fs-6 form-label fw-bolder text-dark">N° Proforma</label>
+                          <div class="input-group input-group-sm">
+                            <input type="text" class="form-control form-control-solid" />
+                            <a class="btn btn-light-primary btn-sm">
+                              <i class="bi bi-search"></i>
+                            </a>
+                          </div>
+                        </div>
+                        <!--end::Col-->
+
+                        <!--begin::Col-->
+                        <div class="col-md-12">
+                          <div class="col-md-12 table-responsive pt-5">
+                            <table class="table table-hover table-row-bordered">
+                              <thead class="bg-primary text-white fw-bolder">
+                                <tr>
+                                  <th width="1%">#</th>
+                                  <th width="1%">Fecha</th>
+                                  <th width="1%">N° Proforma</th>
+                                  <th width="5%">Cliente</th>
+                                  <th width="20%">Observación</th>
+                                  <th width="1%">Total</th>
+
+                                </tr>
+
+                              </thead>
+                              <tbody class="text-gray-600 fw-bold">
+                                <tr>
+                                  <td width="1%">1</td>
+                                  <td width="1%"> 03/08/2022 </td>
+                                  <td width="1%"> 001-031-000001395 <br></td>
+                                  <td width="5%"> GETSOFT </td>
+                                  <td width="20%"> Sin Novedades y probando el modal del formulario Guia de Remisión.</td>
+                                  <td width="1%"> 36.96 </td>
+                                </tr>
+                                <tr>
+                                  <td width="1%">2</td>
+                                  <td width="1%"> 05/01/2022 </td>
+                                  <td width="1%"> 000088 <br></td>
+                                  <td width="5%"> GETSOFT </td>
+                                  <td width="20%"> Sin Novedades y probando el modal del formulario Guia de Remisión.</td>
+                                  <td width="1%"> 56.96 </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <!--end::Col-->
+
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="modal-footer centrar-contenido">
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- end:: Modal Documentos -->
+      <!-- beggin::Modal Items -->
+      <div class="modal fade" tabindex="-1" id="Items">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header bg-primary">
+
+              <h1 class="mb-1 text-white">BUSQUEDA AVANZADA DE ITEMS</h1>
+
+            </div>
+
+            <div class="modal-body">
+
+              <div class="row">
+
+                <!--begin::Col-->
+                <div class="col-xl-2 mt-2">
+                  <div class="input-group">
+                    <select class="form-select form-select-solid" aria-label="Select example">
+                      <option value="1">Inventario/Rep</option>
+                      <option value="2">Servicios/M.O</option>
+                      <option value="3">Serv. Terceros</option>
+                      <option value="4">Materia Prima</option>
+                    </select>
+                  </div>
+                </div>
+                <!--end::Col-->
+
+                <!--begin::Col-->
+                <div class="col-3 mb-5 mt-2">
+                  <div class="input-group">
+                    <input type="text" class="form-control form-control-solid" placeholder="Escriba el código o nombre del producto y presione enter" />
+                    <a class="btn btn-light-primary">
+                      <i class="bi bi-search fs-3"></i>
+                    </a>
+                  </div>
+                </div>
+                <!--end::Col-->
+
+                <!--begin::Col-->
+                <div class="col-3 mb-5 mt-2">
+                  <div class="input-group">
+                    <input type="text" class="form-control form-control-solid" placeholder="Escriba la Marca" />
+                    <a class="btn btn-light-primary">
+                      <i class="bi bi-search fs-3"></i>
+                    </a>
+                  </div>
+                </div>
+                <!--end::Col-->
+
+                <!--begin::Col-->
+                <div class="col-3 mb-5 mt-2">
+                  <div class="input-group">
+                    <input type="text" class="form-control form-control-solid" placeholder="Escriba la Aplicación" />
+                    <a class="btn btn-light-primary">
+                      <i class="bi bi-search fs-3"></i>
+                    </a>
+                  </div>
+                </div>
+                <!--end::Col-->
+
+                <!--begin::Col-->
+                <div class="col-1 mb-5">
+                  <div class="input-group input-group-sm">
+                    <button type="button" class="btn btn-sm btn-rounded btn-outline btn-outline-success btn-active-success" title="Eliminar" v-on:click="">
+                      Marcar Todos</button>
+                  </div>
+                </div>
+                <!--end::Col-->
+
+                <!--begin::Col-->
+                <div class="col-md-12 table-responsive pt-5">
+                  <table class="table table-hover table-row-bordered">
+                    <thead class="bg-primary text-white fw-bolder">
+                      <tr>
+                        <th width="1%">#</th>
+                        <th width="1%">Código Principal</th>
+                        <th width="1%">Código Auxiliar</th>
+                        <th width="5%">Descripción Producto</th>
+                        <th width="20%">Aplicacion</th>
+                        <th width="1%">Marca</th>
+                        <th width="1%">Stock</th>
+                        <th width="1%">Precio Sin Iva</th>
+                        <th width="1%">Precio Con Iva</th>
+                        <th width="1%">Selec</th>
+                      </tr>
+
+                    </thead>
+                    <tbody class="text-gray-600 fw-bold">
+                      <tr>
+                        <td width="1%">1</td>
+                        <td width="1%"> KAR00002 </td>
+                        <td width="1%"> KAR00002 <br></td>
+                        <td width="5%"> ACEITE </td>
+                        <td width="20%"> </td>
+                        <td width="1%"> PATITO </td>
+                        <td width="1%"> 180,000.00 </td>
+                        <td width="1%"> 6.25 </td>
+                        <td width="1%"> 6.25 </td>
+                        <td width="1%">
+                          <input class="form-check-input" type="checkbox" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="1%">2</td>
+                        <td width="1%"> REP04125 </td>
+                        <td width="1%"> 987654321 <br></td>
+                        <td width="5%"> BOMBA DE GASOLINA UNIVERSAL 3BAR </td>
+                        <td width="20%"> CHEVROLET AVEO| HYUNDAI ACCENT| NISSAN SENTRA B13 </td>
+                        <td width="1%"> GM REP </td>
+                        <td width="1%"> 1.00 </td>
+                        <td width="1%"> 20.00 </td>
+                        <td width="1%"> 20.00 </td>
+                        <td width="1%">
+                          <input class="form-check-input" type="checkbox" />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!--end::Col-->
+                </td>
+                </tr>
+                </tbody>
+                </table>
+              </div>
+
+            </div>
+
+            <div class="modal-footer centrar-contenido">
+              <button type="button" @click="agregarDetalles()" class="btn btn-sm btn-outline-success">Guardar</button>
+              <button type="button" class="btn btn-sm btn-light" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- begin :: Modal Facturas -->
+      <div class="modal fade" tabindex="-1" id="facturas">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header bg-primary">
+              <h1 class="mb-1 text-white">FACTURAS</h1>
+            </div>
+
+            <div class="modal-body">
+
+              <div class="row">
+
+                <!--begin::Col-->
+                <div class="col-md-3">
+                  <label class="fs-6 form-label fw-bolder text-dark">FECHA DESDE - HASTA</label>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <input type="date" class="form-control form-control-sm form-control-solid rounded-pill rounded-end-0" v-model="dataVenta.fechaDesde" v-on:keyup="validarBusquedaEnter">
+                    </div>
+                    <div class="col-md-6">
+                      <input type="date" class="form-control form-control-sm form-control-solid rounded-pill rounded-start-0" v-model="dataVenta.fechaHasta" v-on:keyup="validarBusquedaEnter">
+                    </div>
+                  </div>
+
+                </div>
+                <!--end::Col-->
+
+                <!--begin::Col-->
+                <div class="col-4 mb-5">
+                  <label class="fs-6 form-label fw-bolder text-dark">Usuario:</label>
+                  <div class="input-group input-group-sm">
+                    <select class="form-select form-select-sm form-select-solid" ref="cboUsuario" aria-label="Select example">
+                      <option value="">:Todos:</option>
+                      <option value="R">Activo</option>
+                      <option value="S">Inactivo</option>
+                    </select>
+                  </div>
+                </div>
+                <!--end::Col-->
+
+                <!--begin::Col-->
+                <div class="col-3">
+                  <label class="fs-6 form-label fw-bolder text-dark">Nº Factura</label>
+                  <div class="input-group input-group-sm">
+                    <input type="text" class="form-control form-control-sm form-control-solid" v-model="dataVenta.numFatura" @keypress="isNumber($event)" maxlength="13" />
+                    <a class="btn btn-light-primary btn-sm" @click="executeBuscarDataCliente()">
+                      <i class="bi bi-search fs-2"></i>
+                    </a>
+                  </div>
+                </div>
+                <!--end::Col-->
+
+                <!--begin::Col-->
+                <div class="col-2 mt-8 text-center">
+                  <div class="input-group input-group-sm">
+
+                    <button type="button" class="btn btn-light-primary btn-sm border border-primary border-1 rounded-pill">Buscar</button>
+
+                  </div>
+                </div>
+                <!--end::Col-->
+
+              </div>
+
+              <!--begin::Alert-->
+              <div class="alert alert-primary d-flex align-items-center p-5 rounded-pill border border-1">
+                <div class="row">
+                  <div class="col-1">
+                    <!--begin::Icon-->
+                    <i class="bi bi-eye-fill fs-2"> </i>
+                    <!--end::Icon-->
+                  </div>
+                  <div class="col-11">
+                    <!--begin::Wrapper-->
+                    <div class="d-flex flex-column">
+                      <!--begin::Title-->
+                      <h4 class="mb-1 fs-6 form-label ">Seleccionar para agregar la Factura.</h4>
+                      <!--end::Title-->
+                    </div>
+                    <!--end::Wrapper-->
+                  </div>
+                </div>
+
+              </div>
+              <!--end::Alert-->
+
+              <div class="col-md-12 table-responsive pt-5" style="max-height: 450px; height: 450px; overflow-y: scroll;">
+                <table class="table table-hover table-row-bordered">
+                  <thead class="bg-primary text-white fw-bolder">
+                    <tr>
+                      <th width="1%">#</th>
+                      <th width="5%">Fecha</th>
+                      <th width="5%">Nº Factura</th>
+                      <th width="5%">Usuario</th>
+                      <th width="5%">Total</th>
+                      <th width="5%">Opciones</th>
+                    </tr>
+
+                  </thead>
+                  <tbody class="text-gray-600 fw-bold">
+                    <tr v-for="(item, i) in dataVenta.facturas">
+                      <td>{{i+1}}</td>
+                      <td>{{item.FECHA_EMISION}}</td>
+                      <td>{{item.NUM_COMPROBANTE}}</td>
+                      <td>{{item.CLIENTE}}</td>
+                      <td>{{item.IMP_TOTAL}}</td>
+                      <td>
+                        <div class="table-responsive table-sm">
+                          <table class="table table-sm border border-2 border-white">
+                            <tbody class="text-gray-600 fw-bold">
+                              <tr class="table-active">
+                                <td>
+                                  <label class="form-check form-switch form-switch-sm form-check-solid">
+                                    <input class="form-check-input mt-1" type="checkbox" checked="checked" v-model="item.IND_DETALLE" />
+                                    <span class="form-check-label fw-bold">
+                                      Con Items
+                                    </span>
+                                  </label>
+                                </td>
+                                <td>
+                                  <button type="button" title="Agregar" class="btn btn-sm btn-primary rounded-pill"><i class="fa fa-angle-double-right" aria-hidden="true" @click="executeAgregarFactura(item.ID_VENTA, item.IND_DETALLE)"></i></button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+
+            <div class="modal-footer centrar-contenido">
+              <button type="button" @click="agregarDetalles()" class="btn btn-sm btn-outline-success">Guardar</button>
+              <button type="button" class="btn btn-sm btn-light" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- end::Modal Facturas -->
+      <!-- begin :: Modal Ingreso Cliente -->
+      <div class="modal fade" tabindex="-1" id="ingresoCliente">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header bg-primary">
+              <h1 class="mb-1 text-white">INGRESO CLIENTE</h1>
+            </div>
+
+            <div class="modal-body">
+
+              <form role="form" novalidate="novalidate" @submit.prevent="validarCreacionCliente()" id="formCliente">
+                <div class="card-body pt-5 pb-5">
+                  <div class="row">
+                    <!-- {{dataCliente}} -->
+                    <div class="col-md-6">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="fv-row mb-5">
+                            <label class="required form-label">Categoría</label>
+                            <select class="form-select form-select-solid" name="categoriaCliente" aria-label="Select example" v-model="dataCliente.idCategoriaCliente">
+                              <option value="">:Seleccione:</option>>
+                              <option v-for="option in datosGenerales.categoriasCliente" v-bind:value="option.ID_CATEGORIA">{{ option.CATEGORIA }}</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="fv-row mb-5">
+                            <label class="required form-label">Tipo Documento</label>
+                            <select class="form-select form-select-solid" aria-label="Select example" name="tipoDocumento" v-model="dataCliente.idTipoDocumento" v-on:change="validarTipoDocumento">
+                              <option v-for="option in datosGenerales.tipoDocumentoCliente" v-bind:value="option.ID_TIPO_DOCUMENTO">{{ option.NOMBRE }}</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <div class="fv-row mb-5">
+                              <label class="required form-label">Número de Documento</label>
+                              <div class="input-group">
+                                <input name="numDocumento" ref="numDocumento" class="form-control form-control-solid" v-model="dataCliente.numDocumento" v-on:keyup="validarDocumento()" @keypress="isNumber($event)">
+                                <span class="input-group-btn">
+                                  <button type="button" class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" v-on:click="executeExtraerRegistroCivil()" id="btnExtraer" v-show="dom.mostrarBotonExtraer">Extraer Datos
+                                    <i class="las la-cloud-download-alt text-primary"></i></button></span>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="fv-row mb-5">
+                            <label class="required form-label">Razón Social</label>
+                            <input type="text" name="razonSocial" class="form-control form-control-solid" v-model="dataCliente.razonSocial" maxlength="400" />
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="fv-row mb-5">
+                            <label class="required form-label">Nombre Comercial</label>
+                            <input type="text" name="nombreComercial" class="form-control form-control-solid" v-model="dataCliente.nombreComercial" maxlength="400" />
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="fv-row mb-5">
+                            <label class="required form-label">Dirección</label>
+                            <input type="text" name="direccion" class="form-control form-control-solid" v-model="dataCliente.direccion" maxlength="400" />
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+
+
+
+                    <div class="col-md-6">
+                      <div class="row">
+
+                        <div class="col-md-12 mb-5">
+                          <label class="form-label">Teléfono</label>
+                          <input type="text" class="form-control form-control-solid" v-model="dataCliente.telefono" @keypress="isNumber($event)" maxlength="10" />
+                        </div>
+                        <div class="col-md-12 mb-5">
+                          <label class="form-label">Celular</label>
+                          <input type="text" class="form-control form-control-solid" v-model="dataCliente.celular" @keypress="isNumber($event)" maxlength="10" />
+                        </div>
+                        <div class="col-md-12 mb-5">
+
+                          <div class="form-group">
+                            <label class="form-label">Correo</label>
+                            <div class="input-group fv-row">
+                              <input name="correoCliente" class="form-control form-control-solid" v-model="dataCliente.correos" maxlength="500">
+                            </div>
+
+                          </div>
+                        </div>
+
+                        <div class="col-md-12 mb-5">
+                          <label class="form-label">Vendedor</label>
+                          <select class="form-select form-select-solid" aria-label="Select example" v-model="dataCliente.idVendedor">
+                            <option value="">:Seleccione:</option>
+                            <option v-for="option in datosGenerales.vendedores" v-bind:value="option.ID_VENDEDOR">{{ option.NOMBRE }}</option>
+                          </select>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 text-center pt-10">
+
+                      <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" v-if="!dataCliente.idCliente">{{dom.nombreBotonRegistrar}}</button>
+                      <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" v-else>{{dom.nombreBotonEditar}}</button>
+                      <button type="button" class="btn btn-bg-dark text-inverse-dark  me-2 mb-2" data-bs-dismiss="modal">Cancelar</button>
+
+
+                    </div>
+
+                  </div>
+                </div>
+              </form>
+
+            </div>
+
+            <div class="modal-footer centrar-contenido">
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- end::Modal Ingreso Cliente -->
+
+
+      <script src="scripts/notaCredito.js?op=001"></script>
+
+
+      <%- include("footer") %>

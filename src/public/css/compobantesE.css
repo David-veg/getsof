@@ -1,0 +1,349 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	   font-family: Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";
+	}
+body:after {
+  content: "©"; 
+  font-size: 15em;  
+  color: rgba(52, 166, 214, 0.4);
+  z-index: 9999;
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+    
+  -webkit-pointer-events: none;
+  -moz-pointer-events: none;
+  -ms-pointer-events: none;
+  -o-pointer-events: none;
+  pointer-events: none;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+p {margin: 2px 0;}
+	  
+	  
+table{
+    
+     border-collapse: collapse;
+    border: none;
+	
+}
+	
+td{
+    padding-bottom:3px; 
+	padding-top:3px; 
+	left:1px; 
+}
+th{
+    padding-bottom:7px; 
+	padding-top:3px; 
+	left:1px;
+}
+.header{
+	position: absolute;
+
+	height: 120px;
+	width: 100%;
+	
+
+	  }
+
+.header_info_empresa{
+	position: absolute;
+	width: 424px;
+	top: 10px;
+	left: 30px;
+	border-radius: 10px;
+	padding-top: 5px;
+	height: 90px;
+	  }
+	.header_info_adicional{
+	top: 30px;
+	position: absolute;
+	left: 535px;
+	padding-top: 30px;
+	width: 190px;
+
+	}
+	.linea{
+		position: absolute;
+		height:4px;
+		top: 120;
+		width:100%; 
+		border-bottom: solid 4px #1e88e5; 
+	}
+	
+	.content{
+		position: relative;
+		left:40px;  
+		top: 150px;
+	}
+
+.content-ride{
+		position: relative;
+		left:40px;  
+		top: 0px;
+	    margin-top:-20px;
+	}
+	
+	.tituloReporte{
+	position: absolute;
+	width: 550px;
+	
+	height:15px; 
+	left: 100px;
+	
+	
+	background-color: #1e88e5;
+	border-radius:10px;
+	font-size:15px;
+	color: #FFF;
+	font-weight:900; 
+		
+		
+	}
+	
+	.tabla_info_general{
+	position: absolute;
+	top: 70px;
+	width: 690px;
+	padding:10px;
+	border: solid 1px #000000; 
+	border-radius: 10px;
+	}
+
+
+.tabla_info_general_ride{
+	position: absolute;
+	top: 70px;
+	width: 690px;
+	padding:10px;
+	
+	}
+	
+	.tabla_detalle{
+	position: relative;
+	top: 165px;
+	width: 690px;
+	padding:10px;
+	left: -8;
+	
+	}
+
+.tabla_detalle-ride{
+	position: relative;
+	top: 480px;
+	width: 690px;
+	padding:10px;
+	left: -8;
+	
+	}
+
+
+
+
+
+.tabla_detalle-gr{
+	position: relative;
+	top: 810px;
+	width: 690px;
+	padding:10px;
+	left: -8;
+	
+	}
+
+.tabla_detalle-nc{
+	position: relative;
+	top: 570px;
+	width: 690px;
+	padding:10px;
+	left: -8;
+	
+	}
+	
+	.tabla_totales{
+	 padding-left:455px; 
+	}
+.contenedorcierre{
+	position: relative;
+}
+   .tabla_cierre{
+	position: absolute;
+	
+	width: 300px;
+	
+	}
+   .tabla_arqueo{
+	position: absolute;
+	left: 346px;
+	width: 350px;
+    
+	}
+
+.txtTitulos{
+		  
+		 font-size: 10px;
+	    
+	}
+.txtTitulos-ride{
+		  
+		 font-size: 13px;
+	    
+	}
+	
+.txtTitulosNegrita{
+		  
+		 font-size: 10px;
+	     font-weight: bold;
+	    
+	}
+
+
+.txtTitulosNegrita-ride{
+		  
+		 font-size: 13px;
+	     font-weight: bold;
+		 padding: 20px;
+	    
+	}
+
+
+.txtTabladetalle-ride{
+		  
+		 font-size: 10px;
+	     font-weight: bold;
+		 color: #fff;
+	    
+	}
+.txtTabladetalle-nc{
+		  
+		 font-size: 15px;
+	     font-weight: bold;
+		 color: #fff;
+	    
+	}
+
+.txtNomNegrita-ride{
+		  
+		 font-size: 15px;
+	     font-weight: bold;
+	letter-spacing: 5px;
+	    
+	}
+	
+.tabla_border-ride{
+
+	border: solid 1px #000000; 
+	border-radius: 10px;
+	}
+
+
+
+.footer { }
+
+.cajaride {
+    background-color: #FFF;
+    
+    padding: 15px 0px 15px 0px;
+    margin: 5px;
+    border: 2px solid #1e88e5;
+ 	border-radius: 25px;
+  	border-top: 40px solid #1e88e5;
+	padding-top: -10px;
+
+}
+
+.cajarideinfo {
+    background-color: #FFF;
+    
+    padding: 15px;
+    margin: 5px;
+    border: 2px solid #1e88e5;
+ 	border-radius: 25px;
+  	border-top: 10px solid #1e88e5;
+	padding-top: 4px;
+
+}
+
+.cajarideinfocliente {
+    
+    padding: 15px;
+    margin: 5px;
+    
+ 	
+  	
+	padding-top: 4px;
+
+}
+.cajarideimg {
+    padding: 15px;
+	text-align: center;
+    
+}
+
+
+.infocliente{
+padding-left: 20px;	
+padding-top: 15px;	
+}
+
+.infonc{
+padding-left: 15px;	
+padding-top: 0px;	
+}
+
+.textocajaride {
+   	padding-top: -15px;
+	font-size: 15px;
+	font-weight: bold;
+	color: #fff;
+	text-align: center;
+}
+
+.textotitulocajaride {
+   	padding-top: -15px;
+	font-size: 15px;
+	font-weight: bold;
+	color: #1e88e5;
+	text-align: center;
+}
+  
+.textotabledetalle {
+  
+    background-color: #1e88e5;
+    color: #fff;
+}
+
+.tituloinfoadicional {
+    color: #1e88e5;
+	font-size: 15px;
+	font-weight: bold;
+	letter-spacing: 5px;
+}
+
+
+
+hr{
+color: #1e88e5;
+background-color: #1e88e5;	
+	
+	
+}
+ul li { 
+padding-left: -10px;
+
+}
+
+

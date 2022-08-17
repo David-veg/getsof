@@ -1,0 +1,784 @@
+<%- include("header") %>
+    <!--begin::Wrapper-->
+    <div class="app-wrapper flex-column flex-row-fluid" id="View">
+        <!--begin::Wrapper container-->
+        <div class="app-container container-xxl d-flex flex-row flex-column-fluid">
+            <!--begin::Main-->
+            <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                <!--begin::Content wrapper-->
+                <div class="d-flex flex-column flex-column-fluid">
+
+                    <!--begin::Toolbar-->
+                    <div class="app-toolbar align-items-center justify-content-between mb-5">
+                        <!--begin::Toolbar wrapper-->
+                        <div class="d-flex flex-grow-1 flex-stack flex-wrap gap-2 mb-n10" id="kt_toolbar">
+                            <!--begin::Page title-->
+                            <div class="d-flex flex-column align-items-start me-3 gap-2">
+                                <!--begin::Title-->
+                                <h1 class="d-flex text-dark fw-bolder m-0 fs-3">Gestión de Usuarios</h1>
+                                <!--end::Title-->
+                            </div>
+                            <!--end::Page title-->
+                            <!--begin::Actions-->
+                            <div class="d-flex align-items-center py-2">
+
+                                <div class="row" v-show="dom.mostrarBtns">
+                                    <!--begin::Button-->
+                                    <div class="col-md-8">
+                                        <a class="btn btn-sm btn-primary" v-on:click="verFormulario();">Nuevo
+                                            Usuario</a>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a class="btn btn-sm btn-primary" v-on:click="verFiltro();">Filtros</a>
+                                    </div>
+                                    <!--end::Button-->
+                                </div>
+
+                            </div>
+                            <!--end::Actions-->
+                        </div>
+                        <!--end::Toolbar wrapper-->
+                    </div>
+                    <!--end::Toolbar-->
+
+                    <!--  <pre> {{dataUsuario}}</pre>  -->
+
+
+
+                    <div class="card mb-12" v-show="dom.mostarBusqueda">
+                        <div class="card-body">
+
+
+                            <div class="d-flex align-items-center">
+
+                                <div class="position-relative w-md-400px me-md-2">
+                                    <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+                                    <span
+                                        class="svg-icon svg-icon-3 svg-icon-gray-500 position-absolute top-50 ms-3 translate-middle-y">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="50"
+                                            viewBox="0 0 20 20" fill="none">
+                                            <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="5"
+                                                rx="1" transform="rotate(45 17.0365 15.1223)" fill="currentColor">
+                                            </rect>
+                                            <path
+                                                d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z"
+                                                fill="currentColor"></path>
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                    <!--end::Icon-->
+                                    <!--begin::Input-->
+                                    <input type="text" class="form-control form-control-solid ps-10" name="Buscar"
+                                        placeholder="Buscar Usuarios" v-on:keyup="validarBusquedaEnter"
+                                        v-model="dataBusqueda.usuario">
+                                    <!--end::Input-->
+                                </div>
+                                <div class="col-md-3"></div>
+
+                                <div class="d-flex align-items-center">
+                                    <button type="submit" class="btn btn-sm btn-primary me-5"
+                                        data-kt-menu-dismiss="true"
+                                        v-on:click="validarBusquedaUsuario();">Aplicar</button>
+                                    <a id="kt_horizontal_search_advanced_link" class="btn btn-link me-5"
+                                        data-bs-toggle="collapse" href="#kt_advanced_search_form"> Búsqueda Avanzada</a>
+                                    <button type="submit" class="btn btn-sm btn-danger" data-kt-menu-dismiss="true"
+                                        v-on:click="ocultarFiltro();">Cancelar</button>
+                                </div>
+                            </div>
+
+                            <!--begin::Búsqueda Avanzadas-->
+                            <div class="collapse" id="kt_advanced_search_form">
+                                <!--begin::Separator-->
+                                <div class="separator separator-dashed mt-9 mb-6"></div>
+                                <!--end::Separator-->
+                                <!--begin::Row-->
+                                <div class="row g-8 mb-8">
+
+                                    <div class="col-md-6">
+                                        <label class="fs-6 form-label fw-bolder text-dark">C.I. / Nombres</label>
+                                        <input type="text" class="form-control form-control form-control-solid"
+                                            v-model="dataBusqueda.cedulaNombre" v-on:keyup="validarBusquedaEnter">
+                                    </div>
+
+                                    <!--begin::Col-->
+                                    <div class="col-md-6">
+                                        <label class="fs-6 form-label fw-bolder text-dark">Estado</label>
+                                        <select class="form-select form-select-solid" aria-label="Select example"
+                                            v-model="dataBusqueda.estado">
+                                            <option value="">:Todos:</option>
+                                            <option value="R">Activo</option>
+                                            <option value="S">Inactivo</option>
+                                        </select>
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Row-->
+                            </div>
+                            <!--end::Búsqueda Avanzada-->
+
+                        </div>
+                    </div>
+                    <!--begin::Content-->
+                    <div class="app-content flex-column-fluid" id="kt_app_content">
+                        <!--begin::Content-->
+                        <!--begin::Formulario Usuario-->
+                        <div class="card mb-12" v-show="dom.mostrarFomulario" id="viewFormulario">
+                            <form role="form" @submit.prevent="validarCreacionEdicionUsuario()">
+
+                                <!-- {{dataUsuario}} -->
+                                <div class="card-body pt-5 pb-5">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+
+
+                                                <div class="fv-row col-md-12">
+                                                    <label class="required form-label">Tipo Documento</label>
+                                                    <select name="tipoDocumento" class="form-select form-select-solid"
+                                                        aria-label="Select example"
+                                                        v-model="dataUsuario.idTipoDocumento">
+                                                        <option v-for="option in datosGenerales.tipoDocumento"
+                                                            v-bind:value="option.ID_TIPO_DOCUMENTO">{{ option.NOMBRE }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+
+
+                                                <div class="fv-row col-md-12 mt-5">
+                                                    <div class="form-group">
+                                                        <label class="required form-label">Número de Documento</label>
+                                                        <div class="input-group">
+                                                            <input name="numDocumento" ref="numDocumento"
+                                                                class="form-control form-control-solid"
+                                                                v-model="dataUsuario.numeroDocumento"
+                                                                @keypress="isNumber($event)"
+                                                                v-on:keyup="validarDocumento()">
+                                                            <span class="input-group-btn">
+                                                                <button type="button"
+                                                                    class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary"
+                                                                    v-on:click="executeExtraerRegistroCivil()"
+                                                                    id="btnExtraer"> {{ dom.nombreBotonExtraccion}}
+                                                                    <i
+                                                                        class="las la-cloud-download-alt text-primary"></i></button></span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="fv-row col-md-12 mt-5">
+                                                    <label class="required form-label">Nombres</label>
+                                                    <input name="nombres" type="text"
+                                                        class="form-control form-control-solid"
+                                                        v-model="dataUsuario.nombres" />
+                                                </div>
+                                                <div class="fv-row col-md-12 mt-5">
+                                                    <label class="required form-label">Apellidos</label>
+                                                    <input name="apellidos" type="text"
+                                                        class="form-control form-control-solid"
+                                                        v-model="dataUsuario.apellidos" />
+                                                </div>
+
+                                                <div class="fv-row col-md-12 mt-5">
+                                                    <label class="required form-label">Dirección</label>
+                                                    <input name="direccion" type="text"
+                                                        class="form-control form-control-solid"
+                                                        v-model="dataUsuario.direccion" />
+                                                </div>
+
+                                                <div class="col-md-12 mt-5">
+                                                    <label class="required form-label">Perfil</label>
+                                                    <select class="form-select form-select-solid" aria-label="Select example"
+                                                        v-model="dataUsuario.idPerfil">
+
+                                                        <option v-for="option in datosGenerales.perfiles"
+                                                            v-bind:value="option.ID_PERFIL">{{ option.DESCRIPCION }}
+                                                        </option>
+
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-12 mt-5">
+                                                    <div class="form-check form-switch form-check-custom form-check-solid">
+                                                        <input class="form-check-input" type="checkbox" value="" id="chkMultiEmpresa" v-bind:checked="dataUsuario.indMultiEmpresa" v-model="dataUsuario.indMultiEmpresa" />
+                                                        <label class="required form-check-label" for="chkMultiEmpresa">
+                                                            Multi-Empresa
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="row">
+
+                                                <div class="col-md-12">
+                                                    <label class="form-label">Celular</label>
+                                                    <input type="text" class="form-control form-control-solid"
+                                                        v-model="dataUsuario.celular" @keypress="isNumber($event)"
+                                                        maxlength="10" />
+                                                </div>
+
+                                                <div class="fv-row col-md-12 mt-5">
+                                                    <label class=" form-label">Correo</label>
+                                                    <input name="correo" type="text"
+                                                        class="form-control form-control-solid"
+                                                        v-model="dataUsuario.correo" />
+                                                </div>
+
+
+
+
+                                                <div class="col-md-12 mt-5">
+                                                    <label class=" form-label">Estado</label>
+                                                    <select class="form-select form-select-solid" aria-label="Select example"
+                                                        v-model="dataUsuario.estado">
+
+                                                        <option value="R">Activo</option>
+                                                        <option value="S">Inactivo</option>
+
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-12 pt-10">
+
+                                                    <div class="row alert alert-primary">
+                                                        <div class="fv-row col-md-12 pt-10">
+                                                            <label class="required form-label">Usuario</label>
+                                                            <input name="usuario" type="text" class="form-control"
+                                                                placeholder="JOHN.RENAN" v-model="dataUsuario.login"
+                                                                v-if="!dataUsuario.idUsuario" />
+                                                            <input name="usuario" type="text" class="form-control"
+                                                                placeholder="JOHN.RENAN" v-model="dataUsuario.login"
+                                                                v-if="dataUsuario.idUsuario" disabled="disabled" />
+                                                        </div>
+                                                        <div class="fv-row col-md-12" v-if="!dataUsuario.idUsuario">
+                                                            <!--begin::Main wrapper-->
+                                                            <div class="fv-row" data-kt-password-meter="true">
+                                                                <!--begin::Wrapper-->
+                                                                <div class="mb-1">
+                                                                    <!--begin::Label-->
+                                                                    <label
+                                                                        class=" required form-label fw-bold fs-6 mb-2">
+                                                                        Contraseña
+                                                                    </label>
+                                                                    <!--end::Label-->
+
+                                                                    <!--begin::Input wrapper-->
+                                                                    <div class="position-relative mb-3">
+                                                                        <input class="form-control form-control-lg"
+                                                                            type="password" v-model="dataUsuario.clave"
+                                                                            name="new_password" autocomplete="off" />
+
+                                                                        <!--begin::Visibility toggle-->
+                                                                        <span
+                                                                            class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2"
+                                                                            data-kt-password-meter-control="visibility">
+                                                                            <i class="bi bi-eye-slash fs-2"></i>
+
+                                                                            <i class="bi bi-eye fs-2 d-none"></i>
+                                                                        </span>
+                                                                        <!--end::Visibility toggle-->
+                                                                    </div>
+                                                                    <!--end::Input wrapper-->
+
+                                                                    <!--begin::Highlight meter-->
+                                                                    <div class="d-flex align-items-center mb-3"
+                                                                        data-kt-password-meter-control="highlight">
+                                                                        <div
+                                                                            class="flex-grow-1 bg-secondary bg-active-primary rounded h-5px me-2">
+                                                                        </div>
+                                                                        <div
+                                                                            class="flex-grow-1 bg-secondary bg-active-primary rounded h-5px me-2">
+                                                                        </div>
+                                                                        <div
+                                                                            class="flex-grow-1 bg-secondary bg-active-primary rounded h-5px me-2">
+                                                                        </div>
+                                                                        <div
+                                                                            class="flex-grow-1 bg-secondary bg-active-primary rounded h-5px">
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Highlight meter-->
+                                                                </div>
+                                                                <!--end::Wrapper-->
+
+                                                                <!--begin::Hint-->
+                                                                <div class="text-primary pb-10">
+                                                                    Use 8 o más caracteres con una combinación de
+                                                                    letras, números y simbolos
+                                                                </div>
+                                                                <!--end::Hint-->
+                                                            </div>
+                                                            <!--end::Main wrapper-->
+                                                        </div>
+
+                                                    </div>
+
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 mt-1">
+                                            <ul class="nav nav-tabs nav-line-tabs mb-5 fs-6">
+                                                <li class="nav-item" v-show="dataUsuario.indMultiEmpresa">
+                                                    <a class="nav-link active" data-bs-toggle="tab" href="#kt_tab_pane_1">Empresas</a>
+                                                </li>
+                                            </ul>
+
+                                            <div class="tab-content" id="myTabContent" v-show="dataUsuario.indMultiEmpresa">
+                                                <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+
+                                                            <div class="col-md-12 mb-5">
+                                                                <select class="form-select" ref="cboEmpresa" name="cboEmpresa" id="cboEmpresa">
+                                                                </select>
+                                                                <!-- {{dataSucursales}} -->
+                                                            </div>
+                                                            <div class="table-responsive">
+                                                                <table class="table table-hover">
+                                                                    <thead class="bg-primary text-white fw-bolder">
+                                                                        <tr>
+                                                                            <th width="5%">#</th>
+                                                                            <th width="20%">RUC</th>
+                                                                            <th width="60%">Empresa</th>
+                                                                            <th width="15%">Acción</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(item, i) in datosGenerales.arrayEmpresasAgregadas">
+                                                                            <td>{{i+1}}</td>
+                                                                            <td>{{item.ruc}}</td>
+                                                                            <td>{{item.empresa}}</td>
+                                                                            <td><button type="button" class="btn btn-sm btn-primary btn-hover-scale me-5" v-on:click="quitarEmpresa(i)">Quitar</button></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 text-center pt-10">
+
+                                            <button type="submit"
+                                                class="btn btn-bg-success text-inverse-success me-2 mb-2"
+                                                v-if="!dataUsuario.idUsuario">{{dom.nombreBotonRegistrar}}</button>
+                                            <button type="submit"
+                                                class="btn btn-bg-success text-inverse-success me-2 mb-2"
+                                                v-else>{{dom.nombreBotonEditar}}</button>
+                                            <button type="button" class="btn btn-bg-dark text-inverse-dark  me-2 mb-2"
+                                                v-on:click="ocultarFormulario()">cancelar</button>
+
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!--end::Formulario Usuario-->
+
+
+
+                        <!--begin::Lista de usuarios tabla-->
+                        <div class="card mb-12" v-show="dom.mostarListado" id="viewListado">
+                            <div class="card-body pt-5 pb-5">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div
+                                            class="notice d-flex bg-light-warning rounded border-warning border border-dashed p-6">
+                                            <!--begin::Icon-->
+                                            <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
+                                            <span class="svg-icon svg-icon-2tx svg-icon-warning me-4">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none">
+                                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10"
+                                                        fill="currentColor"></rect>
+                                                    <rect x="11" y="14" width="7" height="2" rx="1"
+                                                        transform="rotate(-90 11 14)" fill="currentColor"></rect>
+                                                    <rect x="11" y="17" width="2" height="2" rx="1"
+                                                        transform="rotate(-90 11 17)" fill="currentColor"></rect>
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                            <!--end::Icon-->
+                                            <!--begin::Wrapper-->
+                                            <div class="d-flex flex-stack flex-grow-1">
+                                                <!--begin::Content-->
+                                                <div class="fw-bold">
+                                                    <h4 class="text-gray-900 fw-bolder">¡Necesitamos su atención!</h4>
+                                                    <div class="fs-6 text-gray-700">En la siguiente lista encontrará los
+                                                        <a class="fw-bolder"> 50 últimos usuarios registrados</a>, si
+                                                        desea obtener mas información por favor usuar los filtros.
+                                                    </div>
+                                                </div>
+                                                <!--end::Content-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row pt-5">
+                                    <div class="col-md-12 table-responsive"
+                                        style="max-height: 450px; height: 450px; overflow-y: scroll;">
+                                        <table class="table table-hover table-row-bordered">
+                                            <thead class="bg-primary text-white fw-bolder">
+                                                <tr>
+                                                    <th width="3%">#</th>
+                                                    <th width="10%">Identificación</th>
+                                                    <th width="22%">Nombres</th>
+                                                    <th width="15%">Usuario</th>
+                                                    <th width="18%">Perfil</th>
+                                                    <th width="10%">Foto</th>
+                                                    <th width="7%">Estado</th>
+                                                    <th width="15%">Opciones</th>
+                                                </tr>
+
+                                            </thead>
+                                            <tbody class="text-gray-600 fw-bold">
+                                                <tr v-for="(item, i) in datosGenerales.listadoUsuarios">
+                                                    <td width="3%">{{ i+1 }}</td>
+                                                    <td width="10%">{{ item.NUM_DOCUMENTO }} </td>
+                                                    <td width="22%">{{ item.APELLIDOS }} {{ item.NOMBRE }}<br></td>
+                                                    <td width="15%">{{ item.LOGIN }}</td>
+                                                    <td width="18%">{{ item.PERFIL }}</td>
+                                                    <td width="10%">
+                                                        <div class="symbol symbol-35px symbol-circle">
+                                                            <img src="https://s3.amazonaws.com/facturale.app/Imagenes/usuarios/avatar.jpg"
+                                                                alt="image">
+                                                        </div>
+
+                                                    </td>
+                                                    <td width="7%">
+
+                                                        <span class="badge badge-success"
+                                                            v-if="item.ESTADO == 'R'">Activo</span>
+                                                        <span v-else class="badge badge-danger">Inactivo</span>
+
+                                                    </td>
+
+
+
+                                                    <td width="15%">
+
+                                                        <div class="btn-group" role="group">
+                                                            <button id="btnGroupDrop1" type="button"
+                                                                class="btn btn-light btn-active-light-primary btn-sm dropdown-toggle"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                                Acción
+                                                            </button>
+                                                            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                                <li>
+                                                                    <a href="javascript:void(0)" class="dropdown-item"
+                                                                        data-toggle="tooltip" title="Editar"
+                                                                        v-on:click="executecargarDataUsuario(item.ID_USUARIO)">
+                                                                        <span class="svg-icon svg-icon-3 me-3"><svg
+                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                                width="24" height="24"
+                                                                                viewBox="0 0 24 24" fill="none">
+                                                                                <path opacity="0.3"
+                                                                                    d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z"
+                                                                                    fill="currentColor"></path>
+                                                                                <path
+                                                                                    d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z"
+                                                                                    fill="currentColor"></path>
+                                                                            </svg></span> Editar
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="javascript:void(0)" class="dropdown-item"
+                                                                        data-toggle="tooltip" title="Eliminar"
+                                                                        v-on:click="confirmacionEliminarUsuario(item.ID_USUARIO, item.APELLIDOS, item.NOMBRE);">
+                                                                        <span class="svg-icon svg-icon-3 me-3"><svg
+                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                                width="24" height="24"
+                                                                                viewBox="0 0 24 24" fill="none">
+                                                                                <path
+                                                                                    d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z"
+                                                                                    fill="currentColor"></path>
+                                                                                <path opacity="0.5"
+                                                                                    d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z"
+                                                                                    fill="currentColor"></path>
+                                                                                <path opacity="0.5"
+                                                                                    d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z"
+                                                                                    fill="currentColor"></path>
+                                                                            </svg></span>Eliminar
+
+                                                                    </a>
+                                                                </li>
+
+
+                                                                <li>
+                                                                    <a href="javascript:void(0)" class="dropdown-item"
+                                                                        data-toggle="tooltip" title="contraseña"
+                                                                        v-on:click="abrirModalCambioClave(item.ID_USUARIO);">
+                                                                        <span class="svg-icon svg-icon-3 me-3"><svg
+                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                                width="24" height="24"
+                                                                                viewBox="0 0 24 24" fill="none">
+                                                                                <path opacity="0.3"
+                                                                                    d="M20.5543 4.37824L12.1798 2.02473C12.0626 1.99176 11.9376 1.99176 11.8203 2.02473L3.44572 4.37824C3.18118 4.45258 3 4.6807 3 4.93945V13.569C3 14.6914 3.48509 15.8404 4.4417 16.984C5.17231 17.8575 6.18314 18.7345 7.446 19.5909C9.56752 21.0295 11.6566 21.912 11.7445 21.9488C11.8258 21.9829 11.9129 22 12.0001 22C12.0872 22 12.1744 21.983 12.2557 21.9488C12.3435 21.912 14.4326 21.0295 16.5541 19.5909C17.8169 18.7345 18.8277 17.8575 19.5584 16.984C20.515 15.8404 21 14.6914 21 13.569V4.93945C21 4.6807 20.8189 4.45258 20.5543 4.37824Z"
+                                                                                    fill="currentColor"></path>
+                                                                                <path
+                                                                                    d="M14.854 11.321C14.7568 11.2282 14.6388 11.1818 14.4998 11.1818H14.3333V10.2272C14.3333 9.61741 14.1041 9.09378 13.6458 8.65628C13.1875 8.21876 12.639 8 12 8C11.361 8 10.8124 8.21876 10.3541 8.65626C9.89574 9.09378 9.66663 9.61739 9.66663 10.2272V11.1818H9.49999C9.36115 11.1818 9.24306 11.2282 9.14583 11.321C9.0486 11.4138 9 11.5265 9 11.6591V14.5227C9 14.6553 9.04862 14.768 9.14583 14.8609C9.24306 14.9536 9.36115 15 9.49999 15H14.5C14.6389 15 14.7569 14.9536 14.8542 14.8609C14.9513 14.768 15 14.6553 15 14.5227V11.6591C15.0001 11.5265 14.9513 11.4138 14.854 11.321ZM13.3333 11.1818H10.6666V10.2272C10.6666 9.87594 10.7969 9.57597 11.0573 9.32743C11.3177 9.07886 11.6319 8.9546 12 8.9546C12.3681 8.9546 12.6823 9.07884 12.9427 9.32743C13.2031 9.57595 13.3333 9.87594 13.3333 10.2272V11.1818Z"
+                                                                                    fill="currentColor"></path>
+                                                                            </svg></span>Contraseña
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="javascript:void(0)" class="dropdown-item"
+                                                                        title="Foto" data-bs-toggle="modal"
+                                                                        data-bs-target="#modalImagenUsuario"
+                                                                        @click="abrirModalFotoUsuario(item.ID_USUARIO);">
+                                                                        <span class="svg-icon svg-icon-3 me-3"><svg
+                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                                width="24" height="24"
+                                                                                viewBox="0 0 24 24" fill="none">
+                                                                                <path opacity="0.3"
+                                                                                    d="M22 5V19C22 19.6 21.6 20 21 20H19.5L11.9 12.4C11.5 12 10.9 12 10.5 12.4L3 20C2.5 20 2 19.5 2 19V5C2 4.4 2.4 4 3 4H21C21.6 4 22 4.4 22 5ZM7.5 7C6.7 7 6 7.7 6 8.5C6 9.3 6.7 10 7.5 10C8.3 10 9 9.3 9 8.5C9 7.7 8.3 7 7.5 7Z"
+                                                                                    fill="currentColor"></path>
+                                                                                <path
+                                                                                    d="M19.1 10C18.7 9.60001 18.1 9.60001 17.7 10L10.7 17H2V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V12.9L19.1 10Z"
+                                                                                    fill="currentColor"></path>
+                                                                            </svg></span>Foto
+
+                                                                    </a>
+                                                                </li>
+
+                                                                <div v-if="item.FECHA_MOD === ' ' ">
+                                                                    <div class="separator"></div>
+                                                                    <div class="d-flex align-items-center p-2 ">
+                                                                        <!--begin::Text-->
+                                                                        <div class="fs-9 fw-bold">
+                                                                            <span class="text-muted"> Creado por:</span>
+                                                                            <br>
+                                                                            <a class="text-gray-700 text-hover-primary">
+                                                                                {{ item.USUARIO_REG }}</a>
+                                                                            <span class="text-muted"> el {{
+                                                                                item.FECHA_REG }}</span>
+                                                                        </div>
+                                                                        <!--end::Text-->
+                                                                    </div>
+                                                                </div>
+
+                                                                <div v-else>
+                                                                    <div class="separator"></div>
+                                                                    <div class="d-flex align-items-center p-2 ">
+                                                                        <!--begin::Text-->
+                                                                        <div class="fs-9 fw-bold">
+                                                                            <span class="text-muted"> Creado por:</span>
+                                                                            <br>
+                                                                            <a class="text-gray-700 text-hover-primary">
+                                                                                {{ item.USUARIO_REG }}</a>
+                                                                            <span class="text-muted"> el {{
+                                                                                item.FECHA_REG }}</span>
+                                                                        </div>
+                                                                        <!--end::Text-->
+                                                                    </div>
+
+                                                                    <div class="separator pt-3"></div>
+                                                                    <div class="d-flex align-items-center p-2">
+
+                                                                        <!--begin::Text-->
+                                                                        <div class="fs-9 fw-bold">
+                                                                            <span class="text-muted"> Actualizado
+                                                                                por:</span> <br>
+                                                                            <a class="text-gray-700 text-hover-primary">{{
+                                                                                item.USUARIO_MOD}}</a><br>
+                                                                            <span class="text-muted"> el
+                                                                                {{item.FECHA_MOD}}</span>
+                                                                        </div>
+                                                                        <!--end::Text-->
+                                                                    </div>
+                                                                </div>
+
+                                                            </ul>
+                                                        </div>
+
+
+                                                    </td>
+
+
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--end::Lista de usuarios tabla-->
+
+                        <!--begin::Content-->
+
+
+
+                    </div>
+                    <!--end::Content-->
+                </div>
+
+                <div class="modal fade" tabindex="-1" id="modalCambioClave">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Cambio Clave</h5>
+
+                                <!--begin::Close-->
+                                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
+                                    aria-label="Close">
+                                    <span class="svg-icon svg-icon-2x"></span>
+                                </div>
+                                <!--end::Close-->
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row alert alert-primary">
+                                    <div class="fv-row col-md-12 pt-10">
+                                        <label class="required form-label">Usuario</label>
+                                        <input name="usuario" type="text" class="form-control" placeholder="JOHN.RENAN"
+                                            v-model="dataUsuario.login" />
+                                    </div>
+
+                                    <div class="fv-row col-md-12">
+                                        <!--begin::Main wrapper-->
+                                        <div class="fv-row" data-kt-password-meter="true">
+                                            <!--begin::Wrapper-->
+                                            <div class="mb-1">
+                                                <!--begin::Label-->
+                                                <label class=" required form-label fw-bold fs-6 mb-2">
+                                                    Nueva Contraseña
+                                                </label>
+                                                <!--end::Label-->
+
+                                                <!--begin::Input wrapper-->
+                                                <div class="position-relative mb-3">
+                                                    <input class="form-control form-control-lg" type="password"
+                                                        v-model="dataUsuario.clave" name="new_password"
+                                                        autocomplete="off" />
+
+                                                    <!--begin::Visibility toggle-->
+                                                    <span
+                                                        class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2"
+                                                        data-kt-password-meter-control="visibility">
+                                                        <i class="bi bi-eye-slash fs-2"></i>
+
+                                                        <i class="bi bi-eye fs-2 d-none"></i>
+                                                    </span>
+                                                    <!--end::Visibility toggle-->
+                                                </div>
+                                                <!--end::Input wrapper-->
+
+                                                <!--begin::Highlight meter-->
+                                                <div class="d-flex align-items-center mb-3"
+                                                    data-kt-password-meter-control="highlight">
+                                                    <div
+                                                        class="flex-grow-1 bg-secondary bg-active-primary rounded h-5px me-2">
+                                                    </div>
+                                                    <div
+                                                        class="flex-grow-1 bg-secondary bg-active-primary rounded h-5px me-2">
+                                                    </div>
+                                                    <div
+                                                        class="flex-grow-1 bg-secondary bg-active-primary rounded h-5px me-2">
+                                                    </div>
+                                                    <div
+                                                        class="flex-grow-1 bg-secondary bg-active-primary rounded h-5px">
+                                                    </div>
+                                                </div>
+                                                <!--end::Highlight meter-->
+                                            </div>
+                                            <!--end::Wrapper-->
+
+                                            <!--begin::Hint-->
+                                            <div class="text-primary pb-10">
+                                                Use 8 o más caracteres con una combinación de letras, números y simbolos
+                                            </div>
+                                            <!--end::Hint-->
+                                        </div>
+                                        <!--end::Main wrapper-->
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" v-on:click="executeCambiarClave()">{{
+                                    dom.nombreBotonCambioClave}}</button>
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                                    v-on:click="limpiarFormulario()">Cerrar</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade" tabindex="-1" id="modalImagenUsuario">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Imagen del usuario</h3>
+
+                                <!--begin::Close-->
+                                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
+                                    aria-label="Close" id="btnSupCerrarModalImagen">
+                                    <span class="svg-icon svg-icon-1"></span>
+                                </div>
+                                <!--end::Close-->
+                            </div>
+
+                            <div class="modal-body">
+                                <!-- <pre>{{dataUsuario.archivo}}</pre> -->
+                                <!--begin::Form-->
+                                <form id="upload-widget" class="dropzone" enctype="multipart/form-data">
+                                    <!--begin::Input group-->
+                                    <div class="fv-row">
+                                        <!--begin::Dropzone-->
+                                        <div class="dropzone" id="kt_dropzonejs_example_1">
+                                            <!--begin::Message-->
+                                            <div class="dz-message needsclick">
+                                                <!--begin::Icon-->
+                                                <i class="bi bi-file-earmark-arrow-up text-primary fs-3x"></i>
+                                                <!--end::Icon-->
+
+                                                <!--begin::Info-->
+                                                <div class="ms-4">
+                                                    <h3 class="fs-5 fw-bold text-gray-900 mb-1">Arraste la imagen o de
+                                                        click para seleccionar.</h3>
+                                                    <span class="fs-7 fw-semibold text-gray-400">Agregar 1 imagen</span>
+                                                </div>
+                                                <!--end::Info-->
+                                            </div>
+                                        </div>
+                                        <!--end::Dropzone-->
+                                    </div>
+                                    <!--end::Input group-->
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                                    id="btnCerrarModalImagen">Close</button>
+                                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script src="scripts/usuario.js?op=10214"></script>
+
+                <%- include("footer") %>

@@ -1,0 +1,890 @@
+<%- include("header") %>
+    <!--begin::Wrapper-->
+    <div class="app-wrapper flex-column flex-row-fluid" id="ViewProductos">
+        <!--begin::Wrapper container-->
+        <div class="app-container container-xxl d-flex flex-row flex-column-fluid">
+            <!--begin::Main-->
+            <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                <!--begin::Content wrapper-->
+                <div class="d-flex flex-column flex-column-fluid">
+                    <!--begin::Toolbar-->
+                    <div class="app-toolbar align-items-center justify-content-between">
+                        <!--begin::Toolbar wrapper-->
+                        <div class="d-flex flex-grow-1 flex-stack flex-wrap gap-2 mb-n10" id="kt_toolbar">
+                            <!--begin::Page title-->
+                            <div class="d-flex flex-column align-items-start me-3 gap-2">
+                                <!--begin::Title-->
+                                <h1 class="d-flex text-dark fw-bolder m-0 fs-3">Mis productos y servicios</h1>
+                                <!--end::Title-->
+                            </div>
+                            <!--end::Page title-->
+                            <!--begin::Actions-->
+                            <div class="d-flex align-items-center py-2">
+
+                                <div class="row" v-show="dom.mostrarBotonNuevo">
+                                    <!--begin::Button-->
+                                    <div class="col-md-7">
+                                    <a class="btn btn-sm btn-primary" v-on:click="verFormulario();">Nuevo</a>
+                                    </div>
+                                    <div class="col-md-3">                                
+                                    <a class="btn btn-sm btn-primary" v-on:click="verFiltro();">Filtros</a>
+                                    </div>
+                                    <!--end::Button-->
+                                </div>
+                                
+                            </div>
+                            <!--end::Actions-->
+                        </div>
+                        <!--end::Toolbar wrapper-->
+                    </div>
+                    <!--end::Toolbar-->   
+                    
+                    <div class="card mb-12" v-show="dom.mostrarBusqueda" id="">
+                        <div class="card-body">
+                           
+                            <div class="d-flex align-items-center">
+                                <div class="position-relative w-md-400px me-md-2">
+                                    <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+                                    <span class="svg-icon svg-icon-3 svg-icon-gray-500 position-absolute top-50 ms-5 translate-middle-y">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+										<rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1"
+											transform="rotate(45 17.0365 15.1223)" fill="currentColor"></rect>
+										<path
+											d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z"
+											fill="currentColor"></path>
+									</svg>
+								</span>
+                                    <!--end::Svg Icon-->
+                                    <!--end::Icon-->
+                                    <!--begin::Input-->
+                                    <input type="text" class="form-control form-control-solid ps-13" name="Buscar" placeholder="Buscar"
+                                    v-model="datosBusqueda.nombreProServ" v-on:keyup="validarBusquedaEnter">
+                                    <!--end::Input-->
+
+                                </div>                        
+                                <div class="col-md-3"></div>
+
+                                <div class="d-flex align-items-center">
+                                    <button type="submit" class="btn btn-sm btn-primary me-5" data-kt-menu-dismiss="true"
+                                    v-on:click="validarBusquedaProServ();">Aplicar</button>
+                                    <a id="kt_horizontal_search_advanced_link" class="btn btn-link me-5" data-bs-toggle="collapse" href="#kt_advanced_search_form" > Búsqueda Avanzada</a>
+                                    <button type="submit" class="btn btn-sm btn-danger" data-kt-menu-dismiss="true" v-on:click="ocultarFiltro();" >Cancelar</button>
+                                </div>
+                                <!-- {{dataBusqueda}} -->
+                            </div>
+
+                            <!--begin::Búsqueda Avanzadas-->
+                            <div class="collapse" id="kt_advanced_search_form">
+                                <!--begin::Separator-->
+                                <div class="separator separator-dashed mt-9 mb-6"></div>
+                                <!--end::Separator-->
+                                <!--begin::Row-->
+                                <div class="row g-8 mb-8">
+                                    <!--begin::Col-->                                                                       
+
+                                    <!--begin::Col-->
+                                    <div class="col-md-6">
+                                        <label class="fs-6 form-label fw-bolder text-dark">Estado</label>
+                                        <select class="form-select form-select-solid" aria-label="Select example" v-model="datosBusqueda.estado"
+                                        >
+                                            <option value="">:Todos:</option>
+                                            <option value="R">Activo</option>
+                                            <option value="S">Inactivo</option>
+                                        </select>
+                                    </div>
+                                    <!--end::Col-->
+
+                                    <!--begin::Col-->
+                                    <div class="col-md-6">
+                                        <label class="fs-6 form-label fw-bolder text-dark">Tipo Producto/Servicio</label>
+                                        <select class="form-select form-select-solid" aria-label="Select example" v-model="datosBusqueda.tipoProServ"
+                                        >
+                                            <option value="">:Seleccione:</option>
+                                            <option value="P">Producto</option>
+                                            <option value="S">Servicio</option>
+                                        </select>
+                                    </div>
+                                    <!--end::Col-->
+                                    
+                                    <!--begin::Col-->
+                                    <div class="col-md-6">
+                                        <label class="fs-6 form-label fw-bolder text-dark">Código Principal</label>
+                                        <input type="text" class="form-control form-control form-control-solid" name="tags" v-model="datosBusqueda.codigoPrincipal"
+                                        @keypress="isNumber($event)" v-on:keyup="validarBusquedaEnter">
+                                    </div>
+                                    <!--end::Col-->
+
+                                </div>
+                                <!--end::Row-->
+                            </div>
+                            <!--end::Búsqueda Avanzada-->
+
+                        </div>
+                    </div>
+
+                
+                    <!--begin::Content-->
+                    <div class="app-content flex-column-fluid" id="kt_app_content">
+                        <!--begin::Content-->
+                        <!--begin::Formulario Usuario v-show="dom.mostrarFomulario"-->
+                        <div class="card mb-12" v-show="dom.mostrarFormulario" id="viewFormulario">                           
+                            <form role="form" @submit.prevent="validarCreacionEdicionProducto()" id="formProServ">
+                                <!-- <pre> {{dataProducto}}</pre> -->
+                                <div class="card-body pt-5 pb-5">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="fv-row mb-10">
+                                                        <label class="required form-label">Tipo</label>
+                                                        <select name="tipoProServ" class="form-select form-select-solid" aria-label="Select example" v-model="dataProducto.tipoProServ"> 
+                                                        <option value="">:Seleccione:</option>
+                                                        <option value="P">Producto</option>
+                                                        <option value="S">Servicio</option>
+                                                        
+											</select>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                    <div class="fv-row mb-10">
+                                                        <label class="required form-label">Categoría</label>
+
+                                                        <div class="input-group">
+                                                        <select name="categoriaProServ" class="form-select form-select-solid" v-model="dataProducto.idCategoria"> 
+                                                        <option value="">:Seleccione:</option>
+                                                        <option v-for="option in datosGenerales.categorias"
+                                                        v-bind:value="option.ID_CATEGORIA">{{ option.NOMBRE }}
+                                                        </option>                                                      
+											            </select>
+
+                                                        <span class="input-group-btn">
+															<a class="btn btn-primary btn-hover-scale me-5" data-bs-toggle="modal" data-bs-target="#categoriaPS"
+                                                            >
+                                                            <i class="bi bi-gear-fill fs-2"></i>
+                                                            Config.
+                                                                <!--begin::Svg Icon | path: icons/duotune/general/gen016.svg-->
+                                                                
+                                                            </a>
+                                                        </span>
+                                                        </div>                                        
+                                                    </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <div class="fv-row mb-10">
+                                                            <label class="required form-label">Código Principal</label>
+                                                            <div class="input-group">
+                                                                <input name="codigoPrincipal" class="form-control form-control-solid" v-model="dataProducto.codigoPrincipal"
+                                                                    @keypress="isNumber($event)"  maxlength="15">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <div class="fv-row mb-10">
+                                                            <label class="required form-label">Código de Barras</label>
+                                                            <div class="input-group">
+                                                                <input name="codigoBarras" class="form-control form-control-solid" v-model="dataProducto.codigoBarras"
+                                                                    @keypress="isNumber($event)"  maxlength="15">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="fv-row col-md-12 mb-10">
+                                                    <label class="required form-label">Nombre</label>
+                                                    <input name="nombreProServ" type="text" class="form-control form-control-solid"  
+                                                    v-model="dataProducto.nombreProServ"/>
+                                                </div>                                                
+
+                                                <div class="col-md-12 mb-10">
+                                                    <label class="form-label">Estado</label>
+
+                                                    <select class="form-select form-select-solid" aria-label="Select example" v-model="dataProducto.estado">
+												<option value="R">Activo</option>
+												<option value="S">Inactivo</option>
+											</select>
+                                                </div>                                                                                                                                        
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="row">                                            
+                                                
+                                                <!-- <div class="col-md-12">
+                                                    <div class="mb-10">
+                                                        <label class="form-label">Marca</label>
+
+                                                        <div class="input-group">
+                                                        <select  class="form-select form-select-solid" aria-label="Select example" v-model="dataProducto.idMarca"
+                                                        v-on:change="executeCargarModelo();"> 
+                                                        <option value="">:Seleccione:</option>
+                                                        <option v-for="option in datosGenerales.marcas"
+                                                        v-bind:value="option.ID_MARCA">{{option.MARCA}}</option>                                                      
+											            </select>
+
+                                                        <span class="input-group-btn">
+															<a class="btn btn-primary btn-hover-scale me-5" data-bs-toggle="modal" data-bs-target="#marcaPS"
+                                                            @click="executeListarMarca()">
+                                                            <i class="bi bi-gear-fill fs-2"></i>
+                                                            Config.
+                                                                
+                                                            </a>
+                                                        </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="mb-10">
+                                                        <label class="form-label">Modelo</label>
+
+                                                        <div class="input-group">
+                                                        <select class="form-select form-select-solid" aria-label="Select example" v-model="dataProducto.idModelo"
+                                                        > 
+                                                        <option value="">:Seleccione:</option>
+                                                        <option v-for="option in datosGenerales.modelos"
+                                                        v-bind:value="option.ID_MODELO">{{option.MODELO}}</option>
+                                                        
+											            </select>
+
+                                                        <span class="input-group-btn">
+															<a class="btn btn-primary btn-hover-scale me-5" data-bs-toggle="modal" data-bs-target="#modeloPS"
+                                                            @click="executeListarModelo()">
+                                                            <i class="bi bi-gear-fill fs-2"></i>
+                                                            Config.
+                                                                
+                                                            </a>
+                                                        </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div> -->
+
+                                                <div class="fv-row col-md-12 mb-10">
+                                                    <label class="required form-label">IVA</label>
+                                                    <select name="iva" class="form-select form-select-solid" aria-label="Select example" v-model="dataProducto.ivaProServ"
+                                                    v-on:change="cargarIvaCalculo(),calcularIVA();">
+                                                        <option value="">:Seleccione:</option>
+                                                        <option v-for="option in datosGenerales.listaIva"
+                                                        v-bind:value="option.CODIGO">
+                                                        {{option.IMPUESTO}}</option>     
+                                                    </select>
+                                                </div>    
+                                                
+                                                <div class="fv-row col-md-6">
+                                                    <label class="required form-label">PVP sin impuesto</label>
+                                                    <input ref="valorSinIva" name="valorProServ" type="text" class="form-control form-control-solid"   
+                                                    v-model="dataProducto.valorProServ" @input="restrictDecimal" v-on:keyup="calcularIVA()"
+                                                    />
+                                                </div>     
+                                                <div class="fv-row col-md-6 ">
+                                                    <label class="required form-label">PVP con impuesto</label>
+                                                    <input name="valorProServImp" type="text" class="form-control form-control-solid"   
+                                                    v-model="dataProducto.valorIvaProServ" @input="restrictDecimalIva"
+                                                    />
+                                                </div>
+                                            
+                                                <div class="col-md-3">
+                                                    <div class="pt-20">
+                                                            <!--begin::Switch-->
+                                                            <label class="form-check form-switch form-check-custom form-check-solid">
+                                                        <input class="form-check-input" type="checkbox" checked="checked"
+                                                        v-model="dataProducto.irbpn"/>
+                                                        <span class="form-check-label fw-bold text-muted">
+                                                            IRBPN
+                                                        </span>                                                        
+                                                    </label>
+                                                            <!--end::Switch-->
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="pt-20">
+                                                            <!--begin::Switch-->
+                                                            <label class="form-check form-switch form-check-custom form-check-solid">
+                                                        <input class="form-check-input" type="checkbox" checked="checked"
+                                                        v-model="dataProducto.iceProServ" v-on:change="executeCargarSelectIce();"/>
+                                                        <span class="form-check-label fw-bold text-muted">
+                                                            ICE
+                                                        </span>                                                        
+                                                    </label>
+                                                            <!--end::Switch-->
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7 pt-18" v-show="dom.selectIce">
+                                                    <select class="form-select form-select-solid" aria-label="Select example" v-model="dataProducto.idIceProServ"
+                                                    >
+                                                    <option value="">:Seleccione:</option>
+                                                        <option v-for="option in datosGenerales.listaIsecProServ"
+                                                        v-bind:value="option.ID_ICE">
+                                                        {{option.NOMBRE}}</option>
+											</select>
+                                                </div>
+
+                                                <div class="col-md-12 mt-8">
+                                                    <div class="rounded border d-flex flex-column p-8">
+                                                        <label for="" class="form-label">Información Adicional</label>
+                                                        <textarea class="form-control form-control form-control-solid" data-kt-autosize="true"
+                                                        v-model="dataProducto.informacionAdicional" placeholder="Descripcion"></textarea>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 text-center pt-10">
+
+                                            <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" v-if="!dataProducto.idProducto">{{dom.nombreBotonRegistrar}}</button>
+                                            <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" v-else>{{dom.nombreBotonEditar}}</button>
+                                            <button type="button" class="btn btn-bg-dark text-inverse-dark  me-2 mb-2" v-on:click="ocultarFormulario()">Cancelar</button>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!--end::Formulario Usuario-->
+
+
+                        <!--begin::Lista de usuarios tabla-->
+                        <div class="card mb-12" v-show="dom.mostrarListado" id="divMostrarListado">
+                            <div class="card-body pt-5 pb-5">
+
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        <div class="notice d-flex bg-light-warning rounded border-warning border border-dashed p-6">
+                                            <!--begin::Icon-->
+                                            <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg--><span class="svg-icon svg-icon-2tx svg-icon-warning me-4"><svg xmlns="http://www.w3.org/2000/svg"
+													width="24" height="24" viewBox="0 0 24 24" fill="none">
+													<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
+													<rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)"
+														fill="currentColor"></rect>
+													<rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)"
+														fill="currentColor"></rect>
+												</svg></span>
+                                            <!--end::Svg Icon-->
+                                            <!--end::Icon-->
+                                            <!--begin::Wrapper-->
+                                            <div class="d-flex flex-stack flex-grow-1">
+                                                <!--begin::Content-->
+                                                <div class="fw-bold">
+                                                    <h4 class="text-gray-900 fw-bolder">¡Necesitamos su atención!</h4>
+                                                    <div class="fs-6 text-gray-700">En la siguiente lista encontrará los <a class="fw-bolder"> 50
+															últimos productos y servicios registrados</a>, si desea obtener mas información por favor usuar los filtros.
+                                                    </div>
+                                                </div>
+                                                <!--end::Content-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 table-responsive pt-5" style="max-height: 450px; height: 450px; overflow-y: scroll;">
+                                        <table class="table table-hover table-row-bordered">
+                                            <thead class="bg-primary text-white fw-bolder">
+                                                <tr>
+                                                    <th width="3%">#</th>
+                                                    <th width="10%">Tipo</th>
+                                                    <th width="12%">Código Principal</th>
+                                                    <th width="10%">Código Barras</th>
+                                                    <th width="20%">Nombre</th>
+                                                    <th width="10%">Valor</th>
+                                                    <th width="15%">IVA</th>
+                                                    <th width="10%">Estado</th>
+                                                    <th width="15%">Opciones</th>
+                                                </tr>
+
+                                            </thead>
+                                            <tbody class="text-gray-600 fw-bold">
+
+                                                <tr v-for="(item, i) in datosGenerales.listaProServ">
+                                                    <td width="3%">{{ i+1 }}</td>
+                                                    <td width="10%"
+                                                    v-if="item.TIPO_PROD_SERV == 'P'">PRODUCTO</td>
+                                                    <td width="10%"
+                                                    v-else>SERVICIO</td>
+                                                    <td width="12%">{{item.CODIGO_PRINCIPAL}}</td>
+                                                    <td width="10%">{{item.CODIGO_BARRAS}}</td>
+                                                    <td width="20%">{{item.NOMBRE_PROD_SERV}}</td>
+                                                    <td width="10%">{{item.VALOR}}</td>
+
+                                                    <td width="15%">{{item.VALOR_IVA}}</td>                                                    
+                                                    
+                                                    <td width="10%">
+                                                        <span class="badge badge-success" v-if="item.ESTADO == 'R'">Activo</span>
+                                                        <span v-else class="badge badge-danger">Inactivo</span>
+                                                    </td>
+                                                    <td width="15%">
+
+                                                        <div class="btn-group" role="group">
+                                                            <button id="btnGroupDrop1" type="button" class="btn btn-light btn-active-light-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+														Acción
+													  </button>
+                                                            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                                <li>
+                                                                    <a href="javascript:void(0)" class="dropdown-item" data-toggle="tooltip" title="Editar" v-on:click="executecargarDataProServ(item.ID_PROD_SERV)">
+                                                                        <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="currentColor"></path><path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="currentColor"></path></svg></span>
+                                                                        Editar</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="javascript:void(0)" class="dropdown-item" data-toggle="tooltip" title="Eliminar" v-on:click="confirmacionEliminarProServ(item.ID_PROD_SERV, item.NOMBRE_PROD_SERV);">
+                                                                        <span class="svg-icon svg-icon-3 me-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor"></path><path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor"></path><path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor"></path></svg></span>                                                                        
+                                                                        Eliminar</a>
+                                                                </li>                                                                
+
+                                                                <div v-if="item.FECHA_EDICION === ' ' ">
+                                                                    <div class="separator"></div>
+                                                                    <div class="d-flex align-items-center p-2 ">																	
+                                                                        <!--begin::Text-->
+                                                                        <div class="fs-9 fw-bold">
+                                                                            <span class="text-muted"> Creado por:</span> <br>
+                                                                            <a href="javascript:void(0)" class="text-gray-700 text-hover-primary"> {{ item.USUARIO_REG }}</a>
+                                                                            <span class="text-muted"> el {{ item.FECHA_REG }}</span>
+                                                                        </div>
+                                                                        <!--end::Text-->
+                                                                    </div>                                                            
+                                                                </div>
+    
+                                                                <div v-else>
+                                                                    <div class="separator"></div>
+                                                                    <div class="d-flex align-items-center p-2 ">																	
+                                                                        <!--begin::Text-->
+                                                                        <div class="fs-9 fw-bold">
+                                                                            <span class="text-muted"> Creado por:</span> <br>
+                                                                            <a href="javascript:void(0)" class="text-gray-700 text-hover-primary"> {{ item.USUARIO_REG }}</a>
+                                                                            <span class="text-muted"> el {{ item.FECHA_REG }}</span>
+                                                                        </div>
+                                                                        <!--end::Text-->
+                                                                    </div>
+    
+                                                                    <div class="separator pt-3"></div>
+                                                                    <div class="d-flex align-items-center p-2">
+                                                                        
+                                                                        <!--begin::Text-->
+                                                                        <div class="fs-9 fw-bold">
+                                                                            <span class="text-muted"> Actualizado por:</span> <br>
+                                                                            <a href="javascript:void(0)" class="text-gray-700 text-hover-primary">{{ item.USUARIO_MOD}}</a><br>
+                                                                            <span class="text-muted"> el {{item.FECHA_EDICION}}</span>
+                                                                        </div>
+                                                                        <!--end::Text-->
+                                                                    </div>
+                                                                </div>
+
+                                                            </ul>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <!--end::Action=-->
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--end::Lista de usuarios tabla-->
+
+                        <!--begin::Content-->
+
+
+
+                    </div>
+                    <!--end::Content-->
+                </div>
+
+<!--Modal CategoriaProServ-->
+<div class="modal fade" tabindex="-1" id="categoriaPS" >
+    <div class="modal-dialog">
+        <div class="modal-content" id="viewFormularioCategoria">
+            <form role="form" @submit.prevent="validarCreacionCategorias()" id="formCategoria"
+            novalidate="novalidate">
+            <div class="modal-header bg-primary">
+                
+                <h1 class="mb-1 text-white"><i class="bi bi-bookmarks-fill text-white fs-1"></i>   REGISTRO NUEVA CATEGORIA </h1>
+                
+            </div>
+
+            <div class="modal-body"> 
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="mb-1 text-black text-hover-primary">DATOS GENERALES</h3>
+                        <div class="separator"></div>
+                        <br>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <div class="row">                         
+                            <div class="fv-row col-md-12">
+                                <label class="required form-label">Nombre Categoría</label>
+                                <input name="nombreCategoria" type="text" class="form-control form-control-solid"
+                                v-model="dataCategoria.nombreCategoria" maxlength="100">
+                            </div> 
+                            <div class="fv-row col-md-12">
+                                <label class="required form-label">Prefíjo</label>
+                                <input name="prefijoCategoria" type="text" class="form-control form-control-solid"
+                                v-model="dataCategoria.prefijoCategoria" maxlength="3">
+                            </div>                                                             
+                        </div>
+
+                    </div>                                                       
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer centrar-contenido">
+                <button class="btn btn-primary"
+                v-if="dataCategoria.nombreCategoria == '' || dataCategoria.prefijoCategoria == '' ">Registrar</button> 
+                <button class="btn btn-primary" data-bs-dismiss="modal" v-else>Registrar</button>                    
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" @click="limpiarFormCategoria()">Close</button>
+            </div>  
+            </form>          
+
+        </div>
+    </div>
+</div>
+ <!--Fin::Modal CategoriaProServ-->
+
+ <!--Modals marcaProServ-->
+ <!-- Modal 1 -->
+<div class="modal fade" tabindex="-1" id="marcaPS" >
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content" id="viewFormularioM">
+            <div class="modal-header bg-primary">
+                
+                <h1 class="mb-1 text-white">CONFIGURACIÓN MARCA</h1>
+
+            </div>
+
+            <div class="modal-body">                                
+                    
+                    <div class="col-md-12">
+                        <!-- {{dataSucursales}} -->
+                        <div class="row">                            
+                            
+                            <div class="table-responsive">
+                                <table class="table  table-flush table-hover">
+                                 <thead class="bg-primary">
+                                  <tr class="fw-bold fs-4 text-white">
+                                   <th width="5%">#</th>
+                                   <th width="30%">Marca</th>
+                                   <th width="20%">Opciones</th>                                   
+                                  </tr>
+                                 </thead>
+                                 <tbody>
+                                  <tr class="py-5 fw-semibold  border-bottom border-gray-300 fs-6"
+                                  v-for="(itemM, i) in datosGenerales.listaMarcas">
+                                   <td width="5%">{{i+1}}</td>
+                                   <td width="30%">{{itemM.MARCA}}</td>
+                                   <td width="20%">
+                                    <div class="row">
+                                            
+                                        <div class="col-md-5">
+                                        <a href="javascript:void(0)" class=" btn btn-sm btn-active-success"  data-toggle="tooltip" title="Editar" 
+                                        v-on:click="executecargarDataMarca(itemM.ID_MARCA)" data-bs-toggle="modal" data-bs-target="#marcaPS2">
+                                            <span class="svg-icon svg-icon-3">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="245" height="245" viewBox="0 0 24 24" fill="none">
+                                                <path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="currentColor"></path><path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="currentColor">
+                                                </path>
+                                                </svg>
+                                            </span>
+                                        </a>
+                                        </div>
+                                        
+                                        <div class="col-md-5">
+                                        <a  href="javascript:void(0)" class="btn btn-sm btn-active-dark" data-toggle="tooltip" title="Eliminar"
+                                            v-on:click="confirmacionEliminarMarca(itemM.ID_MARCA, itemM.MARCA);">
+                                            <span class="svg-icon svg-icon-3">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor"></path><path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor"></path><path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor">
+                                                </path>
+                                                </svg>
+                                            </span>
+                                        </a>
+                                        </div>
+                                    </td>                                   
+                                    </tr>                                  
+                                   
+                                 </tbody>
+                                </table>
+                               </div>
+                                                                                     
+                        </div>
+
+                    </div>                                                       
+
+            </div>
+
+            <div class="modal-footer centrar-contenido">
+                <button @click="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#marcaPS2"
+                    ><i class="fs-2hx lar la-plus text-white"></i>Nuevo</button>                    
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>            
+
+        </div>
+    </div>
+</div>
+<!-- Fin::Modal 1 -->
+<!-- Modal 2 -->
+<div class="modal fade" tabindex="-1" id="marcaPS2" >
+    <div class="modal-dialog">
+        <div class="modal-content" id="viewFormularioMarca">
+            <form role="form" @submit.prevent="validarCreacionEdicionMarca()" id="formMarca"
+            novalidate="novalidate">
+                <div class="modal-header bg-primary">
+                
+                    <h1 class="mb-1 text-white">CONFIGURACIÓN MARCA</h1>
+    
+                </div>
+    
+                <div class="modal-body">
+                   
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="mb-1 text-black text-hover-primary">DATOS GENERALES</h3>
+                            <div class="separator"></div>
+                            <br>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <!-- {{dataSucursales}} -->
+                            <div class="row border border-5 rounded">
+                                <div class="mb-5"></div>                                                         
+                                <div class="fv-row col-md-12 mb-10">
+                                    <label class="required form-label">Marca:</label>
+                                    <input name="nombreMarca" type="text" class="form-control form-control-solid"
+                                    v-model="dataMarca.nombreMarca">
+                                </div>                                                             
+                            </div>
+    
+                        </div>                                                       
+    
+                    </div>
+    
+                </div>
+    
+                <div class="modal-footer centrar-contenido">
+
+                    <div v-if="dataMarca.nombreMarca == ''">
+                        <button class="btn btn-primary"
+                        v-if="!dataMarca.idMarca">{{dom.nombreBotonRegistrar}}</button>
+                        <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" data-bs-dismiss="modal"
+                        v-else>{{dom.nombreBotonEditar}}</button>        <a></a>          
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal" @click="limpiarFomMarca()">Close</button>
+                    </div>
+
+
+                    <div v-else>
+                        <button class="btn btn-primary" data-bs-dismiss="modal"
+                    v-if="!dataMarca.idMarca">{{dom.nombreBotonRegistrar}}</button>
+                    <button type="submit" class="btn btn-bg-success text-inverse-success me-2 mb-2" data-bs-dismiss="modal"
+                    v-else>{{dom.nombreBotonEditar}}</button>  <a></a>                
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" @click="limpiarFomMarca()">Close</button>
+                    </div>
+                    
+                </div>  
+            </form>                      
+        </div>
+    </div>
+</div>
+<!-- Fin::Modal 2 -->
+ <!--Fin::Modal marcaProServ-->
+
+ <!--Modal modeloProServ-->
+ <!-- Modal 1 -->
+<div class="modal fade" tabindex="-1" id="modeloPS" >
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content ">
+            <div class="modal-header bg-primary">
+                
+                <h1 class="mb-1 text-white">CONFIGURACIÓN MODELO</h1>
+
+            </div>
+
+            <div class="modal-body">
+               
+                <div class="row">                    
+                    
+                    <div class="col-md-12">
+                        
+                        <div class="row">                            
+                            
+                            <div class="table-responsive">
+                                <table class="table  table-flush table-hover">
+                                 <thead class="bg-primary">
+                                  <tr class="fw-bold fs-4 text-white">
+                                   <th width="5%">#</th>
+                                   <th width="30%">Marca</th>
+                                   <th width="30%">Modelo</th>
+                                   <th width="20%">Opciones</th>                                   
+                                  </tr>
+                                 </thead>
+                                 <tbody>
+                                  <tr class="py-5 fw-semibold  border-bottom border-gray-300 fs-6"
+                                  v-for="(itemMo, i) in datosGenerales.listaModelos">
+                                   <td width="5%">{{i+1}}</td>
+                                   <td width="30%">{{itemMo.MARCA}}</td>
+                                   <td width="30%">{{itemMo.MODELO}}</td>
+                                   <td width="20%">
+                                    <div class="row">
+                                            
+                                        <div class="col-md-5">
+                                        <a href="javascript:void(0)" class=" btn btn-sm btn-active-success"  data-toggle="tooltip" title="Editar" 
+                                            v-on:click="executecargarDataModelo(itemMo.ID_MODELO)" data-bs-toggle="modal" data-bs-target="#modeloPS2">
+                                            <span class="svg-icon svg-icon-3">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="245" height="245" viewBox="0 0 24 24" fill="none">
+                                                <path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="currentColor"></path><path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="currentColor">
+                                                </path>
+                                                </svg>
+                                            </span>
+                                        </a>
+                                        </div>
+                                        
+                                        <div class="col-md-5">
+                                        <a  href="javascript:void(0)" class="btn btn-sm btn-active-dark" data-toggle="tooltip" title="Eliminar"
+                                            v-on:click="confirmacionEliminarModelo(itemMo.ID_MODELO, itemMo.MODELO);">
+                                            <span class="svg-icon svg-icon-3">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor"></path><path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor"></path><path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor">
+                                                </path>
+                                                </svg>
+                                            </span>
+                                        </a>
+                                        </div>
+                                   </td>                                   
+                                  </tr>                                                                                                                                         
+                                 </tbody>
+                                </table>
+                               </div>
+                                                                                     
+                        </div>
+
+                    </div>                                                       
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer centrar-contenido">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modeloPS2"
+                    >Nuevo</button>                    
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>            
+
+        </div>
+    </div>
+</div>
+<!-- Fin::Modal 1 -->
+<!-- Modal 2 -->
+<div class="modal fade" tabindex="-1" id="modeloPS2" >
+    <div class="modal-dialog">
+        <div class="modal-content" id="viewFormularioModelo">
+
+            <form role="form" @submit.prevent="validarCreacionEdicionModelo()" id="formModelo"
+            novalidate="novalidate">
+
+            <div class="modal-header bg-primary">
+                
+                <h1 class="mb-1 text-white">CONFIGURACIÓN MODELO</h1>
+
+            </div>
+
+            <div class="modal-body">
+               
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="mb-1 text-black text-hover-primary">DATOS GENERALES</h3>
+                        <div class="separator"></div>
+                        <br>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <!-- {{dataSucursales}} -->
+
+                        <div class="col-md-12">
+                            <!-- {{dataSucursales}} -->
+                            
+                            <div class="mb-10">
+                                <label class="form-label">Marca</label>
+
+                                <select  class="form-select form-select-solid" aria-label="Select example" v-model="dataModelo.idMarca"
+                                v-on:change="executeCargarModelo();"> 
+                                <option value="">:Seleccione:</option>
+                                <option v-for="option in datosGenerales.marcas"
+                                v-bind:value="option.ID_MARCA">{{option.MARCA}}</option>                                                      
+                                </select>                                
+
+                            </div>
+    
+                        </div>
+
+                        <div class="row border border-5 rounded">
+                            <div class="mb-5"></div>                                                         
+                            <div class="fv-row col-md-12 mb-10">
+                                <label class="required form-label">Modelo:</label>
+                                <input name="nombreModelo" type="text" class="form-control form-control-solid"
+                                v-model="dataModelo.nombreModelo">
+                            </div>                                                             
+                        </div>
+
+                    </div>                                                       
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer centrar-contenido">
+
+                <div v-if="dataModelo.nombreModelo == '' ">
+
+                    <button class="btn btn-primary"
+                v-if="!dataModelo.idModelo">{{dom.nombreBotonRegistrar}}</button>
+                <button type="submit" class="btn btn-bg-success text-inverse-success" data-bs-dismiss="modal"
+                v-else>{{dom.nombreBotonEditar}}</button> <a></a>                   
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal"  @click="limpiarFormModelo()">Close</button>
+
+                </div>
+                
+                <div v-else>
+
+                    <button class="btn btn-primary" data-bs-dismiss="modal"
+                    v-if="!dataModelo.idModelo">{{dom.nombreBotonRegistrar}}</button>
+                    <button type="submit" class="btn btn-bg-success text-inverse-success" data-bs-dismiss="modal"
+                    v-else>{{dom.nombreBotonEditar}}</button>    <a></a>                
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"  @click="limpiarFormModelo()">Close</button>
+
+                </div>
+            </div> 
+
+            </form>                       
+
+        </div>
+    </div>
+</div>
+<!-- fin::Modal 2 -->
+ <!--Fin::Modal modeloProServ-->
+
+
+                <script src="scripts/producto.js?op=10214"></script>
+
+
+
+                <%- include("footer") %>
